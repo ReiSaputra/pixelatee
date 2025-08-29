@@ -4,6 +4,9 @@ node_modules
 # don't allow prisma 
 src/generated/prisma
 
+# don't allow prisma migration
+prisma/migrations
+
 # don't allow .env
 .env
 
