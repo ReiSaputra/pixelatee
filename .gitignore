@@ -1,0 +1,14 @@
+# don't allow node_modules
+node_modules
+
+# don't allow prisma 
+src/generated/prisma
+
+# don't allow .env
+.env
+
+# don't allow logs (except in prod)
+logs
+
+# don't allow dist
+dist
