@@ -4,5 +4,5 @@ import { NewsletterController } from "../controller/newsletter.controller";
 
 export const newsletterRoute: express.Router = express.Router();
 
-newsletterRoute.post("/newsletters/join", NewsletterController.join);
-newsletterRoute.get("/newsletters/activate", NewsletterController.activate);
+newsletterRoute.post("/public/newsletters/join", NewsletterController.join);
+newsletterRoute.get("/public/newsletters/activate", NewsletterController.activate);
