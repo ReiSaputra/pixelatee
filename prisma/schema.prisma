@@ -13,3 +13,60 @@ datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
 }
+
+model User {
+  id String @id @default(uuid())
+
+  name String?
+
+  password String
+
+  username String @unique
+  email    String @unique
+
+  role UserRole
+
+  newsletter Newsletter[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("users")
+}
+
+model Newsletter {
+  id String @id @default(uuid())
+
+  title   String
+  content String @db.Text
+
+  authorId String @map("author_id")
+  author   User   @relation(fields: [authorId], references: [id])
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("newsletters")
+}
+
+model NewsletterMember {
+  id String @id @default(uuid())
+
+  email String @unique
+
+  status NewsletterMemberStatus @default(PENDING)
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("newsletter_members")
+}
+
+enum UserRole {
+  ADMIN
+}
+
+enum NewsletterMemberStatus {
+  SUBSCRIBE
+  PENDING
+}
