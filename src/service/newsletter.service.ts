@@ -66,6 +66,12 @@ export class NewsletterService {
     return info.accepted;
   }
 
+  /**
+   * Activate newsletter
+   * @param request request that contains member ID
+   * @returns response that contains updated newsletter member
+   * @throws ResponseError if member ID not found
+   */
   public static async activate(request: NewsletterParams) {
     // validating request
     const response: NewsletterParams = Validation.validate<NewsletterParams>(NewsletterSchema.ACTIVATE, request);
