@@ -29,22 +29,22 @@ export class NewsletterController {
   }
 
   /**
-   * Confirm newsletter
+   * Activate newsletter
    * @param req request that contains member ID
    * @param res response that redirects to frontend
    * @param next next function to handle error
    * @throws ResponseError if member ID not found
    */
-  public static async confirm(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
+  public static async activate(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
     try {
       // assert request
-      const request: NewsletterParams = req.params as NewsletterParams;
+      const request: NewsletterParams = req.query as NewsletterParams;
 
       // call service
-      const response = await NewsletterService.confirm(request);
+      const response = await NewsletterService.activate(request);
 
       // return response
-      res.status(300).redirect("http://localhost:5173");
+      res.redirect(`http://localhost:5173/newsletters/${response.id}/thank-you`);
     } catch (error: any) {
       next(error);
     }

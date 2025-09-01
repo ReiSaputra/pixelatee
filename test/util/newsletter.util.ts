@@ -2,10 +2,12 @@ import Mail from "nodemailer/lib/mailer";
 
 import { prisma } from "../../src/application/database";
 
+import { NewsletterResponse } from "../../src/model/newsletter.model";
+
 export type NewsletterResponseSuccess = {
   status: string;
   code: number;
-  data: (string | Mail.Address)[];
+  data: (string | Mail.Address)[] | NewsletterResponse;
   message: string;
 };
 
@@ -22,7 +24,8 @@ export class NewsletterUtil {
    * @param email email to be created
    */
   public static async createMember(email: string) {
-    await prisma.newsletterMember.create({ data: { email: email } });
+    const admin = await prisma.newsletterMember.create({ data: { email: email } });
+    return admin.id;
   }
 
   /**

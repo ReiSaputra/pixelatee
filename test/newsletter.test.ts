@@ -2,7 +2,7 @@ import request from "supertest";
 
 import { web } from "../src/application/web";
 
-import { NewsletterResponseError, NewsletterResponseSuccess, NewsletterUtil } from "./utils/newsletter.util";
+import { NewsletterResponseError, NewsletterResponseSuccess, NewsletterUtil } from "./util/newsletter.util";
 
 describe("POST /api/v1/newsletters/join", () => {
   beforeEach(async () => {
@@ -10,7 +10,7 @@ describe("POST /api/v1/newsletters/join", () => {
   });
 
   afterEach(async () => {
-    await NewsletterUtil.deleteAllMember();
+    await NewsletterUtil.deleteMember("fathurraihan.edu@gmail.com");
   });
 
   it("should pass - join newsletter", async () => {
@@ -83,5 +83,33 @@ describe("POST /api/v1/newsletters/join", () => {
     expect(response.status).toBe(400);
 
     expect(body.error).toBe("ZodError");
-  })
+  });
+});
+
+describe("GET /api/v1/newsletters/confirm", () => {
+  let admin1: string;
+
+  beforeEach(async () => {
+    admin1 = await NewsletterUtil.createMember("fthrn.s14@gmail.com");
+  });
+
+  afterEach(async () => {
+    await NewsletterUtil.deleteMember("fthrn.s14@gmail.com");
+  });
+
+  it("should pass - confirm newsletter", async () => {
+    const response: request.Response = await request(web).get(`/api/v1/newsletters/confirm?memberId=${admin1}`);
+
+    expect(response.status).toBe(302);
+  });
+
+  it("should fail - member not found", async () => {
+    const response: request.Response = await request(web).get("/api/v1/newsletters/confirm?memberId=1");
+
+    const body: NewsletterResponseError = response.body as NewsletterResponseError;
+
+    expect(response.status).toBe(400);
+
+    expect(body.error).toBe("ResponseError");
+  });
 });

@@ -66,9 +66,9 @@ export class NewsletterService {
     return info.accepted;
   }
 
-  public static async confirm(request: NewsletterParams) {
+  public static async activate(request: NewsletterParams) {
     // validating request
-    const response: NewsletterParams = Validation.validate<NewsletterParams>(NewsletterSchema.CONFIRM, request);
+    const response: NewsletterParams = Validation.validate<NewsletterParams>(NewsletterSchema.ACTIVATE, request);
 
     // find newsletter member equals to params
     const findNewsletterMember: NewsletterMember | null = await prisma.newsletterMember.findUnique({
@@ -76,7 +76,7 @@ export class NewsletterService {
     });
 
     // if newsletter member not found then throw error
-    if (!findNewsletterMember) throw new ResponseError("Member ID not found", 400);
+    if (!findNewsletterMember) throw new ResponseError("Member Id not found", 400);
 
     // update newsletter member to subscriber
     const updateNewsletterMember: NewsletterMember = await prisma.newsletterMember.update({ where: { id: response.memberId }, data: { status: "SUBSCRIBE" } });
@@ -84,6 +84,4 @@ export class NewsletterService {
     // return response
     return toNewsletterResponse(updateNewsletterMember);
   }
-
-  
 }
