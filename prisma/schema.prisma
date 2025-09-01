@@ -67,6 +67,6 @@ enum UserRole {
 }
 
 enum NewsletterMemberStatus {
-  SUBSCRIBED
+  SUBSCRIBE
   PENDING
 }
