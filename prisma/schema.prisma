@@ -27,6 +27,7 @@ model User {
   role UserRole
 
   newsletter Newsletter[]
+  portfolio  Portfolio[]
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
@@ -60,6 +61,27 @@ model NewsletterMember {
   updatedAt DateTime @updatedAt @map("updated_at")
 
   @@map("newsletter_members")
+}
+
+model Portfolio {
+  id String @id @default(uuid())
+
+  title       String
+  description String @db.Text
+
+  mainImage   String  @map("main_image")
+  secondImage String? @map("second_image")
+  thirdImage  String? @map("third_image")
+  fourthImage String? @map("fourth_image")
+  fifthImage  String? @map("fifth_image")
+
+  authorId String @map("author_id")
+  author   User   @relation(fields: [authorId], references: [id])
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("portfolios")
 }
 
 enum UserRole {

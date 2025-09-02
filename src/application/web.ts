@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 
 import { newsletterRoute } from "../route/newsletter.route";
+import { portfolioRoute } from "../route/portfolio.route";
 
 import { ErrorMiddleware } from "../middleware/error.middleware";
 
@@ -24,6 +25,7 @@ web.use(express.static("public"));
  * Routes
  */
 web.use("/api/v1", newsletterRoute);
+web.use("/api/v1", portfolioRoute);
 
 /**
  * Not Found Handler
