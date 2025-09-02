@@ -1,7 +1,7 @@
 import express from "express";
 import Mail from "nodemailer/lib/mailer";
 
-import { NewsletterParams, NewsletterRequest } from "../model/newsletter.model";
+import { NewsletterParams, NewsletterRequest, NewsletterResponse } from "../model/newsletter.model";
 
 import { NewsletterService } from "../service/newsletter.service";
 
@@ -41,10 +41,32 @@ export class NewsletterController {
       const request: NewsletterParams = req.query as NewsletterParams;
 
       // call service
-      const response = await NewsletterService.activate(request);
+      const response: NewsletterResponse = await NewsletterService.activate(request);
 
       // return response
       res.redirect(`http://localhost:5173/newsletters/${response.id}/thank-you`);
+    } catch (error: any) {
+      next(error);
+    }
+  }
+
+  /**
+   * Thanks for subscribing to newsletter
+   * @param req request that contains member ID
+   * @param res response that contains member data
+   * @param next next function to handle error
+   * @throws ResponseError if member ID not found
+   */
+  public static async thanks(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
+    try {
+      // assert request
+      const request: NewsletterParams = req.query as NewsletterParams;
+
+      // call service
+      const response: NewsletterResponse = await NewsletterService.thanks(request);
+
+      // return response
+      res.status(200).json({ status: "Success", code: 200, data: response, message: "Send thanks successfully" });
     } catch (error: any) {
       next(error);
     }
