@@ -9,11 +9,13 @@ export type NewsletterRequest = {
 };
 
 export type NewsletterResponse = {
-  id: string;
+  id?: string;
+  email?: string;
 };
 
 export function toNewsletterResponse(data: NewsletterMember): NewsletterResponse {
   return {
     id: data.id,
+    email: data.email,
   };
 }

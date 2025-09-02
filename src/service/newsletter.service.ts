@@ -8,7 +8,7 @@ import { prisma } from "../application/database";
 
 import { NewsletterMember } from "../generated/prisma";
 
-import { NewsletterParams, NewsletterRequest, toNewsletterResponse } from "../model/newsletter.model";
+import { NewsletterParams, NewsletterRequest, NewsletterResponse, toNewsletterResponse } from "../model/newsletter.model";
 
 import { NewsletterSchema } from "../schema/newsletter.schema";
 import { Validation } from "../schema/validation";
@@ -37,7 +37,7 @@ export class NewsletterService {
     // create newsletter member temporary
     const createNewsletterMember: NewsletterMember = await prisma.newsletterMember.create({ data: { email: response.email } });
 
-    // send email to newsletter member
+    // create email transporter
     const transporter: nodemailer.Transporter<SMTPTransport.SentMessageInfo, SMTPTransport.Options> = nodemailer.createTransport({
       host: "smtp.gmail.com",
       port: 465,
@@ -69,10 +69,10 @@ export class NewsletterService {
   /**
    * Activate newsletter
    * @param request request that contains member ID
-   * @returns response that contains updated newsletter member
+   * @returns member data
    * @throws ResponseError if member ID not found
    */
-  public static async activate(request: NewsletterParams) {
+  public static async activate(request: NewsletterParams): Promise<NewsletterResponse> {
     // validating request
     const response: NewsletterParams = Validation.validate<NewsletterParams>(NewsletterSchema.ACTIVATE, request);
 
@@ -89,5 +89,30 @@ export class NewsletterService {
 
     // return response
     return toNewsletterResponse(updateNewsletterMember);
+  }
+
+  /**
+   * Thanks for subscribing to newsletter
+   * @param request request that contains member ID
+   * @returns member data
+   * @throws ResponseError if member ID not found
+   */
+  public static async thanks(request: NewsletterParams): Promise<NewsletterResponse> {
+    // validating request
+    const response: NewsletterParams = Validation.validate<NewsletterParams>(NewsletterSchema.THANKS, request);
+
+    // find newsletter member equals to params
+    const findNewsletterMember: NewsletterMember | null = await prisma.newsletterMember.findUnique({
+      where: { id: response.memberId },
+    });
+
+    // if newsletter member not found then throw error
+    if (!findNewsletterMember) throw new ResponseError("Member Id not found", 400);
+
+    // specify return
+    findNewsletterMember.id = undefined!;
+
+    // return response
+    return toNewsletterResponse(findNewsletterMember);
   }
 }
