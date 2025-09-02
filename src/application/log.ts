@@ -15,5 +15,3 @@ export const logger: winston.Logger = winston.createLogger({
   format: winston.format.printf((info) => `${new Date().toISOString()} [${info.level.toUpperCase()}]: ${info.message}`),
   transports: [rotateFile],
 });
-
-logger.info("logger connected");

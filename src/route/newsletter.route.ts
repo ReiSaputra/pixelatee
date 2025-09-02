@@ -6,3 +6,4 @@ export const newsletterRoute: express.Router = express.Router();
 
 newsletterRoute.post("/public/newsletters/join", NewsletterController.join);
 newsletterRoute.get("/public/newsletters/activate", NewsletterController.activate);
+newsletterRoute.get("/public/newsletters/thank-you", NewsletterController.thanks)

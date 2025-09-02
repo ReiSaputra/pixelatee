@@ -10,7 +10,13 @@ export class NewsletterSchema {
 
   public static readonly ACTIVATE: z.ZodType<NewsletterParams> = z
     .strictObject({
-      memberId: z.string({ error: "Invalid type of member ID" }).nonempty({ error: "Member ID is required" }),
+      memberId: z.string({ error: "Invalid type of member ID" }).nonempty({ error: "Member Id is required" }),
+    })
+    .required();
+
+  public static readonly THANKS: z.ZodType<NewsletterParams> = z
+    .strictObject({
+      memberId: z.string({ error: "Invalid type of member ID" }).nonempty({ error: "Member Id is required" }),
     })
     .required();
 }
