@@ -10,6 +10,11 @@ import { PortfolioSchema } from "../schema/portfolio.schema";
 import { ResponseError } from "../error/response.error";
 
 export class PortfolioService {
+  /**
+   * Get all portfolio
+   * @returns array of PortfolioResponse
+   * @throws ResponseError if error occur
+   */
   public static async publicGetAll(): Promise<PortfolioResponse[]> {
     // find all portfolio
     const findPortfolio: Portfolio[] = await prisma.portfolio.findMany();
@@ -26,6 +31,12 @@ export class PortfolioService {
     return toPortfoliosResponse(findPortfolio);
   }
 
+  /**
+   * Get detail portfolio
+   * @param request request that contains portfolio ID
+   * @returns PortfolioResponse that contains detail portfolio
+   * @throws ResponseError if error occur
+   */
   public static async publicGetDetail(request: PortfolioParams): Promise<PortfolioResponse> {
     // request validation
     const response: PortfolioParams = Validation.validate<PortfolioParams>(PortfolioSchema.PUBLIC_GET_DETAIL, request);
