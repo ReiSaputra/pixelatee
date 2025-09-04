@@ -13,9 +13,14 @@ export type NewsletterResponse = {
   email?: string;
 };
 
-export function toNewsletterResponse(data: NewsletterMember): NewsletterResponse {
+/**
+ * Converts a NewsletterMember to a NewsletterResponse
+ * @param newsletter the NewsletterMember to convert
+ * @returns a NewsletterResponse containing the id and email of the newsletter
+ */
+export function toNewsletterResponse(newsletter: NewsletterMember): NewsletterResponse {
   return {
-    id: data.id,
-    email: data.email,
+    id: newsletter.id,
+    email: newsletter.email,
   };
 }

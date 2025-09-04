@@ -16,19 +16,19 @@ export type PortfolioResponse = {
 };
 
 /**
- * Convert a Portfolio model to PortfolioResponse
- * @param data Portfolio model
- * @returns PortfolioResponse
+ * Convert a Portfolio model to a PortfolioResponse
+ * @param portfolio the Portfolio model to be converted
+ * @returns a PortfolioResponse that contains the converted Portfolio model
  */
-export function toPortfolioResponse(data: Portfolio): PortfolioResponse {
+export function toPortfolioResponse(portfolio: Portfolio): PortfolioResponse {
   return {
-    title: data.title,
-    description: data.description,
-    mainImage: data.mainImage,
-    secondImage: data.secondImage!,
-    thirdImage: data.thirdImage!,
-    fourthImage: data.fourthImage!,
-    fifthImage: data.fifthImage!,
+    title: portfolio.title,
+    description: portfolio.description,
+    mainImage: portfolio.mainImage,
+    secondImage: portfolio.secondImage!,
+    thirdImage: portfolio.thirdImage!,
+    fourthImage: portfolio.fourthImage!,
+    fifthImage: portfolio.fifthImage!,
   };
 }
 

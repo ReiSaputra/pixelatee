@@ -14,6 +14,11 @@ export type ContactResponse = {
   message?: string;
 };
 
+/**
+ * Maps a Contact entity to a ContactResponse
+ * @param contact - The Contact entity to be mapped
+ * @returns A ContactResponse with the name of the contact
+ */
 export function toContactResponse(contact: Contact) {
   return {
     name: contact.name,

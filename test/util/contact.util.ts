@@ -17,10 +17,17 @@ export type ContactResponseError = {
 };
 
 export class ContactUtil {
+  /**
+   * Delete a contact by their email
+   * @param email the email of the contact to be deleted
+   */
   public static async deleteContact(email: string): Promise<void> {
     await prisma.contact.deleteMany({ where: { email: email } });
   }
 
+  /**
+   * Delete all contacts from the database
+   */
   public static async deleteAllContact(): Promise<void> {
     await prisma.contact.deleteMany();
   }
