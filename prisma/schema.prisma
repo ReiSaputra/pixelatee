@@ -17,14 +17,13 @@ datasource db {
 model User {
   id String @id @default(uuid())
 
-  name String?
-
+  name     String? @default("Guest")
   password String
-
-  username String @unique
-  email    String @unique
+  email    String  @unique
 
   role UserRole
+
+  permissions UserPermission?
 
   newsletter Newsletter[]
   portfolio  Portfolio[]
@@ -33,6 +32,33 @@ model User {
   updatedAt DateTime @updatedAt @map("updated_at")
 
   @@map("users")
+}
+
+model UserPermission {
+  id String @id @default(uuid())
+
+  user   User   @relation(fields: [userId], references: [id])
+  userId String @unique @map("user_id")
+
+  canReadNewsletter   Boolean @default(false) @map("can_read_newsletter")
+  canWriteNewsletter  Boolean @default(false) @map("can_write_newsletter")
+  canUpdateNewsletter Boolean @default(false) @map("can_update_newsletter")
+  canDeleteNewsletter Boolean @default(false) @map("can_delete_newsletter")
+
+  canReadPortfolio   Boolean @default(false) @map("can_read_portfolio")
+  canWritePortfolio  Boolean @default(false) @map("can_write_portfolio")
+  canUpdatePortfolio Boolean @default(false) @map("can_update_portfolio")
+  canDeletePortfolio Boolean @default(false) @map("can_delete_portfolio")
+
+  canReadAdmin   Boolean @default(false) @map("can_read_admin")
+  canWriteAdmin  Boolean @default(false) @map("can_write_admin")
+  canUpdateAdmin Boolean @default(false) @map("can_update_admin")
+  canDeleteAdmin Boolean @default(false) @map("can_delete_admin")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("user_permissions")
 }
 
 model Newsletter {
@@ -100,6 +126,7 @@ model Contact {
 
 enum UserRole {
   ADMIN
+  SUPER_ADMIN
 }
 
 enum NewsletterMemberStatus {

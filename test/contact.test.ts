@@ -1,6 +1,7 @@
 import request from "supertest";
 
 import { web } from "../src/application/web";
+
 import { ContactResponseError, ContactResponseSuccess, ContactUtil } from "./util/contact.util";
 
 describe("POST /api/v1/contacts", () => {
