@@ -78,10 +78,10 @@ export class AuthMiddleware {
    * @param role user role to check
    * @returns middleware that checks user role
    */
-  public static authorization(role: $Enums.UserRole): express.RequestHandler {
+  public static authorization(role: $Enums.UserRole[]): express.RequestHandler {
     return (req: UserRequest, res: express.Response, next: express.NextFunction) => {
       // check user role
-      if (req.user!.role !== role) {
+      if (!role.includes(req.user!.role)) {
         // throw error if user role not match
         throw new ResponseError("Forbidden", 403);
       }

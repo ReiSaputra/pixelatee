@@ -1,4 +1,7 @@
 import bcrypt from "bcrypt";
+import request from "supertest";
+
+import { web } from "../../src/application/web";
 
 import { prisma } from "../../src/application/database";
 
@@ -60,7 +63,6 @@ export class AdminUtil {
     return admin.id;
   }
 
-
   /**
    * Delete an admin by their ID
    * @param id the ID of the admin to be deleted
@@ -73,5 +75,57 @@ export class AdminUtil {
         id: id,
       },
     });
+  }
+
+  /**
+   * Delete all admin from the database
+   * @returns a promise that resolves to void when all admin are deleted
+   */
+  public static async deleteAllAdmin(): Promise<void> {
+    await prisma.user.deleteMany();
+  }
+
+  public static async updateAdminPermission(id: string, read: boolean, write: boolean, update: boolean, remove: boolean): Promise<void> {
+    await prisma.userPermission.update({
+      where: {
+        userId: id,
+      },
+      data: {
+        canReadAdmin: read,
+        canWriteAdmin: write,
+        canUpdateAdmin: update,
+        canDeleteAdmin: remove,
+        canReadNewsletter: read,
+        canWriteNewsletter: write,
+        canUpdateNewsletter: update,
+        canDeleteNewsletter: remove,
+        canReadPortfolio: read,
+        canWritePortfolio: write,
+        canUpdatePortfolio: update,
+        canDeletePortfolio: remove,
+      },
+    });
+  }
+
+  /**
+   * Delete all user permissions from the database
+   * @returns a promise that resolves to void when all user permissions are deleted
+   */
+  public static async deleteAllAdminPermission(): Promise<void> {
+    await prisma.userPermission.deleteMany();
+  }
+
+  /**
+   * Login as an admin and retrieve a JWT token
+   * @param email the email address of the admin
+   * @param password the password of the admin
+   * @returns a promise that resolves to the JWT token
+   */
+  public static async login(email: string, password: string): Promise<string> {
+    const response = await request(web).post("/api/v1/public/auth/login").send({ email: email, password: password });
+
+    const body: AuthResponseSuccess = response.body as AuthResponseSuccess;
+
+    return body.data.token!;
   }
 }
