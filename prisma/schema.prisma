@@ -92,10 +92,12 @@ model NewsletterMember {
 model Portfolio {
   id String @id @default(uuid())
 
-  title       String
-  description String @db.Text
+  title       String  @default("Untitled")
+  description String? @db.Text
 
-  mainImage   String  @map("main_image")
+  status PortfolioStatus @default(DRAFT)
+
+  mainImage   String? @map("main_image")
   secondImage String? @map("second_image")
   thirdImage  String? @map("third_image")
   fourthImage String? @map("fourth_image")
@@ -104,10 +106,27 @@ model Portfolio {
   authorId String @map("author_id")
   author   User   @relation(fields: [authorId], references: [id])
 
+  clientId String? @map("client_id")
+  client   Client? @relation(fields: [clientId], references: [id])
+
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
   @@map("portfolios")
+}
+
+model Client {
+  id String @id @default(uuid())
+
+  name String
+  logo String
+
+  portfolio Portfolio[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("clients")
 }
 
 model Contact {
@@ -127,6 +146,12 @@ model Contact {
 enum UserRole {
   ADMIN
   SUPER_ADMIN
+}
+
+enum PortfolioStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
 }
 
 enum NewsletterMemberStatus {

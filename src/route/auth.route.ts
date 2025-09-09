@@ -14,4 +14,4 @@ authRoute.post("/public/auth/login", AuthController.login);
 /**
  * Super Admin
  */
-authRoute.post("/super-admin/auth/register", AuthMiddleware.authentication, AuthMiddleware.authorization("SUPER_ADMIN"));
+// authRoute.post("/super-admin/auth/register", AuthMiddleware.authentication, AuthMiddleware.authorization(["ADMIN", "SUPER_ADMIN"]));

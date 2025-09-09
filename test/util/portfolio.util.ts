@@ -2,7 +2,9 @@ import { faker } from "@faker-js/faker";
 
 import { prisma } from "../../src/application/database";
 
-import { PortfolioResponse } from "../../src/model/portfolio.model";
+import { $Enums } from "../../src/generated/prisma";
+
+import { PortfolioPaginationResponse, PortfolioResponse } from "../../src/model/portfolio.model";
 
 export type PortfolioResponseSuccess = {
   status: string;
@@ -17,6 +19,13 @@ export type PortfoliosResponseSuccess = {
   data: PortfolioResponse[];
   message: string;
 };
+
+export type PortfolioPaginationResponseSuccess = {
+  status: string;
+  code: number;
+  data: PortfolioPaginationResponse;
+  message: string;
+}
 
 export type PortfolioResponseError = {
   status: string;
@@ -37,17 +46,19 @@ export class PortfolioUtil {
    * @param fifthImage whether to include the fifth image or not
    * @returns the ID of the created portfolio
    */
-  public static async createPortfolio(title: string, description: string, authorId: string, secondImage?: boolean, thirdImage?: boolean, fourthImage?: boolean, fifthImage?: boolean): Promise<string> {
+  public static async createPortfolio(title: string, description: string, status: $Enums.PortfolioStatus, authorId: string, clientId: string, secondImage?: boolean, thirdImage?: boolean, fourthImage?: boolean, fifthImage?: boolean): Promise<string> {
     const portfolio = await prisma.portfolio.create({
       data: {
         title: title,
         description: description,
         mainImage: faker.image.url(),
+        status: status,
         secondImage: secondImage ? faker.image.url() : null,
         thirdImage: thirdImage ? faker.image.url() : null,
         fourthImage: fourthImage ? faker.image.url() : null,
         fifthImage: fifthImage ? faker.image.url() : null,
         authorId: authorId,
+        clientId: clientId,
       },
     });
 
@@ -63,18 +74,20 @@ export class PortfolioUtil {
    * @param fourthImage whether to include the fourth image or not
    * @param fifthImage whether to include the fifth image or not
    */
-  public static async createAllPortfolio(limiter: number, authorId: string, secondImage?: boolean, thirdImage?: boolean, fourthImage?: boolean, fifthImage?: boolean): Promise<void> {
+  public static async createAllPortfolio(limiter: number, authorId: string, clientId: string, secondImage?: boolean, thirdImage?: boolean, fourthImage?: boolean, fifthImage?: boolean): Promise<void> {
     for (let i = 1; i <= limiter; i++) {
       await prisma.portfolio.create({
         data: {
           title: faker.commerce.productName(),
           description: faker.lorem.paragraphs(2),
           mainImage: faker.image.url(),
+          status: faker.helpers.arrayElement(["PUBLISHED", "ARCHIVED", "DRAFT"]),
           secondImage: secondImage ? faker.image.url() : null,
           thirdImage: thirdImage ? faker.image.url() : null,
           fourthImage: fourthImage ? faker.image.url() : null,
           fifthImage: fifthImage ? faker.image.url() : null,
           authorId: authorId,
+          clientId: clientId,
         },
       });
     }
