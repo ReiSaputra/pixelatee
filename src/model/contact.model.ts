@@ -1,9 +1,10 @@
-import { Contact } from "../generated/prisma";
+import { $Enums, Contact } from "../generated/prisma";
 
 export type ContactRequest = {
   name: string;
   email: string;
   subject: string;
+  type: $Enums.ContactType;
   message: string;
 };
 
@@ -13,6 +14,14 @@ export type ContactResponse = {
   subject?: string;
   message?: string;
 };
+
+export type ContactFilters = {
+  page: number;
+  name?: string | undefined;
+  email?: string | undefined;
+  type?: $Enums.ContactType | undefined;
+};
+
 
 /**
  * Maps a Contact entity to a ContactResponse

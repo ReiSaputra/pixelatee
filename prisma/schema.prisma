@@ -137,6 +137,8 @@ model Contact {
   subject String
   message String @db.Text
 
+  type ContactType
+
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
@@ -157,4 +159,12 @@ enum PortfolioStatus {
 enum NewsletterMemberStatus {
   SUBSCRIBE
   PENDING
+}
+
+enum ContactType {
+  CUSTOMER_SERVICE
+  IT_CONSULTATION
+  UIUX_DEVELOPMENT
+  WEB_DEVELOPMENT
+  MOBILE_DEVELOPMENT
 }
