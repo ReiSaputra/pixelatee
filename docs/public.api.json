@@ -1,0 +1,212 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Pixellatee Public APIs",
+    "version": "1.0"
+  },
+  "servers": [{ "url": "https://http://localhost:3000/api/v1" }],
+  "tags": [
+    {
+      "name": "Auth",
+      "description": "Auth APIs"
+    },
+    {
+      "name": "Portfolio",
+      "description": "Portfolio APIs"
+    },
+    {
+      "name": "Contact",
+      "description": "Contact APIs"
+    },
+    {
+      "name": "Newsletter",
+      "description": "Newsletter APIs"
+    }
+  ],
+  "paths": {
+    "/public/newsletters/join": {
+      "post": {
+        "tags": ["Newsletter"],
+        "summary": "Join newsletters",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewsletterRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NewsletterResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/public/newsletters/activate": {},
+    "/public/newsletters/unsubscribe": {},
+    "/public/auth/login": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Admin login",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/public/portfolios": {
+      "get": {
+        "tags": ["Portfolio"],
+        "summary": "Get all portfolios"
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "LoginRequest": {
+        "type": "object",
+        "required": ["email", "password"],
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email",
+            "example": "pixel@pixelatee.com"
+          },
+          "password": {
+            "type": "string",
+            "format": "password",
+            "example": "password"
+          }
+        }
+      },
+      "NewsletterRequest": {
+        "type": "object",
+        "required": ["email"],
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email",
+            "example": "pixel@example.com"
+          }
+        }
+      },
+      "NewsletterResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "Success"
+          },
+          "code": {
+            "type": "integer",
+            "example": 200
+          },
+          "message": {
+            "type": "string",
+            "example": "success"
+          }
+        }
+      },
+      "AuthResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "Success"
+          },
+          "code": {
+            "type": "integer",
+            "example": 200
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "email": {
+                "type": "string",
+                "format": "email",
+                "example": "pixel@pixelatee.com"
+              },
+              "token": {
+                "type": "string",
+                "format": "jwt",
+                "example": "token"
+              }
+            }
+          },
+          "message": {
+            "type": "string",
+            "example": "success"
+          }
+        }
+      },
+      "ZodErrorResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "Error"
+          },
+          "code": {
+            "type": "integer",
+            "example": 400
+          },
+          "error": {
+            "type": "string",
+            "example": "ZodError"
+          },
+          "message": {
+            "type": "string",
+            "example": "error message"
+          }
+        }
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "Error"
+          },
+          "code": {
+            "type": "integer",
+            "example": 400
+          },
+          "error": {
+            "type": "string",
+            "example": "ResponseError"
+          },
+          "message": {
+            "type": "string",
+            "example": "error message"
+          }
+        }
+      }
+    }
+  }
+}
