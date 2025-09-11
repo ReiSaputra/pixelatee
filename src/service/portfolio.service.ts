@@ -83,11 +83,8 @@ export class PortfolioService {
     // if there is a status filter
     if (response.status) where.status = response.status;
 
-    // if there is a title filter
-    if (response.title) where.title = { contains: response.title };
-
-    // if there is a client filter
-    if (response.client) where.client = { name: { contains: response.client } };
+    // if there is a search filter
+    if (response.search) where.OR = [{ title: { contains: response.search } }, { client: { name: { contains: response.search } } }];
 
     // find all portfolio
     const findPortfolio: (Portfolio & { client: Client | null })[] = await prisma.portfolio.findMany({
@@ -110,8 +107,11 @@ export class PortfolioService {
       item.fifthImage = undefined!;
     });
 
+    // count data
+    const countPortfolio: number = await prisma.portfolio.count({ where });
+
     // return response
-    return toPortfolioPaginationResponse(findPortfolio, response.page, 15, await prisma.portfolio.count({ where }), Math.ceil((await prisma.portfolio.count({ where })) / 15));
+    return toPortfolioPaginationResponse(findPortfolio, response.page, 15, countPortfolio, Math.ceil(countPortfolio / 15));
   }
 
   public static async create(user: (User & { permissions: UserPermission | null }) | undefined, request: PortfolioRequest, files: Express.Multer.File[] | undefined): Promise<PortfolioResponse> {
@@ -166,8 +166,6 @@ export class PortfolioService {
         client: true,
       },
     });
-
-    console.info(createPortfolio);
 
     // specify return
     createPortfolio.description = undefined!;

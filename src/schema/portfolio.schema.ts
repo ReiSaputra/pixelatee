@@ -23,8 +23,7 @@ export class PortfolioSchema {
 
   public static readonly GET_ALL: z.ZodType<PortfolioFilters> = z.strictObject({
     page: z.coerce.number({ error: "Invalid type of page, must be number" }).min(1, { error: "Page must be greater than 0" }).default(1),
-    title: z.string({ error: "Invalid type of title, must be string" }).optional(),
-    client: z.string({ error: "Invalid type of client, must be string" }).optional(),
+    search: z.string({ error: "Invalid type of search, must be string" }).optional(),
     status: z.enum(["PUBLISHED", "ARCHIVED"], { error: "Invalid type of status, must be PUBLISHED or ARCHIVED" }).optional(),
   });
 }
