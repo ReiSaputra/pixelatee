@@ -6,8 +6,7 @@ export type PortfolioParams = {
 
 export type PortfolioFilters = {
   page: number;
-  title?: string | undefined;
-  client?: string | undefined;
+  search?: string | undefined;
   status?: "PUBLISHED" | "ARCHIVED" | undefined;
 };
 
@@ -94,9 +93,9 @@ export function toPortfoliosResponse(portfolio: (Portfolio & { client: Client | 
  * @param totalPage the total page of the Portfolio models
  * @returns a PortfolioPaginationResponse object that contains the converted Portfolio models and pagination information
  */
-export function toPortfolioPaginationResponse(data: (Portfolio & { client: Client | null })[], page: number, limit: number, totalData: number, totalPage: number): PortfolioPaginationResponse {
+export function toPortfolioPaginationResponse(portfolio: (Portfolio & { client: Client | null })[], page: number, limit: number, totalData: number, totalPage: number): PortfolioPaginationResponse {
   return {
-    portfolios: toPortfoliosResponse(data),
+    portfolios: toPortfoliosResponse(portfolio),
     pagination: {
       page: page,
       limit: limit,

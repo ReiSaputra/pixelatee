@@ -27,6 +27,7 @@ model User {
 
   newsletter Newsletter[]
   portfolio  Portfolio[]
+  Contact    Contact[]
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
@@ -49,6 +50,11 @@ model UserPermission {
   canWritePortfolio  Boolean @default(false) @map("can_write_portfolio")
   canUpdatePortfolio Boolean @default(false) @map("can_update_portfolio")
   canDeletePortfolio Boolean @default(false) @map("can_delete_portfolio")
+
+  canReadContact   Boolean @default(false) @map("can_read_contact")
+  canWriteContact  Boolean @default(false) @map("can_write_contact")
+  canUpdateContact Boolean @default(false) @map("can_update_contact")
+  canDeleteContact Boolean @default(false) @map("can_delete_contact")
 
   canReadAdmin   Boolean @default(false) @map("can_read_admin")
   canWriteAdmin  Boolean @default(false) @map("can_write_admin")
@@ -138,6 +144,9 @@ model Contact {
   message String @db.Text
 
   type ContactType
+
+  handlerId String?
+  handler   User?   @relation(fields: [handlerId], references: [id])
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")

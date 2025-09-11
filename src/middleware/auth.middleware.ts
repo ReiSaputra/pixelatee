@@ -97,7 +97,23 @@ export class AuthMiddleware {
    * @returns middleware to check permission
    */
   public static permission(
-    permission: "canReadNewsletter" | "canWriteNewsletter" | "canUpdateNewsletter" | "canDeleteNewsletter" | "canReadPortfolio" | "canWritePortfolio" | "canUpdatePortfolio" | "canDeletePortfolio"
+    permission:
+      | "canReadNewsletter"
+      | "canWriteNewsletter"
+      | "canUpdateNewsletter"
+      | "canDeleteNewsletter"
+      | "canReadPortfolio"
+      | "canWritePortfolio"
+      | "canUpdatePortfolio"
+      | "canDeletePortfolio"
+      | "canReadContact"
+      | "canWriteContact"
+      | "canUpdateContact"
+      | "canDeleteContact"
+      | "canReadAdmin"
+      | "canWriteAdmin"
+      | "canUpdateAdmin"
+      | "canDeleteAdmin"
   ): express.RequestHandler {
     return (req: UserRequest, res: express.Response, next: express.NextFunction) => {
       // check user permissions
