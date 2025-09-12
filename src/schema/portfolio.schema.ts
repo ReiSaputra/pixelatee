@@ -14,11 +14,11 @@ export class PortfolioSchema {
     description: z.string({ error: "Invalid type of description, must be string" }).nullable().optional(),
     status: z.enum(["DRAFT", "PUBLISHED", "ARCHIVED"], { error: "Invalid type of status, must be DRAFT, PUBLISHED or ARCHIVED" }).default("DRAFT"),
     client: z.string({ error: "Invalid type of client, must be string" }).nullable().optional(),
-    mainImage: z.string({ error: "Invalid type of main image, must be string" }).nullable().optional(),
-    secondImage: z.string({ error: "Invalid type of second image, must be string" }).nullable().optional(),
-    thirdImage: z.string({ error: "Invalid type of third image, must be string" }).nullable().optional(),
-    fourthImage: z.string({ error: "Invalid type of fourth image, must be string" }).nullable().optional(),
-    fifthImage: z.string({ error: "Invalid type of fifth image, must be string" }).nullable().optional(),
+    mainImage: z.string({ error: "Invalid type of main image, must be string" }).regex(/^image\/(png|jpeg)$/, { error: "Main image must be a PNG or JPEG image" }).nullable().optional(),
+    secondImage: z.string({ error: "Invalid type of second image, must be string" }).regex(/^image\/(png|jpeg)$/, { error: "Second image must be a PNG or JPEG image" }).nullable().optional(),
+    thirdImage: z.string({ error: "Invalid type of third image, must be string" }).regex(/^image\/(png|jpeg)$/, { error: "Third image must be a PNG or JPEG image" }).nullable().optional(),
+    fourthImage: z.string({ error: "Invalid type of fourth image, must be string" }).regex(/^image\/(png|jpeg)$/, { error: "Fourth image must be a PNG or JPEG image" }).nullable().optional(),
+    fifthImage: z.string({ error: "Invalid type of fifth image, must be string" }).regex(/^image\/(png|jpeg)$/, { error: "Fifth image must be a PNG or JPEG image" }).nullable().optional(),
   });
 
   public static readonly GET_ALL: z.ZodType<PortfolioFilters> = z.strictObject({

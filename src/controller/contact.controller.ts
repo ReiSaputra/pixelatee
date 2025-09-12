@@ -15,13 +15,13 @@ export class ContactController {
    * @param next next function to handle error
    * @throws ResponseError if error occur
    */
-  public static async create(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
+  public static async publicCreate(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
     try {
       // assert request
       const request: ContactRequest = req.body as ContactRequest;
 
       // calling service
-      const response: ContactResponse = await ContactService.create(request);
+      const response: ContactResponse = await ContactService.publicCreate(request);
 
       // return response
       res.status(201).json({ status: "Success", code: 200, data: response, message: "Contact Inquiry created successfully" });

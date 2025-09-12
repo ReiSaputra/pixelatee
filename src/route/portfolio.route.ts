@@ -1,6 +1,7 @@
 import express from "express";
 
 import { PortfolioController } from "../controller/portfolio.controller";
+
 import { AuthMiddleware } from "../middleware/auth.middleware";
 import { FileUploadMiddleware } from "../middleware/file-upload.middleware";
 
@@ -22,6 +23,6 @@ portfolioRoute.post(
   AuthMiddleware.authentication,
   AuthMiddleware.authorization(["ADMIN", "SUPER_ADMIN"]),
   AuthMiddleware.permission("canWritePortfolio"),
-  FileUploadMiddleware.handleMultiple("portfolio", 2, "photos"),
+  FileUploadMiddleware.handleMultiple("portfolio", 2, "photos", 5),
   PortfolioController.create
 );

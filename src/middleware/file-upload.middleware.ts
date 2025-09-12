@@ -2,6 +2,12 @@ import multer from "multer";
 import fs from "fs";
 
 export class FileUploadMiddleware {
+  /**
+   * Returns a multer StorageEngine that stores files in the directory specified
+   * by the `dest` parameter. The directory is created if it does not exist. The
+   * filename is a unique identifier followed by the original file name.
+   * @param dest The destination directory
+   */
   public static storage(dest: string) {
     return multer.diskStorage({
       destination: (req, file, cb) => {
@@ -52,11 +58,11 @@ export class FileUploadMiddleware {
    * Handle multiple image upload, filter by image/jpeg and image/png
    * @param dest destination folder
    * @param size maximum file size in megabytes
+   * @param nameFile the name of the field in the form
+   * @param max maximum number of files to upload
    * @returns middleware to handle multiple image upload
-   * @remarks
-   * The maximum number of files that will be accepted is 5
    */
-  public static handleMultiple(dest: string, size: number, nameFile: string) {
+  public static handleMultiple(dest: string, size: number, nameFile: string, max: number) {
     // check if destination folder exist
     if (!fs.existsSync(`public/${dest}`)) {
       fs.mkdirSync(`public/${dest}`);
@@ -77,6 +83,6 @@ export class FileUploadMiddleware {
     });
 
     // return uploader in array
-    return upload.array(nameFile, 5);
+    return upload.array(nameFile, max);
   }
 }

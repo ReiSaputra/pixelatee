@@ -48,6 +48,11 @@ export class AdminUtil {
             canUpdateAdmin: permission,
             canDeleteAdmin: permission,
 
+            canReadClient: permission,
+            canWriteClient: permission,
+            canUpdateClient: permission,
+            canDeleteClient: permission,
+
             canReadContact: permission,
             canWriteContact: permission,
             canUpdateContact: permission,
@@ -107,6 +112,11 @@ export class AdminUtil {
         canWriteContact: write,
         canUpdateContact: update,
         canDeleteContact: remove,
+
+        canReadClient: read,
+        canWriteClient: write,
+        canUpdateClient: update,
+        canDeleteClient: remove,
 
         canReadNewsletter: read,
         canWriteNewsletter: write,

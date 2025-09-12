@@ -156,7 +156,7 @@ describe("GET /api/v1/admin/portfolios", () => {
   });
 
   it("should pass - search title", async () => {
-    const response: request.Response = await request(web).get("/api/v1/admin/portfolios?title=Kortlink").set("Authorization", `Bearer ${token}`);
+    const response: request.Response = await request(web).get("/api/v1/admin/portfolios?search=Kortlink").set("Authorization", `Bearer ${token}`);
 
     const body: PortfolioPaginationResponseSuccess = response.body as PortfolioPaginationResponseSuccess;
 
@@ -166,7 +166,7 @@ describe("GET /api/v1/admin/portfolios", () => {
   });
 
   it("should pass - search client", async () => {
-    const response: request.Response = await request(web).get("/api/v1/admin/portfolios?client=Kakatua").set("Authorization", `Bearer ${token}`);
+    const response: request.Response = await request(web).get("/api/v1/admin/portfolios?search=Kakatua").set("Authorization", `Bearer ${token}`);
 
     const body: PortfolioPaginationResponseSuccess = response.body as PortfolioPaginationResponseSuccess;
 
@@ -196,7 +196,7 @@ describe("GET /api/v1/admin/portfolios", () => {
   });
 });
 
-describe.only("POST /api/v1/admin/portfolios", () => {
+describe("POST /api/v1/admin/portfolios", () => {
   let admin1: string;
   let client1: string;
   let token: string;
@@ -243,6 +243,7 @@ describe.only("POST /api/v1/admin/portfolios", () => {
       .field("client", client1)
       .attach("photos", "public/test/Kortlink.png");
 
+    console.info(response.body);
     expect(response.status).toBe(200);
   });
 
@@ -305,7 +306,7 @@ describe.only("POST /api/v1/admin/portfolios", () => {
     expect(response.status).toBe(200);
   });
 
-  it.only("should fail - second Photos is not image (.pdf)", async () => {
+  it("should fail - second Photos is not image (.pdf)", async () => {
     const response: request.Response = await request(web)
       .post("/api/v1/admin/portfolios")
       .set("Authorization", `Bearer ${token}`)
