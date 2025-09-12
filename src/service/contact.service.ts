@@ -16,7 +16,7 @@ export class ContactService {
    * @returns the created contact inquiry
    * @throws ResponseError if error occur
    */
-  public static async create(request: ContactRequest): Promise<ContactResponse> {
+  public static async publicCreate(request: ContactRequest): Promise<ContactResponse> {
     // validating request
     const response: ContactRequest = Validation.validate<ContactRequest>(ContactSchema.CREATE, request);
 
@@ -93,6 +93,12 @@ export class ContactService {
     return toContactResponse(findContact);
   }
 
+  /**
+   * Delete a contact by ID
+   * @param contactId the ID of the contact to delete
+   * @returns the deleted contact
+   * @throws ResponseError if contact not found
+   */
   public static async adminDelete(contactId: ContactParams): Promise<ContactResponse> {
     // validate params
     const response: ContactParams = Validation.validate<ContactParams>(ContactSchema.PARAMS, contactId);

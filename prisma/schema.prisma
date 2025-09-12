@@ -46,6 +46,11 @@ model UserPermission {
   canUpdateNewsletter Boolean @default(false) @map("can_update_newsletter")
   canDeleteNewsletter Boolean @default(false) @map("can_delete_newsletter")
 
+  canReadClient   Boolean @default(false) @map("can_read_client")
+  canWriteClient  Boolean @default(false) @map("can_write_client")
+  canUpdateClient Boolean @default(false) @map("can_update_client")
+  canDeleteClient Boolean @default(false) @map("can_delete_client")
+
   canReadPortfolio   Boolean @default(false) @map("can_read_portfolio")
   canWritePortfolio  Boolean @default(false) @map("can_write_portfolio")
   canUpdatePortfolio Boolean @default(false) @map("can_update_portfolio")

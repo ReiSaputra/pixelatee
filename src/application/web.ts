@@ -1,7 +1,7 @@
 import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
-import dotenv from "dotenv"
+import dotenv from "dotenv";
 
 import { authRoute } from "../route/auth.route";
 import { newsletterRoute } from "../route/newsletter.route";
@@ -9,6 +9,7 @@ import { portfolioRoute } from "../route/portfolio.route";
 import { contactRoute } from "../route/contact.route";
 
 import { ErrorMiddleware } from "../middleware/error.middleware";
+import { clientRoute } from "../route/client.route";
 
 dotenv.config();
 
@@ -18,7 +19,12 @@ export const web: express.Application = express();
  * Middlewares
  */
 
-web.use(cors());
+web.use(
+  cors({
+    origin: "http://localhost:5173",
+    credentials: true,
+  })
+);
 web.use(cookieParser(process.env.COOKIE_SECRET!));
 web.use(express.json());
 web.use(express.urlencoded({ extended: true }));
@@ -34,6 +40,7 @@ web.use(express.static("public"));
 web.use("/api/v1", authRoute);
 web.use("/api/v1", newsletterRoute);
 web.use("/api/v1", portfolioRoute);
+web.use("/api/v1", clientRoute);
 web.use("/api/v1", contactRoute);
 
 /**
