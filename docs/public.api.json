@@ -1,0 +1,241 @@
+{
+    "openapi":"3.1.1",
+    "info": {
+      "title":"Docs API",
+      "version":"1.0"
+    },
+    "servers": [
+      {"url":"https://localhost:3000/api/v1"}
+    ],
+    "paths": {
+        "/public/newsletter/activate":{
+            "get": {
+                "tags": [
+                    "Newsletter"
+                ],
+                "summary": "Activate newsletter subscribers",
+                "description": "Activate a newsletter subscription using memberId",
+                "parameters": [
+                    {
+                        "name": "memberId",
+                        "in" : "path",
+                        "required": true,
+                        "schema":{
+                            "type": "string"
+                        },
+                        "description": "ID of the newsletter member"
+                    }
+                ],
+                "responses": {
+                    "200" :{
+                        "description": "Newsletter subscription activated successfully",
+                        "content": {
+                            "application/json" :{
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Newsletter subscription activated"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400" :{
+                        "description": "Invalid memberId or activation failed"
+                    },
+                    "404" :{
+                        "description": "Member not found"
+                    }
+                }
+            }
+        },
+        "/public/newsletter/join":{
+            "post": {
+                "tags": [
+                    "Newsletter"
+                ],
+                "summary": "Subscribe to newsletter",
+                "description": "Subscribe to newsletter with email",
+                "requestBody":{
+                    "required": true,
+                    "content": {
+                        "application/json" :{
+                            "schema" : {
+                                "type" : "object"
+                            },
+                            "example": {
+                                "email" : "jessica.smart.pixelatee.com"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/public/portfolios" :{
+            "get" : {
+                "tags": [
+                    "Portfolio"
+                ],
+                "summary": "Get all portfolio",
+                "description": "Get all portfolio by default",
+                "responses": {
+                    "200" :{
+                        "description": "List of portfolios retrieved successfully",
+                        "content": {
+                            "application/json" :{
+                                "schema" : {
+                                    "type" : "array",
+                                    "items": {
+                                        "type":"object"
+                                    }
+                                },
+                                "example": [
+                                    {
+                                        "id" : "1",
+                                        "name" : "NovaLink Shortene",
+                                        "client" : "BrightWave Media",
+                                        "description" : "A smart link shortening platform with real-time analytics and custom branding options.",
+                                        "imageUrl" : "https://cdn.example.com/images/portfolio-123.png"
+                                    },
+                                    {
+                                        "id" : "2",
+                                        "name" : "SkyHost Cloud",
+                                        "client" : "Horizon Tech",
+                                        "description" : "Cloud hosting with enterprise-grade security and 99.9% uptime guarantee.",
+                                        "imageUrl" : "https://cdn.example.com/images/portfolio-123.png"   
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/public/portfolios/{portfolioId}":{
+            "get":{
+                "tags": [
+                    "Portfolio"
+                ],
+                "summary": "Get portfolio",
+                "description": "Get a specific portfolio by id",
+                "parameters": [
+                    {
+                        "name": "portfolioId",
+                        "in" : "path",
+                        "required": true,
+                        "schema":{
+                            "type": "string"
+                        },
+                        "description": "ID of the portfolio"
+                    }
+                ],
+                "responses": {
+                    "200" : {
+                        "description": "Portfolio retrieved successfully",
+                        "content": {
+                            "application/json" :{
+                                "schema":{
+                                    "type":"object"
+                                },
+                                "example":{
+                                    "id" : "1",
+                                    "name" : "NovaLink Shortene",
+                                    "client" : "BrightWave Media",
+                                    "description" : "A smart link shortening platform with real-time analytics and custom branding options.",
+                                    "imageUrl" : "https://cdn.example.com/images/portfolio-123.png"
+                                }
+                            }
+                        }
+                    },
+                    "400" :{
+                        "description": "Portfolio not found"
+                    }
+                }
+            }
+        },
+        "/public/contacts":{
+            "post": {
+                "tags": [
+                    "Contact"
+                ],
+                "summary": "Create new contact",
+                "description": "Create new contact to database",
+                "requestBody":{
+                    "required": true,
+                    "content": {
+                        "application/json" :{
+                            "schema" : {
+                                "type" : "object"
+                            },
+                            "example": {
+                                "id": "1",
+                                "name" : "Jessica Smart",
+                                "email" : "jessica.smart.pixelatee.com",
+                                "subject": "Web Development Collaboration Opportunity",
+                                "type" : "Web Development",
+                                "message" : "I hope this message finds you well. I am reaching out..."
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas":{
+            "Portfolio":{
+                "type":"object",
+                "properties": {
+                    "id":{
+                        "type":"string"
+                    },
+                    "name":{
+                        "type":"string"
+                    },
+                    "client":{
+                        "type":"string"
+                    },
+                    "description":{
+                        "type":"string"
+                    },
+                    "imageUrl" : {
+                        "type":"string",
+                        "format": "uri"
+                    }
+                },
+                "required": ["id", "name", "client", "description", "imageUrl"]
+            },
+            "Contact":{
+                "type":"object",
+                "properties": {
+                    "id" :{
+                        "type":"string"
+                    },
+                    "name":{
+                        "type":"string"
+                    },
+                    "email":{
+                        "type":"string"
+                    },
+                    "subject":{
+                        "type":"string"
+                    },
+                    "type":{
+                        "type":"string"
+                    },
+                    "message":{
+                        "type":"string"
+                    }
+                },
+                "required": ["id", "name", "email", "subject", "type", "message"]
+            }  
+        }
+    }
+}

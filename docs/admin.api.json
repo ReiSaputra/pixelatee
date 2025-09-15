@@ -1,0 +1,889 @@
+{
+    "openapi":"3.1.1",
+    "info": {
+      "title":"Docs API",
+      "version":"1.0"
+    },
+    "servers": [
+      {"url":"https://api/v1"}
+    ],
+    "paths": {
+        "/admin/newsletters":{
+            "get": {
+                "tags": [
+                    "Newsletter"
+                ],
+                "summary": "Get all newsletter",
+                "description": "Get all portfolio by default",
+                "responses": {
+                    "200":{
+                        "description": "List of newsletter retrieved successfully",
+                        "content": {
+                            "application/json":{
+                                "schema":{
+                                    "type":"array",
+                                    "items":{
+                                        "type" :"object"
+                                    }
+                                },
+                                "example":[
+                                    {
+                                        "id" : "1",
+                                        "title" : "What happen in Industry of Tech Right Now?",
+                                        "description" : "Suspendisse euismod turpis vel imperdiet vulputate. Fusce ac felis mauris. Phasellus odio tortor, varius tristique egestas non, bibendum non ipsum...",
+                                        "type" : "Tech",
+                                        "status" : "Sent",
+                                        "date": "2024-08-12T13:42:00+07:00"
+                                    },
+                                    {
+                                        "id" : "2",
+                                        "title" : "This is why you should use Angular than React",
+                                        "description" : "corper sit amet orci a, tempus scelerisque ipsum. Nulla bibendum luctus tellus eget sodales. Sed convallis nec risus sit amet hendrerit...",
+                                        "type" : "Tech",
+                                        "status" : "Schedule",
+                                        "date": "2024-08-12T13:42:00+07:00"
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Newsletter"
+                ],
+                "summary": "Create new newsletter",
+                "description": "Create new newsletter to database",
+                "requestBody":{
+                    "required": true,
+                    "content": {
+                        "application/json":{
+                            "schema":{
+                                "type":"object"
+                            },
+                            "example":{
+                                "id" : "1",
+                                "title" : "What happen in Industry of Tech Right Now?",
+                                "description" : "Suspendisse euismod turpis vel imperdiet vulputate. Fusce ac felis mauris. Phasellus odio tortor, varius tristique egestas non, bibendum non ipsum...",
+                                "type" : "Tech",
+                                "status" : "Sent",
+                                "date": "2024-08-12T13:42:00+07:00"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201" :{
+                        "description": "Newsletter created successfully",
+                        "content": {
+                            "application/json":{
+                                "schema":{
+                                    "$ref" : "#/components/schemas/Newsletter"
+                                }
+                            }
+                        }
+                    },
+                    "400":{
+                        "description": "Invalid request data"
+                    }
+                }
+            }
+        },
+        "/admin/newsletter/{newsletterId}":{
+            "get": {
+                "tags": [
+                    "Newsletter"
+                ],
+                "summary": "Get newsletter",
+                "description": "Get a specific newsletter by id",
+                "parameters": [
+                    {
+                        "name": "newsletterId",
+                        "in": "path",
+                        "required": true,
+                        "schema":{
+                            "type":"string"
+                        },
+                        "description": "ID of newsletter"
+                    }
+                ],
+                "responses": {
+                    "200":{
+                        "description": "Newsletter retrieved successfully",
+                        "content": {
+                            "application/json":{
+                                "schema":{
+                                    "type":"object"
+                                },
+                                "example":{
+                                    "id" : "1",
+                                    "title" : "What happen in Industry of Tech Right Now?",
+                                    "description" : "Suspendisse euismod turpis vel imperdiet vulputate. Fusce ac felis mauris. Phasellus odio tortor, varius tristique egestas non, bibendum non ipsum...",
+                                    "type" : "Tech",
+                                    "status" : "Sent",
+                                    "date": "2024-08-12T13:42:00+07:00"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Newsletter"
+                ],
+                "summary": "Update newsletter",
+                "description": "Update an existing newsletter by id",
+                "parameters": [
+                    {
+                        "name" : "newsletterId",
+                        "in": "path",
+                        "required": true,
+                        "schema":{
+                            "type":"string"
+                        },
+                        "description": "ID of newsletter"
+                    }
+                ],
+                "requestBody":{
+                    "required": true,
+                    "content": {
+                        "application/json":{
+                            "schema":{
+                                "$ref" : "#/components/schemas/Newsletter"
+                            },
+                            "example":{
+                                "id" : "1",
+                                "title" : "What happen in Industry of Tech Right Now?",
+                                "description" : "Suspendisse euismod turpis vel imperdiet vulputate. Fusce ac felis mauris. Phasellus odio tortor, varius tristique egestas non, bibendum non ipsum...",
+                                "type" : "Tech",
+                                "status" : "Sent",
+                                "date": "2024-08-12T13:42:00+07:00"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200":{
+                        "description": "Newsletter updated successfully",
+                        "content": {
+                            "application/json":{
+                                "schema":{
+                                    "$ref" : "#/components/schemas/Newsletter"
+                                }
+                            }
+                        }
+                    },
+                    "400":{
+                        "description": "Invalid retrieved data"
+                    },
+                    "404":{
+                        "description": "Newsletter not found"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Newsletter"
+                ],
+                "summary": "Delete newsletter",
+                "description": "Delete an existing newsletter by id",
+                "parameters": [
+                    {
+                        "name": "newsletterId",
+                        "in": "path",
+                        "required": true,
+                        "schema":{
+                            "type":"string"
+                        },
+                        "description": "ID of newsletter to delete"
+                    }
+                ],
+                "responses": {
+                    "204":{
+                        "description": "Newsletter deleted successfully"
+                    },
+                    "404":{
+                        "description": "Newsletter not found"
+                    }
+                }
+            }
+        },
+        "/admin/portfolios" :{
+            "get" : {
+                "tags": [
+                    "Portfolio"
+                ],
+                "summary": "Get all portfolio",
+                "description": "Get all portfolio by default",
+                "responses": {
+                    "200" :{
+                        "description": "List of portfolios retrieved successfully",
+                        "content": {
+                            "application/json" :{
+                                "schema" : {
+                                    "type" : "array",
+                                    "items": {
+                                        "type":"object"
+                                    }
+                                },
+                                "example": [
+                                    {
+                                        "id" : "1",
+                                        "name" : "NovaLink Shortene",
+                                        "client" : "BrightWave Media",
+                                        "description" : "A smart link shortening platform with real-time analytics and custom branding options.",
+                                        "imageUrl" : "https://cdn.example.com/images/portfolio-123.png"
+                                    },
+                                    {
+                                        "id" : "2",
+                                        "name" : "SkyHost Cloud",
+                                        "client" : "Horizon Tech",
+                                        "description" : "Cloud hosting with enterprise-grade security and 99.9% uptime guarantee.",
+                                        "imageUrl" : "https://cdn.example.com/images/portfolio-123.png"   
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Portfolio"
+                ],
+                "summary": "Create new portfolio",
+                "description": "Create new portfolio to database",
+                "requestBody":{
+                    "required": true,
+                    "content": {
+                        "application/json" :{
+                            "schema":{
+                                "type":"object"
+                            },
+                            "example":{
+                                "id" : "1",
+                                "name" : "CoreCMS",
+                                "client" : "Urban Mart",
+                                "description" : "A flexible content management system designed for startups and enterprises.",
+                                "imageUrl" : "https://cdn.example.com/images/portfolio-123.png"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201":{
+                        "description": "Portfolio created successfully",
+                        "content": {
+                            "application/json":{
+                                "schema" :{
+                                    "$ref" : "#/components/schemas/Portfolio"
+                                }
+                            }
+                        }
+                    },
+                     "400":{
+                            "description": "Invalid required data"
+                        }
+                }
+            }
+        },
+        "/admin/portfolios/{portfolioId}":{
+            "get":{
+                "tags": [
+                    "Portfolio"
+                ],
+                "summary": "Get portfolio",
+                "description": "Get a specific portfolio by id",
+                "parameters": [
+                    {
+                        "name": "portfolioId",
+                        "in" : "path",
+                        "required": true,
+                        "schema":{
+                            "type": "string"
+                        },
+                        "description": "ID of the portfolio"
+                    }
+                ],
+                "responses": {
+                    "200" : {
+                        "description": "Portfolio retrieved successfully",
+                        "content": {
+                            "application/json" :{
+                                "schema":{
+                                    "type":"object"
+                                },
+                                "example":{
+                                    "id" : "1",
+                                    "name" : "NovaLink Shortene",
+                                    "client" : "BrightWave Media",
+                                    "description" : "A smart link shortening platform with real-time analytics and custom branding options.",
+                                    "imageUrl" : "https://cdn.example.com/images/portfolio-123.png"
+                                }
+                            }
+                        }
+                    },
+                    "404" :{
+                        "description": "Portfolio not found"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Portfolio"
+                ],
+                "summary": "Update Portfolio",
+                "description": "Updpate an existing portfolio by id",
+                "parameters": [
+                    {
+                        "name": "portfolioId",
+                        "in": "path",
+                        "required": true,
+                        "schema":{
+                            "type":"string"
+                        },
+                        "description": "ID of the portfolio to update"
+                    }
+                ],
+                "requestBody":{
+                    "required": true,
+                    "content": {
+                        "application/json" :{
+                            "schema":{
+                                "$ref" : "#/components/schemas/Portfolio"
+                            },
+                            "example":{
+                                "id" : "1",
+                                "name": "ShopMaster E-Commerce",
+                                "client" : "Urban Mart",
+                                "description" : "Complete e-commerce solution with integrated payment gateways and inventory tracking.",
+                                "imageUrl" : "https://cdn.example.com/images/portfolio-123.png"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200":{
+                        "description": "Portfolio updated successfully",
+                        "content": {
+                            "application/json":{
+                                "schema":{
+                                    "$ref": "#/components/schemas/Portfolio"
+                                }
+                            }
+                        }
+                    },
+                    "400":{
+                        "description": "Invalid request data"
+                    },
+                    "404":{
+                        "description": "Portfolio not found"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Portfolio"
+                ],
+                "summary": "Delete portfolio",
+                "description": "Delete an existing portfolio by id",
+                "parameters": [
+                    {
+                        "name": "portfolioId",
+                        "in": "path",
+                        "required": true,
+                        "schema":{
+                            "type":"string"
+                        },
+                        "description": "ID of portfolio to delete"
+                    }
+                ],
+                "responses": {
+                    "204" :{
+                        "description": "Portfolio deleted successfully"
+                    },
+                    "404":{
+                        "description": "Portfolio not found"
+                    }
+                }
+            }
+        },
+        "/admin/contacts":{
+            "get": {
+                "tags": [
+                    "Contact"
+                ],
+                "summary": "Get all contact",
+                "description": "Get all contact by default",
+                "responses": {
+                    "200":{
+                        "description": "List of contact retrieved successfully",
+                        "content": {
+                            "application/json":{
+                                "schema":{
+                                    "type": "array",
+                                    "items":{
+                                        "type":"object"
+                                    }
+                                },
+                                "example":[
+                                    {
+                                        "id" : "1",
+                                        "name": "Jessica Smart",
+                                        "email": "jessica.smart.pixelatee.com",
+                                        "subject":"Web Development Collaboration Opportunity",
+                                        "description" : "I hope this message finds you well. I am reaching out..."
+                                    },
+                                    {
+                                        "id" : "2",
+                                        "name": "John Doe",
+                                        "email":"john.doe@example.com",
+                                        "subject":"Join Business with Us",
+                                        "description" : "I hope this message finds you well. I am reaching out..."
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/contacts/{contactId}":{
+            "get":{
+                "tags" :[
+                    "Contact"
+                ],
+                "summary": "Get contact",
+                "description": "Get a specific contact by id",
+                "parameters": [
+                    {
+                        "name": "contactId",
+                        "in": "path",
+                        "required": true,
+                        "schema":{
+                            "type":"string"
+                        },
+                        "description": "ID of contact"
+                    }
+                ],
+                "responses": {
+                    "200" :{
+                        "description": "Contact retrieved successfully",
+                        "content": {
+                            "application/json":{
+                                "schema":{
+                                    "type":"object"
+                                },
+                                "example":{
+                                    "id" :"1",
+                                    "name": "Jessica Smart",
+                                    "email" : "jessica.smart.pixelatee.com",
+                                    "subject" : "Web Development Collaboration Opportunity",
+                                    "type" : "Web Development",
+                                    "message" : "I hope this message finds you well. I am reaching out..."
+                                }
+                            }
+                        }
+                    },
+                    "404":{
+                        "description": "Contact not found"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Contact"
+                ],
+                "summary": "Delete contact",
+                "description": "Delete an existing contact by id",
+                "parameters": [
+                    {
+                        "name": "contactId",
+                        "in": "path",
+                        "required": true,
+                        "schema":{
+                            "type":"string"
+                        },
+                        "description": "ID of contact to delete"
+                    }
+                ],
+                "responses": {
+                    "200" :{
+                        "description": "Contact deleted successfully"
+                    },
+                    "404" :{
+                        "description": "Contact not found"
+                    }
+                }
+            }
+        },
+        "/admin/clients":{
+            "get":{
+                "tags": [
+                    "Client"
+                ],
+                "summary": "Get all client",
+                "description": "Get all client by default",
+                "responses": {
+                    "200" : {
+                        "description": "List of client retrieved successfully",
+                        "content": {
+                            "application/json":{
+                                "schema":{
+                                    "type":"array",
+                                    "items":{
+                                        "type":"object"
+                                    }
+                                },
+                                "example":[
+                                    {
+                                        "id" : "1",
+                                        "name" : "BrightWave Media",
+                                        "images" : "https://cdn.example.com/images/client-1.png"
+                                    },
+                                    {
+                                        "id" : "2",
+                                        "name" : "Horizon Tech",
+                                        "images" : "https://cdn.example.com/images/client-2.png"
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Client"
+                ],
+                "summary": "Create client",
+                "description": "Create a new client to database",
+                "requestBody":{
+                    "required": true,
+                    "content": {
+                        "application/json":{
+                            "schema":{
+                                "type":"object"
+                            },
+                            "example":{
+                                "id" : "1",
+                                "name" :" Summit Corp",
+                                "images" :"https://cdn.example.com/images/client-1.png"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/client/{clientId}":{
+            "get": {
+                "tags": [
+                    "Client"
+                ],
+                "summary": "Get client",
+                "description": "Get a specific client by id",
+                "parameters": [
+                    {
+                        "name": "clientId",
+                        "in": "path",
+                        "required": true,
+                        "schema":{
+                            "type":"string"
+                        },
+                        "description": "ID of client"
+                    }
+                ],
+                "responses": {
+                    "200":{
+                        "description": "Client retrieved successfully",
+                        "content": {
+                            "application/json":{
+                                "schema":{
+                                    "type":"object"
+                                },
+                                "example":{
+                                    "id":"1",
+                                    "name":"BrightWave Media",
+                                    "images" : "https://cdn.example.com/images/client-1.png"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Client"
+                ],
+                "summary": "Update client",
+                "description": "Update an existing client by id",
+                "parameters": [
+                    {
+                        "name": "clientId",
+                        "in": "path",
+                        "required": true,
+                        "schema" :{
+                            "type" : "string"
+                        },
+                        "description": "ID of the client to update"
+                    }
+                ],
+                "requestBody":{
+                    "required": true,
+                    "content": {
+                        "application/json":{
+                            "schema":{
+                                "$ref": "#/components/schemas/Client"
+                            },
+                            "example":{
+                                "id" : "2",
+                                "name" : "Urban Mart",
+                                "images" : "https://cdn.example.com/images/client-1.png"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200" :{
+                        "description": "Client updated successfully",
+                        "content": {
+                            "application/json" :{
+                                "schema":{
+                                    "$ref" : "#/components/schemas/Client"
+                                }
+                            }
+                        }
+                    },
+                    "400":{
+                        "description": "Invalid request data"
+                    },
+                    "404":{
+                        "description": "Client not found"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Client"
+                ],
+                "summary": "Delete contact",
+                "description": "Delete an existing client by id",
+                "parameters": [
+                    {
+                        "name": "clientId",
+                        "in": "path",
+                        "required": true,
+                        "schema":{
+                            "type":"string"
+                        },
+                        "description": "ID of client"
+                    }
+                ],
+                "responses": {
+                    "200":{
+                        "description": "Client deleted successfully"
+                    },
+                    "404":{
+                        "description": "Client not found"
+                    }
+                }
+            }
+        },
+        "/admin/profile":{
+            "get": {
+                "tags": [
+                    "Profile"
+                ],
+                "summary": "Get profile",
+                "description": "Get profile admin",
+                "responses": {
+                    "200":{
+                        "description": "Profile retrieved successfully",
+                        "content": {
+                            "application/json":{
+                                "schema":{
+                                    "$ref": "#/components/schemas/Profile"
+                                },
+                                "example":{
+                                    "id" :"1",
+                                    "first_name" : "Natasha",
+                                    "last_name" : "Augenia",
+                                    "role" : "admin",
+                                    "email" : "natasha.augenia@pixelatee.com",
+                                    "phone_number" : "+62892-341-1234",
+                                    "birth_date" : "1990-10-12",
+                                    "county" : "Indonesia",
+                                    "city" : "Yogyakarta",
+                                    "postal_code" : "12345",
+                                    "images" : "https://cdn.example.com/images/profile.png"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Profile"
+                ],
+                "summary": "Update profile",
+                "description": "Update the admin profile",
+                "requestBody":{
+                    "required": true,
+                    "content": {
+                        "application/json":{
+                            "schema":{
+                                "$ref" : "#/components/schemas/Profile"
+                            },
+                            "example":{
+                                "id" :"1",
+                                "first_name" : "Natasha",
+                                "last_name" : "Augenia",
+                                "role" : "admin",
+                                "email" : "natasha.augenia@pixelatee.com",
+                                "phone_number" : "+62892-341-1234",
+                                "birth_date" : "1990-10-12",
+                                "county" : "Indonesia",
+                                "city" : "Yogyakarta",
+                                "postal_code" : "12345",
+                                "images" : "https://cdn.example.com/images/profile.png"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas":{
+            "Portfolio":{
+                "type":"object",
+                "properties": {
+                    "id":{
+                        "type":"string"
+                    },
+                    "name":{
+                        "type":"string"
+                    },
+                    "client":{
+                        "type":"string"
+                    },
+                    "description":{
+                        "type":"string"
+                    },
+                    "imageUrl" : {
+                        "type":"string",
+                        "format": "uri"
+                    }
+                },
+                "required": ["id", "name", "client", "description", "imageUrl"]
+            },
+            "Contact":{
+                "type":"object",
+                "properties": {
+                    "id" :{
+                        "type":"string"
+                    },
+                    "name":{
+                        "type":"string"
+                    },
+                    "email":{
+                        "type":"string"
+                    },
+                    "subject":{
+                        "type":"string"
+                    },
+                    "type":{
+                        "type":"string"
+                    },
+                    "message":{
+                        "type":"string"
+                    }
+                },
+                "required": ["id", "name", "email", "subject", "type", "message"]
+            },
+            "Client":{
+                "type": "object",
+                "properties": {
+                    "id" : {
+                        "type":"string"
+                    },
+                    "name":{
+                        "type":"string"
+                    },
+                    "images" : {
+                        "type":"string"
+                    }
+                },
+                "required": ["id", "name", "images"]
+            },
+            "Profile":{
+                "type":"object",
+                "properties": {
+                    "id":{
+                        "type":"string"
+                    },
+                    "first_name":{
+                        "type" : "string"
+                    },
+                    "last_name" :{
+                        "type" :"string"
+                    },
+                    "role" : {
+                        "type" : "string"
+                    },
+                    "email" : {
+                        "type":"string"
+                    },
+                    "phone_number" :{
+                        "type":"string"
+                    },
+                    "birth_date":{
+                        "type":"string",
+                        "format": "date"
+                    },
+                    "county" : {
+                        "type":"string"
+                    },
+                    "city" :{
+                        "type":"string"
+                    },
+                    "postal_code" :{
+                        "type":"integer"
+                    },
+                    "images" : {
+                        "type":"string"
+                    }
+
+                },
+                "required": ["id", "first_name", "last_name", "role", "email", "phone_number", "birth_date", "county", "city", "postal_code", "images"]
+            },
+            "Newsletter":{
+                "type":"object",
+                "properties": {
+                    "id":{
+                        "type" :"string"
+                    },
+                    "title":{
+                        "type":"string"
+                    },
+                    "description" : {
+                        "type" :"string"
+                    },
+                    "type":{
+                        "type":"string"
+                    },
+                    "status" : {
+                        "type" : "string"
+                    },
+                    "date":{
+                        "type" : "string",
+                        "format": "date-time"
+                    }
+                }
+            }
+        }
+    }
+}
