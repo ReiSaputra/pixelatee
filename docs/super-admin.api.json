@@ -13,6 +13,7 @@
                 "tags": [
                     "Auth"
                 ],
+                
                 "summary": "Register a new user",
                 "description": "Create a new user account with the provided details",
                 "requestBody": {
