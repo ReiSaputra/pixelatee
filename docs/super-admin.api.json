@@ -1,5 +1,4 @@
 {
-<<<<<<< HEAD
     "openapi":"3.1.1",
     "info": {
       "title":"Docs API",
@@ -103,14 +102,3 @@
         }
     }
 }
-=======
-  "openapi": "3.0.3",
-  "info": {
-    "title": "Pixellatee Public APIs",
-    "version": "1.0"
-  },
-  "servers": [{ "url": "https://api.server.test/v1" }],
-  "paths": {},
-  "components": {}
-}
->>>>>>> 61c9427b1235da6085112e228c57ff8fbf6357a5
