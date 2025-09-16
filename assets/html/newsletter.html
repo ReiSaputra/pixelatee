@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pixelatee Blog Newsletter</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+  </head>
+
+  <body style="margin: 0; padding: 0; background: #f9f9f9; font-family: 'Poppins', Arial, sans-serif">
+    <div style="max-width: 600px; margin: auto; background: #ffffff; border-radius: 5px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); overflow: hidden">
+      <!-- HEADER -->
+      <div style="background: #3b82f6; padding: 20px; text-align: center">
+        <h1 style="margin: 0; font-size: 22px; font-weight: 600; color: #ffffff">Pixelatee Blog Newsletter</h1>
+      </div>
+
+      <!-- CONTENT -->
+      <div style="padding: 30px; color: #000000">
+        <img src="http://localhost:3000/public/newsletter/{{photo}}" alt="Pixelatee Logo" style="max-width: 120px; margin-bottom: 10px" />
+
+        <!-- ARTICLE TITLE -->
+        <div style="margin-bottom: 30px; text-align: left">
+          <h2 style="font-size: 18px; margin: 15px 0 0; font-weight: 600">{{title}}</h2>
+        </div>
+
+        <!-- ARTICLE ITEM -->
+        <div style="margin-bottom: 30px; text-align: justify">
+          {{content}}
+        </div>
+      </div>
+
+      <!-- FOOTER -->
+      <div style="background: #f3f4f6; padding: 20px; text-align: center; font-size: 12px; color: #6b7280">
+        <p id="currentYear" style="margin: 0">© 2025 Pixelatee. All rights reserved.</p>
+        <p style="margin: 5px 0">
+          <a href="http://localhost:3000/api/v1/public/newsletters/unsubscribe?memberId={{memberId}}" style="color: #3b82f6; text-decoration: none">Unsubscribe</a>
+        </p>
+      </div>
+    </div>
+
+    <script>
+      const date = new Date();
+      document.getElementById("currentYear").innerHTML = `© ${date.getFullYear()} Pixelatee. All rights reserved.`;
+    </script>
+  </body>
+</html>
