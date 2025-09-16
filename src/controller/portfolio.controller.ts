@@ -83,38 +83,51 @@ export class PortfolioController {
    * @param next next function to handle error
    * @throws ResponseError if error occur
    */
-  public static async create(req: UserRequest, res: express.Response, next: express.NextFunction): Promise<void> {
-    try {
-      // assert request
-      const user: (User & { permissions: UserPermission | null }) | undefined = req.user;
-      const request: PortfolioRequest = req.body as PortfolioRequest;
-      const files = req.files as Express.Multer.File[] | undefined;
+  // public static async create(req: UserRequest, res: express.Response, next: express.NextFunction): Promise<void> {
+  //   try {
+  //     // assert user
+  //     const user: (User & { permissions: UserPermission | null }) | undefined = req.user;
 
-      // call service
-      const response: PortfolioResponse = await PortfolioService.create(user, request, files);
+  //     // assert request
+  //     const request: PortfolioRequest = req.body as PortfolioRequest;
 
-      // return response
-      res.status(200).json({ status: "Success", code: 200, data: response, message: "Create portfolio successfully" });
-    } catch (error: any) {
-      // handle unsync file if there error
-      const files = req.files as Express.Multer.File[] | undefined;
+  //     // assert files
+  //     const files: Express.Multer.File[] | undefined = req.files as Express.Multer.File[] | undefined;
 
-      // clean file
-      if (files && Array.isArray(files)) {
-        for (const file of files) {
-          try {
-            if (fs.existsSync(file.path)) {
-              fs.unlinkSync(file.path);
-            }
-          } catch (err) {
-            console.error("Failed to clean file:", err);
-          }
-        }
-      }
+  //     // assert files to request if exists
+  //     if (files && Array.isArray(files)) {
+  //       request.mainImage = files[0]?.mimetype;
+  //       request.secondImage = files[1]?.mimetype;
+  //       request.thirdImage = files[2]?.mimetype;
+  //       request.fourthImage = files[3]?.mimetype;
+  //       request.fifthImage = files[4]?.mimetype;
+  //     }
 
-      next(error);
-    }
-  }
+  //     // call service
+  //     const response: PortfolioResponse = await PortfolioService.create(user, request, files);
+
+  //     // return response
+  //     res.status(200).json({ status: "Success", code: 200, data: response, message: "Create portfolio successfully" });
+  //   } catch (error: any) {
+  //     // handle unsync file if there error
+  //     const files = req.files as Express.Multer.File[] | undefined;
+
+  //     // clean file
+  //     if (files && Array.isArray(files)) {
+  //       for (const file of files) {
+  //         try {
+  //           if (fs.existsSync(file.path)) {
+  //             fs.unlinkSync(file.path);
+  //           }
+  //         } catch (err) {
+  //           console.error("Failed to clean file:", err);
+  //         }
+  //       }
+  //     }
+
+  //     next(error);
+  //   }
+  // }
 
   public static async delete(req: UserRequest, res: express.Response, next: express.NextFunction): Promise<void> {
     try {

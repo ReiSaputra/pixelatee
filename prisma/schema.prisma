@@ -77,6 +77,11 @@ model Newsletter {
 
   title   String
   content String @db.Text
+  photo   String
+
+  status NewsletterStatus
+
+  type NewsletterType
 
   authorId String @map("author_id")
   author   User   @relation(fields: [authorId], references: [id])
@@ -103,12 +108,12 @@ model NewsletterMember {
 model Portfolio {
   id String @id @default(uuid())
 
-  title       String  @default("Untitled")
-  description String? @db.Text
+  title       String @default("Untitled")
+  description String @db.Text
 
-  status PortfolioStatus @default(DRAFT)
+  status PortfolioStatus
 
-  mainImage   String? @map("main_image")
+  mainImage   String  @map("main_image")
   secondImage String? @map("second_image")
   thirdImage  String? @map("third_image")
   fourthImage String? @map("fourth_image")
@@ -117,8 +122,8 @@ model Portfolio {
   authorId String @map("author_id")
   author   User   @relation(fields: [authorId], references: [id])
 
-  clientId String? @map("client_id")
-  client   Client? @relation(fields: [clientId], references: [id])
+  clientId String @map("client_id")
+  client   Client @relation(fields: [clientId], references: [id])
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
@@ -165,14 +170,26 @@ enum UserRole {
 }
 
 enum PortfolioStatus {
-  DRAFT
   PUBLISHED
+  ARCHIVED
+}
+
+enum NewsletterStatus {
+  PUBLISHED
+  SCHEDULED
   ARCHIVED
 }
 
 enum NewsletterMemberStatus {
   SUBSCRIBE
   PENDING
+}
+
+enum NewsletterType {
+  TECH
+  BUSINESS
+  INTERNAL
+  OTHER
 }
 
 enum ContactType {

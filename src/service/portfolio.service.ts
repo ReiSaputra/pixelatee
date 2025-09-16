@@ -114,71 +114,71 @@ export class PortfolioService {
     return toPortfolioPaginationResponse(findPortfolio, response.page, 15, countPortfolio, Math.ceil(countPortfolio / 15));
   }
 
-  public static async create(user: (User & { permissions: UserPermission | null }) | undefined, request: PortfolioRequest, files: Express.Multer.File[] | undefined): Promise<PortfolioResponse> {
-    // request validation
-    const response: PortfolioRequest = Validation.validate<PortfolioRequest>(PortfolioSchema.CREATE, request);
+  // public static async create(user: (User & { permissions: UserPermission | null }) | undefined, request: PortfolioRequest, files: Express.Multer.File[] | undefined): Promise<PortfolioResponse> {
+  //   // query params validation
+  //   const filterValidation: PortfolioRequest = Validation.validate<PortfolioRequest>(PortfolioSchema.CREATE, request);
 
-    // if status is DRAFT
-    if (response.status === "DRAFT") {
-      // change title
-      response.title = `${response.title} #${(await prisma.portfolio.count({ where: { authorId: user?.id! } })) + 1}`;
+  //   // if status is DRAFT
+  //   if (response.status === "DRAFT") {
+  //     // change title
+  //     response.title = `${response.title} #${(await prisma.portfolio.count({ where: { authorId: user?.id! } })) + 1}`;
 
-      // delete files
-      if (files && Array.isArray(files)) {
-        for (const file of files) {
-          try {
-            if (fs.existsSync(`public/portfolio/${file.path}`)) {
-              fs.unlinkSync(`public/portfolio/${file.path}`);
-            }
-          } catch (err) {
-            console.error("Failed to clean file:", err);
-          }
-        }
-      }
-    }
+  //     // delete files
+  //     if (files && Array.isArray(files)) {
+  //       for (const file of files) {
+  //         try {
+  //           if (fs.existsSync(`public/portfolio/${file.path}`)) {
+  //             fs.unlinkSync(`public/portfolio/${file.path}`);
+  //           }
+  //         } catch (err) {
+  //           console.error("Failed to clean file:", err);
+  //         }
+  //       }
+  //     }
+  //   }
 
-    // check if client exists
-    let findClient: Client | null = null;
+  //   // check if client exists
+  //   let findClient: Client | null = null;
 
-    // if client exists in request, find it
-    if (response.client) {
-      findClient = await prisma.client.findUnique({ where: { id: response.client } });
+  //   // if client exists in request, find it
+  //   if (response.client) {
+  //     findClient = await prisma.client.findUnique({ where: { id: response.client } });
 
-      // if client not found then throw error
-      if (!findClient) throw new ResponseError("Client not found");
-    }
+  //     // if client not found then throw error
+  //     if (!findClient) throw new ResponseError("Client not found");
+  //   }
 
-    // create portfolio
-    const createPortfolio: Portfolio & { client: Client | null } = await prisma.portfolio.create({
-      data: {
-        title: response.title,
-        description: response.description ?? null,
-        status: response.status,
-        clientId: findClient?.id ?? null,
-        authorId: user?.id!,
-        mainImage: response.status === "DRAFT" ? null : files?.[0]?.path ?? null,
-        secondImage: response.status === "DRAFT" ? null : files?.[1]?.path ?? null,
-        thirdImage: response.status === "DRAFT" ? null : files?.[2]?.path ?? null,
-        fourthImage: response.status === "DRAFT" ? null : files?.[3]?.path ?? null,
-        fifthImage: response.status === "DRAFT" ? null : files?.[4]?.path ?? null,
-      },
-      include: {
-        client: true,
-      },
-    });
+  //   // create portfolio
+  //   const createPortfolio: Portfolio & { client: Client | null } = await prisma.portfolio.create({
+  //     data: {
+  //       title: response.title,
+  //       description: response.description ?? null,
+  //       status: response.status,
+  //       clientId: findClient?.id ?? null,
+  //       authorId: user?.id!,
+  //       mainImage: response.status === "DRAFT" ? null : files?.[0]?.path ?? null,
+  //       secondImage: response.status === "DRAFT" ? null : files?.[1]?.path ?? null,
+  //       thirdImage: response.status === "DRAFT" ? null : files?.[2]?.path ?? null,
+  //       fourthImage: response.status === "DRAFT" ? null : files?.[3]?.path ?? null,
+  //       fifthImage: response.status === "DRAFT" ? null : files?.[4]?.path ?? null,
+  //     },
+  //     include: {
+  //       client: true,
+  //     },
+  //   });
 
-    // specify return
-    createPortfolio.description = undefined!;
-    if (createPortfolio.client) {
-      createPortfolio.client.name = undefined!;
-    }
-    createPortfolio.mainImage = undefined!;
-    createPortfolio.secondImage = undefined!;
-    createPortfolio.thirdImage = undefined!;
-    createPortfolio.fourthImage = undefined!;
-    createPortfolio.fifthImage = undefined!;
+  //   // specify return
+  //   createPortfolio.description = undefined!;
+  //   if (createPortfolio.client) {
+  //     createPortfolio.client.name = undefined!;
+  //   }
+  //   createPortfolio.mainImage = undefined!;
+  //   createPortfolio.secondImage = undefined!;
+  //   createPortfolio.thirdImage = undefined!;
+  //   createPortfolio.fourthImage = undefined!;
+  //   createPortfolio.fifthImage = undefined!;
 
-    // return response
-    return toPortfolioResponse(createPortfolio);
-  }
+  //   // return response
+  //   return toPortfolioResponse(createPortfolio);
+  // }
 }

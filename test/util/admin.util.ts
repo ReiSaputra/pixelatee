@@ -82,6 +82,8 @@ export class AdminUtil {
   public static async deleteAdmin(id: string): Promise<void> {
     await prisma.userPermission.delete({ where: { userId: id } });
 
+    await prisma.newsletter.deleteMany({ where: { authorId: id } });
+
     await prisma.user.delete({
       where: {
         id: id,

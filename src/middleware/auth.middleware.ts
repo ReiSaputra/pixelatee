@@ -9,7 +9,6 @@ import { $Enums, User, UserPermission } from "../generated/prisma";
 import { UserRequest } from "../types/user.type";
 
 import { ResponseError } from "../error/response.error";
-import { Prisma } from "@prisma/client";
 
 dotenv.config();
 
