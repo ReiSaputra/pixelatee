@@ -81,7 +81,7 @@ export class PortfolioUtil {
           title: faker.commerce.productName(),
           description: faker.lorem.paragraphs(2),
           mainImage: faker.image.url(),
-          status: faker.helpers.arrayElement(["PUBLISHED", "ARCHIVED", "DRAFT"]),
+          status: faker.helpers.arrayElement(["PUBLISHED", "ARCHIVED"]),
           secondImage: secondImage ? faker.image.url() : null,
           thirdImage: thirdImage ? faker.image.url() : null,
           fourthImage: fourthImage ? faker.image.url() : null,
