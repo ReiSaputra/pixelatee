@@ -73,7 +73,7 @@ export function toPortfoliosResponse(portfolio: (Portfolio & { client: Client | 
       id: item.id,
       title: item.title,
       description: item.description!,
-      client: item.client!.name,
+      client: item.client?.name,
       mainImage: item.mainImage!,
       secondImage: item.secondImage!,
       thirdImage: item.thirdImage!,

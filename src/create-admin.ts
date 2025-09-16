@@ -1,0 +1,28 @@
+import { PrismaClient } from "../src/generated/prisma";
+import bcrypt from "bcrypt";
+
+const prisma = new PrismaClient();
+
+async function main() {
+  const email = "admin@pixelatee.com"; 
+  const password = "123456"; 
+  const hashedPassword = await bcrypt.hash(password, 10);
+
+  const admin = await prisma.user.create({
+    data: {
+      email,
+      password: hashedPassword,
+      role: "ADMIN", 
+    },
+  });
+
+  console.log("✅ Admin created:", admin);
+}
+
+main()
+  .catch((e) => {
+    console.error("❌ Error:", e);
+  })
+  .finally(async () => {
+    await prisma.$disconnect();
+  });

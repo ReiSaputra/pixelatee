@@ -33,6 +33,7 @@ export class AuthMiddleware {
         authorization = req.headers.authorization as string | undefined;
       }
 
+
       // check authorization if not start with "Bearer "
       if (!authorization?.startsWith("Bearer ")) {
         // throw error if authorization not start with "Bearer "

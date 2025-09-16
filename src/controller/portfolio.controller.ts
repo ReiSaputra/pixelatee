@@ -85,23 +85,10 @@ export class PortfolioController {
    */
   public static async create(req: UserRequest, res: express.Response, next: express.NextFunction): Promise<void> {
     try {
-      // assert user
-      const user: (User & { permissions: UserPermission | null }) | undefined = req.user;
-
       // assert request
+      const user: (User & { permissions: UserPermission | null }) | undefined = req.user;
       const request: PortfolioRequest = req.body as PortfolioRequest;
-
-      // assert files
-      const files: Express.Multer.File[] | undefined = req.files as Express.Multer.File[] | undefined;
-
-      // assert files to request if exists
-      if (files && Array.isArray(files)) {
-        request.mainImage = files[0]?.mimetype;
-        request.secondImage = files[1]?.mimetype;
-        request.thirdImage = files[2]?.mimetype;
-        request.fourthImage = files[3]?.mimetype;
-        request.fifthImage = files[4]?.mimetype;
-      }
+      const files = req.files as Express.Multer.File[] | undefined;
 
       // call service
       const response: PortfolioResponse = await PortfolioService.create(user, request, files);

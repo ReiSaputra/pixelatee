@@ -20,7 +20,7 @@ export class AuthController {
     const response: AuthResponse = await AuthService.login(request);
 
     // set session cookie
-    res.cookie("session", response.token, { httpOnly: true, secure: false, sameSite: "none", signed: true });
+    res.cookie("session", response.token, { httpOnly: true, secure: false, sameSite: "lax", signed: true });
 
     // return response
     res.status(200).json({ status: "Success", code: 200, data: response, message: "User logged in successfully" });
