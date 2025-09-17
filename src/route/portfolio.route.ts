@@ -17,12 +17,22 @@ portfolioRoute.get("/public/portfolios/:portfolioId", PortfolioController.public
  * Admin
  */
 portfolioRoute.get("/admin/portfolios", AuthMiddleware.authentication, AuthMiddleware.authorization(["ADMIN", "SUPER_ADMIN"]), AuthMiddleware.permission("canReadPortfolio"), PortfolioController.adminGetAll);
-// portfolioRoute.get("/admin/portfolios/:portfolioId", PortfolioController.adminGetDetail);
-// portfolioRoute.post(
-//   "/admin/portfolios",
-//   AuthMiddleware.authentication,
-//   AuthMiddleware.authorization(["ADMIN", "SUPER_ADMIN"]),
-//   AuthMiddleware.permission("canWritePortfolio"),
-//   FileUploadMiddleware.handleMultiple("portfolio", 2, "photos", 5),
-//   PortfolioController.create
-// );
+portfolioRoute.get("/admin/portfolios/:portfolioId", AuthMiddleware.authentication, AuthMiddleware.authorization(["ADMIN", "SUPER_ADMIN"]), AuthMiddleware.permission("canReadPortfolio"), PortfolioController.adminGetDetail);
+portfolioRoute.get("/admin/portfolios/:portfolioId/preview", AuthMiddleware.authentication, AuthMiddleware.authorization(["ADMIN", "SUPER_ADMIN"]), AuthMiddleware.permission("canWritePortfolio"), PortfolioController.adminEditPreview);
+portfolioRoute.post(
+  "/admin/portfolios",
+  AuthMiddleware.authentication,
+  AuthMiddleware.authorization(["ADMIN", "SUPER_ADMIN"]),
+  AuthMiddleware.permission("canWritePortfolio"),
+  FileUploadMiddleware.handleMultiple("portfolio", 2, "photos", 5),
+  PortfolioController.adminCreate
+);
+portfolioRoute.patch(
+  "/admin/portfolios/:portfolioId",
+  AuthMiddleware.authentication,
+  AuthMiddleware.authorization(["ADMIN", "SUPER_ADMIN"]),
+  AuthMiddleware.permission("canUpdatePortfolio"),
+  FileUploadMiddleware.handleMultiple("portfolio", 2, "photos", 5),
+  PortfolioController.adminUpdate
+);
+portfolioRoute.delete("/admin/portfolios/:portfolioId", AuthMiddleware.authentication, AuthMiddleware.authorization(["ADMIN", "SUPER_ADMIN"]), AuthMiddleware.permission("canDeletePortfolio"), PortfolioController.adminDelete);

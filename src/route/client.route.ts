@@ -8,7 +8,7 @@ import { FileUploadMiddleware } from "../middleware/file-upload.middleware";
 export const clientRoute: express.Router = express.Router();
 
 clientRoute.get("/admin/clients", AuthMiddleware.authentication, AuthMiddleware.authorization(["ADMIN", "SUPER_ADMIN"]), AuthMiddleware.permission("canReadClient"), ClientController.adminGetAll);
-clientRoute.get("/admin/clients/form", AuthMiddleware.authentication, AuthMiddleware.authorization(["ADMIN", "SUPER_ADMIN"]), ClientController.formGetAll);
+clientRoute.get("/admin/clients/form", AuthMiddleware.authentication, AuthMiddleware.authorization(["ADMIN", "SUPER_ADMIN"]), AuthMiddleware.permission("canReadClient"), ClientController.formGetAll);
 clientRoute.post(
   "/admin/clients",
   AuthMiddleware.authentication,
