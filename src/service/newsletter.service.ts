@@ -312,7 +312,7 @@ export class NewsletterService {
         await fs.access(`public/newsletter/${findNewsletter.photo}`);
         await fs.unlink(`public/newsletter/${findNewsletter.photo}`);
       } catch (error) {
-        logger.info(error);
+        logger.error(error);
       }
     }
 
@@ -365,7 +365,7 @@ export class NewsletterService {
       await fs.unlink(`public/newsletter/${findNewsletter.photo}`);
     } catch (error) {
       if ((error as NodeJS.ErrnoException).code === "ENOENT") {
-        logger.info(error);
+        logger.error(error);
       } else {
         throw error;
       }
