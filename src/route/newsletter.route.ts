@@ -13,6 +13,7 @@ newsletterRoute.delete("/public/newsletters/unsubscribe", NewsletterController.u
 
 newsletterRoute.get("/admin/newsletters", AuthMiddleware.authentication, AuthMiddleware.authorization(["ADMIN", "SUPER_ADMIN"]), AuthMiddleware.permission("canReadNewsletter"), NewsletterController.adminGetAll);
 newsletterRoute.get("/admin/newsletters/:newsletterId", AuthMiddleware.authentication, AuthMiddleware.authorization(["ADMIN", "SUPER_ADMIN"]), AuthMiddleware.permission("canReadNewsletter"), NewsletterController.adminGetDetail);
+newsletterRoute.get("/admin/newsletters/:newsletterId/preview", AuthMiddleware.authentication, AuthMiddleware.authorization(["ADMIN", "SUPER_ADMIN"]), AuthMiddleware.permission("canWriteNewsletter"), NewsletterController.adminEditPreview);
 newsletterRoute.post(
   "/admin/newsletters",
   AuthMiddleware.authentication,
@@ -21,7 +22,6 @@ newsletterRoute.post(
   FileUploadMiddleware.handleSingle("newsletter", 2, "photo"),
   NewsletterController.adminCreate
 );
-newsletterRoute.get("/admin/newsletters/:newsletterId/preview", AuthMiddleware.authentication, AuthMiddleware.authorization(["ADMIN", "SUPER_ADMIN"]), AuthMiddleware.permission("canWriteNewsletter"), NewsletterController.adminEditPreview);
 newsletterRoute.patch(
   "/admin/newsletters/:newsletterId",
   AuthMiddleware.authentication,

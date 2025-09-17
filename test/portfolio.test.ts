@@ -6,6 +6,7 @@ import { web } from "../src/application/web";
 import { PortfolioPaginationResponseSuccess, PortfolioResponseError, PortfolioResponseSuccess, PortfoliosResponseSuccess, PortfolioUtil } from "./util/portfolio.util";
 import { AdminUtil } from "./util/admin.util";
 import { ClientUtil } from "./util/client.util";
+import { prisma } from "../src/application/database";
 
 describe("GET /api/v1/public/portfolios", () => {
   let admin1: string;
@@ -196,6 +197,53 @@ describe("GET /api/v1/admin/portfolios", () => {
   });
 });
 
+describe("GET /api/v1/admin/portfolios/:portfolioId", () => {
+  let admin1: string;
+  let client1: string;
+  let portfolio1: string;
+  let token: string;
+
+  beforeEach(async () => {
+    admin1 = await AdminUtil.createAdmin("Han", "Saputra", "fthrn.s27@pixelatee.com", "patangpuluhpatang", "ADMIN", false);
+    await AdminUtil.updateAdminPermission(admin1, true, true, true, true);
+    client1 = await ClientUtil.createClient("Example Client");
+    portfolio1 = await PortfolioUtil.createPortfolio("Kortlink App", "Kortlink is shortener App", "PUBLISHED", admin1, client1);
+    token = await AdminUtil.login("fthrn.s27@pixelatee.com", "patangpuluhpatang");
+  });
+
+  afterEach(async () => {
+    await PortfolioUtil.deleteAllPortfolio();
+    await AdminUtil.deleteAdmin(admin1);
+    await ClientUtil.deleteAllClient();
+  });
+
+  it("should pass - get detail portfolio", async () => {
+    const response: request.Response = await request(web).get(`/api/v1/admin/portfolios/${portfolio1}`).set("Authorization", `Bearer ${token}`);
+
+    expect(response.status).toBe(200);
+  });
+
+  it("shoukd fail - portfolio not found", async () => {
+    const response: request.Response = await request(web).get(`/api/v1/admin/portfolios/invalid`).set("Authorization", `Bearer ${token}`);
+
+    expect(response.status).toBe(400);
+  });
+
+  it("should fail - no authorization", async () => {
+    const response: request.Response = await request(web).get(`/api/v1/admin/portfolios/${portfolio1}`);
+
+    expect(response.status).toBe(401);
+  });
+
+  it("should fail - no permission", async () => {
+    await AdminUtil.updateAdminPermission(admin1, false, false, false, false);
+
+    const response: request.Response = await request(web).get(`/api/v1/admin/portfolios/${portfolio1}`).set("Authorization", `Bearer ${token}`);
+
+    expect(response.status).toBe(403);
+  });
+});
+
 describe("POST /api/v1/admin/portfolios", () => {
   let admin1: string;
   let client1: string;
@@ -243,7 +291,6 @@ describe("POST /api/v1/admin/portfolios", () => {
       .field("client", client1)
       .attach("photos", "public/test/Kortlink.png");
 
-    console.info(response.body);
     expect(response.status).toBe(200);
   });
 
@@ -292,21 +339,13 @@ describe("POST /api/v1/admin/portfolios", () => {
     expect(response.status).toBe(200);
   });
 
-  it("should pass - all null properties except title, description, client defined and status DRAFT and 2 image", async () => {
-    const response: request.Response = await request(web)
-      .post("/api/v1/admin/portfolios")
-      .set("Authorization", `Bearer ${token}`)
-      .field("title", "Akaza")
-      .field("description", "fullstack")
-      .field("status", "DRAFT")
-      .field("client", client1)
-      .attach("photos", "public/test/Kortlink.png")
-      .attach("photos", "public/test/Kortlink.png");
+  it("should fail - no sending all properties but photos", async () => {
+    const response: request.Response = await request(web).post("/api/v1/admin/portfolios").set("Authorization", `Bearer ${token}`).attach("photos", "public/test/Kortlink.png");
 
-    expect(response.status).toBe(200);
+    expect(response.status).toBe(400);
   });
 
-  it("should fail - second Photos is not image (.pdf)", async () => {
+  it("should success - second Photos is not image (.pdf)", async () => {
     const response: request.Response = await request(web)
       .post("/api/v1/admin/portfolios")
       .set("Authorization", `Bearer ${token}`)
@@ -317,6 +356,8 @@ describe("POST /api/v1/admin/portfolios", () => {
       .field("client", client1)
       .attach("photos", "public/test/Kortlink.png")
       .attach("photos", "public/test/LAPORAN PRAKTIKUM - DASAR PEMROGRAMAN DART - 2205076 M FATHURRAIHAN S.pdf");
+
+    expect(response.status).toBe(200);
   });
 
   it("should fail - no authorization", async () => {
@@ -328,6 +369,150 @@ describe("POST /api/v1/admin/portfolios", () => {
   it("should fail - permission denied", async () => {
     await AdminUtil.updateAdminPermission(admin1, false, false, false, false);
     const response: request.Response = await request(web).post("/api/v1/admin/portfolios").set("Authorization", `Bearer ${token}`);
+
+    expect(response.status).toBe(403);
+  });
+});
+
+describe("DELETE /api/v1/admin/portfolios", () => {
+  let admin1: string;
+  let client1: string;
+  let token: string;
+  let portfolio1: string;
+
+  beforeEach(async () => {
+    admin1 = await AdminUtil.createAdmin("Han", "Saputra", "fthrn.s27@pixelatee.com", "patangpuluhpatang", "ADMIN", false);
+    await AdminUtil.updateAdminPermission(admin1, true, true, true, true);
+    client1 = await ClientUtil.createClient("Example Client");
+    token = await AdminUtil.login("fthrn.s27@pixelatee.com", "patangpuluhpatang");
+    portfolio1 = await PortfolioUtil.createPortfolio("Kortlink App", "Kortlink is shortener App", "PUBLISHED", admin1, client1, true, true, true, true);
+  });
+
+  afterEach(async () => {
+    await PortfolioUtil.deleteAllPortfolio();
+    await AdminUtil.deleteAdmin(admin1);
+    await ClientUtil.deleteAllClient();
+  });
+
+  it("should pass - delete portfolio", async () => {
+    const response: request.Response = await request(web).delete(`/api/v1/admin/portfolios/${portfolio1}`).set("Authorization", `Bearer ${token}`);
+
+    expect(response.status).toBe(200);
+  });
+
+  it("should fail - portfolio not found", async () => {
+    const response: request.Response = await request(web).delete(`/api/v1/admin/portfolios/invalid`).set("Authorization", `Bearer ${token}`);
+
+    expect(response.status).toBe(400);
+  });
+
+  it("should fail - no authorization", async () => {
+    const response: request.Response = await request(web).delete(`/api/v1/admin/portfolios/${portfolio1}`);
+
+    expect(response.status).toBe(401);
+  });
+
+  it("should fail - permission denied", async () => {
+    await AdminUtil.updateAdminPermission(admin1, false, false, false, false);
+    const response: request.Response = await request(web).delete(`/api/v1/admin/portfolios/${portfolio1}`).set("Authorization", `Bearer ${token}`);
+
+    expect(response.status).toBe(403);
+  });
+});
+
+describe("PATCH /api/v1/admin/portfolios/:portfolioId", () => {
+  let admin1: string;
+  let client1: string;
+  let token: string;
+  let portfolio1: string;
+
+  beforeEach(async () => {
+    admin1 = await AdminUtil.createAdmin("Han", "Saputra", "fthrn.s27@pixelatee.com", "patangpuluhpatang", "ADMIN", false);
+    await AdminUtil.updateAdminPermission(admin1, true, true, true, true);
+    client1 = await ClientUtil.createClient("Example Client");
+    token = await AdminUtil.login("fthrn.s27@pixelatee.com", "patangpuluhpatang");
+    portfolio1 = await PortfolioUtil.createPortfolio("Kortlink App", "Kortlink is shortener App", "PUBLISHED", admin1, client1, true, true, true, true);
+  });
+
+  afterEach(async () => {
+    await PortfolioUtil.deleteAllPortfolio();
+    await AdminUtil.deleteAdmin(admin1);
+    await ClientUtil.deleteAllClient();
+  });
+
+  it("should pass - update portfolio", async () => {
+    const response: request.Response = await request(web)
+      .patch(`/api/v1/admin/portfolios/${portfolio1}`)
+      .set("Authorization", `Bearer ${token}`)
+      .field("title", "Kortlink")
+      .field("description", "Kortlink")
+      .field("client", client1)
+      .field("status", "PUBLISHED");
+
+    expect(response.status).toBe(200);
+  });
+
+  it("should fail - no authorization", async () => {
+    const response: request.Response = await request(web).patch(`/api/v1/admin/portfolios/${portfolio1}`).send({ status: "PUBLISHED" });
+
+    expect(response.status).toBe(401);
+  });
+
+  it("should fail - permission denied", async () => {
+    await AdminUtil.updateAdminPermission(admin1, false, false, false, false);
+    const response: request.Response = await request(web).patch(`/api/v1/admin/portfolios/${portfolio1}`).set("Authorization", `Bearer ${token}`).send({ status: "PUBLISHED" });
+
+    expect(response.status).toBe(403);
+  });
+
+  it("should fail - portfolio not found", async () => {
+    const response: request.Response = await request(web).patch(`/api/v1/admin/portfolios/invalid`).set("Authorization", `Bearer ${token}`).send({ status: "PUBLISHED" });
+
+    expect(response.status).toBe(400);
+  });
+});
+
+describe("GET /api/v1/admin/portfolios/preview", () => {
+  let admin1: string;
+  let client1: string;
+  let token: string;
+  let portfolio1: string;
+
+  beforeEach(async () => {
+    admin1 = await AdminUtil.createAdmin("Han", "Saputra", "fthrn.s27@pixelatee.com", "patangpuluhpatang", "ADMIN", false);
+    await AdminUtil.updateAdminPermission(admin1, true, true, true, true);
+    client1 = await ClientUtil.createClient("Example Client");
+    token = await AdminUtil.login("fthrn.s27@pixelatee.com", "patangpuluhpatang");
+    portfolio1 = await PortfolioUtil.createPortfolio("Kortlink App", "Kortlink is shortener App", "PUBLISHED", admin1, client1, true, true, true, true);
+  });
+
+  afterEach(async () => {
+    await PortfolioUtil.deleteAllPortfolio();
+    await AdminUtil.deleteAdmin(admin1);
+    await ClientUtil.deleteAllClient();
+  });
+
+  it("should pass - get portfolio preview edit", async () => {
+    const response: request.Response = await request(web).get(`/api/v1/admin/portfolios/${portfolio1}/preview`).set("Authorization", `Bearer ${token}`);
+
+    expect(response.status).toBe(200);
+  });
+
+  it("should fail - portfolio not found", async () => {
+    const response: request.Response = await request(web).get(`/api/v1/admin/portfolios/invalid/preview`).set("Authorization", `Bearer ${token}`);
+
+    expect(response.status).toBe(400);
+  });
+
+  it("should fail - no authorization", async () => {
+    const response: request.Response = await request(web).get(`/api/v1/admin/portfolios/${portfolio1}/preview`);
+
+    expect(response.status).toBe(401);
+  });
+
+  it("should fail - permission denied", async () => {
+    await AdminUtil.updateAdminPermission(admin1, false, false, false, false);
+    const response: request.Response = await request(web).get(`/api/v1/admin/portfolios/${portfolio1}/preview`).set("Authorization", `Bearer ${token}`);
 
     expect(response.status).toBe(403);
   });

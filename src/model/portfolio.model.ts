@@ -12,9 +12,9 @@ export type PortfolioFilters = {
 
 export type PortfolioRequest = {
   title: string;
-  description?: string | null | undefined;
+  description: string;
   status: $Enums.PortfolioStatus;
-  client?: string | null | undefined;
+  client: string;
   mainImage?: string | null | undefined;
   secondImage?: string | null | undefined;
   thirdImage?: string | null | undefined;
@@ -52,13 +52,13 @@ export type PortfolioPaginationResponse = {
 export function toPortfolioResponse(portfolio: Portfolio & { client: Client | null }): PortfolioResponse {
   return {
     title: portfolio.title,
-    description: portfolio.description!,
+    description: portfolio.description,
     client: portfolio.client?.name,
-    mainImage: portfolio.mainImage!,
-    secondImage: portfolio.secondImage!,
-    thirdImage: portfolio.thirdImage!,
-    fourthImage: portfolio.fourthImage!,
-    fifthImage: portfolio.fifthImage!,
+    mainImage: portfolio.mainImage,
+    secondImage: portfolio.secondImage,
+    thirdImage: portfolio.thirdImage,
+    fourthImage: portfolio.fourthImage,
+    fifthImage: portfolio.fifthImage,
   };
 }
 
