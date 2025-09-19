@@ -195,7 +195,7 @@ export class NewsletterService {
    * @returns newsletter response data
    * @throws ResponseError if failed to create newsletter
    */
-  public static async adminCreate(user: (User & { permissions: UserPermission | null }) | undefined, request: NewsletterRequest, file: Express.Multer.File | undefined): Promise<NewsletterResponse> {
+  public static async adminCreate(user: (User & { permissions: UserPermission | null }) | undefined, request: NewsletterRequest, file: Express.Multer.File): Promise<NewsletterResponse> {
     // validating request
     const response: NewsletterRequest = Validation.validate<NewsletterRequest>(NewsletterSchema.CREATE, request);
 
@@ -207,7 +207,7 @@ export class NewsletterService {
       data: {
         title: response.title,
         content: response.content,
-        photo: response.photo!,
+        photo: file?.filename,
         type: response.type,
         status: response.status,
         authorId: user!.id,
@@ -322,7 +322,7 @@ export class NewsletterService {
       data: {
         title: requestValidation.title,
         content: requestValidation.content,
-        photo: file?.fieldname ?? findNewsletter.photo,
+        photo: file?.filename ?? findNewsletter.photo,
         type: requestValidation.type,
         status: requestValidation.status,
         authorId: user!.id,

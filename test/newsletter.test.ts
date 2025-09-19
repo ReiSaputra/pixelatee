@@ -169,7 +169,7 @@ describe("GET /api/v1/public/newsletters/thank-you", () => {
   });
 });
 
-describe.only("GET /api/v1/public/newsletters/unsubscribe", () => {
+describe("GET /api/v1/public/newsletters/unsubscribe", () => {
   let admin1: string;
 
   beforeEach(async () => {
@@ -192,7 +192,7 @@ describe("POST /api/v1/admin/newsletters", () => {
   let token: string;
 
   beforeEach(async () => {
-    admin1 = await AdminUtil.createAdmin("Han", "Saputra", "fthrn.s27@pixelatee.com", "patangpuluhpatang", "ADMIN", true);
+    admin1 = await AdminUtil.createAdmin("Han", "fthrn.s27@pixelatee.com", "patangpuluhpatang", "ADMIN", true);
     await AdminUtil.updateAdminPermission(admin1, true, true, true, true);
     await NewsletterUtil.createMember("fthrn.s14@gmail.com");
     await NewsletterUtil.createMember("fathurraihan.edu@gmail.com");
@@ -261,7 +261,7 @@ describe("GET /api/v1/admin/newsletters", () => {
   let token: string;
 
   beforeEach(async () => {
-    admin1 = await AdminUtil.createAdmin("Han", "Saputra", "fthrn.s27@pixelatee.com", "patangpuluhpatang", "ADMIN", true);
+    admin1 = await AdminUtil.createAdmin("Han", "fthrn.s27@pixelatee.com", "patangpuluhpatang", "ADMIN", true);
     await AdminUtil.updateAdminPermission(admin1, true, true, true, true);
     await NewsletterUtil.createAllNewsletter(5, admin1);
     token = await AdminUtil.login("fthrn.s27@pixelatee.com", "patangpuluhpatang");
@@ -300,7 +300,7 @@ describe("GET /api/v1/admin/newsletters/:newsletterId", () => {
   let token: string;
 
   beforeEach(async () => {
-    admin1 = await AdminUtil.createAdmin("Han", "Saputra", "fthrn.s27@pixelatee.com", "patangpuluhpatang", "ADMIN", true);
+    admin1 = await AdminUtil.createAdmin("Han", "fthrn.s27@pixelatee.com", "patangpuluhpatang", "ADMIN", true);
     await AdminUtil.updateAdminPermission(admin1, true, true, true, true);
     newsletter1 = await NewsletterUtil.createNewsletter("Test", "test", "test.png", "TECH", "PUBLISHED", admin1);
     token = await AdminUtil.login("fthrn.s27@pixelatee.com", "patangpuluhpatang");
@@ -345,7 +345,7 @@ describe("DELETE /api/v1/admin/newsletters/:newsletterId", () => {
   let token: string;
 
   beforeEach(async () => {
-    admin1 = await AdminUtil.createAdmin("Han", "Saputra", "fthrn.s27@pixelatee.com", "patangpuluhpatang", "ADMIN", true);
+    admin1 = await AdminUtil.createAdmin("Han", "fthrn.s27@pixelatee.com", "patangpuluhpatang", "ADMIN", true);
     await AdminUtil.updateAdminPermission(admin1, true, true, true, true);
     newsletter1 = await NewsletterUtil.createNewsletter("Test", "test", "test.png", "TECH", "PUBLISHED", admin1);
     token = await AdminUtil.login("fthrn.s27@pixelatee.com", "patangpuluhpatang");
@@ -390,7 +390,7 @@ describe("GET /api/v1/admin/newsletters/:newsletterId/preview", () => {
   let token: string;
 
   beforeEach(async () => {
-    admin1 = await AdminUtil.createAdmin("Han", "Saputra", "fthrn.s27@pixelatee.com", "patangpuluhpatang", "ADMIN", true);
+    admin1 = await AdminUtil.createAdmin("Han", "fthrn.s27@pixelatee.com", "patangpuluhpatang", "ADMIN", true);
     await AdminUtil.updateAdminPermission(admin1, true, true, true, true);
     newsletter1 = await NewsletterUtil.createNewsletter("Test", "test", "test.png", "TECH", "PUBLISHED", admin1);
     token = await AdminUtil.login("fthrn.s27@pixelatee.com", "patangpuluhpatang");
@@ -429,7 +429,7 @@ describe("PATCH /api/v1/admin/newsletters/:newsletterId", () => {
   let token: string;
 
   beforeEach(async () => {
-    admin1 = await AdminUtil.createAdmin("Han", "Saputra", "fthrn.s27@pixelatee.com", "patangpuluhpatang", "ADMIN", true);
+    admin1 = await AdminUtil.createAdmin("Han", "fthrn.s27@pixelatee.com", "patangpuluhpatang", "ADMIN", true);
     await AdminUtil.updateAdminPermission(admin1, true, true, true, true);
     newsletter1 = await NewsletterUtil.createNewsletter("Test", "test", "test.png", "TECH", "PUBLISHED", admin1);
     token = await AdminUtil.login("fthrn.s27@pixelatee.com", "patangpuluhpatang");
@@ -488,7 +488,7 @@ describe("PATCH /api/v1/admin/newsletters/:newsletterId", () => {
       .field("type", "TECH")
       .field("isScheduled", "true")
       .field("status", "PUBLISHED");
-
+    
     expect(response.status).toBe(403);
   });
 });

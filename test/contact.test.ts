@@ -68,7 +68,7 @@ describe("GET /api/v1/admin/contacts", () => {
   let token: string;
 
   beforeEach(async () => {
-    admin1 = await AdminUtil.createAdmin("Han", "Saputra", "fthrn.s27@pixelatee.com", "patangpuluhpatang", "ADMIN", false);
+    admin1 = await AdminUtil.createAdmin("Han", "fthrn.s27@pixelatee.com", "patangpuluhpatang", "ADMIN", false);
     token = await AdminUtil.login("fthrn.s27@pixelatee.com", "patangpuluhpatang");
     await AdminUtil.updateAdminPermission(admin1, true, true, true, true);
     await ContactUtil.createAllContact(20, admin1);
@@ -77,8 +77,7 @@ describe("GET /api/v1/admin/contacts", () => {
   });
 
   afterEach(async () => {
-    await AdminUtil.deleteAllAdminPermission();
-    await AdminUtil.deleteAllAdmin();
+    await AdminUtil.deleteAdmin(admin1);
     await ContactUtil.deleteAllContact();
   });
 
@@ -139,15 +138,14 @@ describe("GET /api/v1/admin/contacts/:contactId", () => {
   let contact1: string;
 
   beforeEach(async () => {
-    admin1 = await AdminUtil.createAdmin("Han", "Saputra", "fthrn.s27@pixelatee.com", "patangpuluhpatang", "ADMIN", false);
+    admin1 = await AdminUtil.createAdmin("Han", "fthrn.s27@pixelatee.com", "patangpuluhpatang", "ADMIN", false);
     token = await AdminUtil.login("fthrn.s27@pixelatee.com", "patangpuluhpatang");
     await AdminUtil.updateAdminPermission(admin1, true, true, true, true);
     contact1 = await ContactUtil.createContact("Contact A", "contacta@example.com", "Subject A", "Message A", "IT_CONSULTATION");
   });
 
   afterEach(async () => {
-    await AdminUtil.deleteAllAdminPermission();
-    await AdminUtil.deleteAllAdmin();
+    await AdminUtil.deleteAdmin(admin1);
     await ContactUtil.deleteAllContact();
   });
 
@@ -192,14 +190,13 @@ describe("DELETE /api/v1/admin/contacts/:contactId", () => {
   let contact1: string;
 
   beforeEach(async () => {
-    admin1 = await AdminUtil.createAdmin("Han", "Saputra", "fthrn.s27@pixelatee.com", "patangpuluhpatang", "ADMIN", true);
+    admin1 = await AdminUtil.createAdmin("Han", "fthrn.s27@pixelatee.com", "patangpuluhpatang", "ADMIN", true);
     token = await AdminUtil.login("fthrn.s27@pixelatee.com", "patangpuluhpatang");
     contact1 = await ContactUtil.createContact("Contact A", "contacta@example.com", "Subject A", "Message A", "IT_CONSULTATION");
   });
 
   afterEach(async () => {
-    await AdminUtil.deleteAllAdminPermission();
-    await AdminUtil.deleteAllAdmin();
+    await AdminUtil.deleteAdmin(admin1);
     await ContactUtil.deleteAllContact();
   });
 

@@ -17,17 +17,22 @@ datasource db {
 model User {
   id String @id @default(uuid())
 
-  name     String? @default("Guest")
+  name     String
   password String
-  email    String  @unique
+  email    String @unique
+
+  phoneNumber String   @map("phone_number")
+  dateOfBirth DateTime @map("date_of_birth")
+  photo       String
 
   role UserRole
 
   permissions UserPermission?
+  address     UserAddress?
 
   newsletter Newsletter[]
   portfolio  Portfolio[]
-  Contact    Contact[]
+  contact    Contact[]
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
@@ -70,6 +75,22 @@ model UserPermission {
   updatedAt DateTime @updatedAt @map("updated_at")
 
   @@map("user_permissions")
+}
+
+model UserAddress {
+  id String @id @default(uuid())
+
+  user   User   @relation(fields: [userId], references: [id])
+  userId String @unique @map("user_id")
+
+  city    String
+  country String
+  zipCode String @map("zip_code")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("user_addresses")
 }
 
 model Newsletter {
