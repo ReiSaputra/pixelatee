@@ -1,0 +1,196 @@
+import request from "supertest";
+import fs from "fs";
+
+import { AdminUtil } from "./util/admin.util";
+
+import { web } from "../src/application/web";
+import { prisma } from "../src/application/database";
+
+describe("GET /api/v1/users/profiles", () => {
+  let admin1: string;
+  let token: string;
+
+  beforeEach(async () => {
+    admin1 = await AdminUtil.createAdmin("Han", "fthrn.s27@pixelatee.com", "patangpuluhpatang", "ADMIN", true);
+    token = await AdminUtil.login("fthrn.s27@pixelatee.com", "patangpuluhpatang");
+  });
+
+  afterEach(async () => {
+    await AdminUtil.deleteAdmin(admin1);
+  });
+
+  it("should pass - get profile", async () => {
+    const response: request.Response = await request(web).get("/api/v1/users/profiles").set("Authorization", `Bearer ${token}`);
+
+    expect(response.status).toBe(200);
+  });
+
+  it("should fail - no authorization", async () => {
+    const response: request.Response = await request(web).get("/api/v1/users/profiles");
+
+    expect(response.status).toBe(401);
+  });
+});
+
+describe("POST /api/v1/users/logout", () => {
+  let admin1: string;
+  let token: string;
+
+  beforeEach(async () => {
+    admin1 = await AdminUtil.createAdmin("Han", "fthrn.s27@pixelatee.com", "patangpuluhpatang", "ADMIN", true);
+    token = await AdminUtil.login("fthrn.s27@pixelatee.com", "patangpuluhpatang");
+  });
+
+  afterEach(async () => {
+    await AdminUtil.deleteAdmin(admin1);
+  });
+
+  it("should pass - logout", async () => {
+    const response: request.Response = await request(web).post("/api/v1/users/logout").set("Authorization", `Bearer ${token}`);
+
+    expect(response.status).toBe(200);
+  });
+
+  it("should fail - no authorization", async () => {
+    const response: request.Response = await request(web).post("/api/v1/users/logout");
+
+    expect(response.status).toBe(401);
+  });
+});
+
+describe("GET /api/v1/users/profiles/photo/preview", () => {
+  let admin1: string;
+  let token: string;
+
+  beforeEach(async () => {
+    admin1 = await AdminUtil.createAdmin("Han", "fthrn.s27@pixelatee.com", "patangpuluhpatang", "ADMIN", true);
+    token = await AdminUtil.login("fthrn.s27@pixelatee.com", "patangpuluhpatang");
+  });
+
+  afterEach(async () => {
+    await AdminUtil.deleteAdmin(admin1);
+  });
+
+  it("should pass - get profile photo", async () => {
+    const response: request.Response = await request(web).get("/api/v1/users/profiles/photo/preview").set("Authorization", `Bearer ${token}`);
+    console.info(response.body);
+    expect(response.status).toBe(200);
+  });
+
+  it("should fail - no authorization", async () => {
+    const response: request.Response = await request(web).get("/api/v1/users/profiles/photo/preview");
+
+    expect(response.status).toBe(401);
+  });
+});
+
+describe("PATCH /api/v1/users/profiles/photo", () => {
+  let admin1: string;
+  let token: string;
+
+  beforeEach(async () => {
+    admin1 = await AdminUtil.createAdmin("Han", "fthrn.s27@pixelatee.com", "patangpuluhpatang", "ADMIN", true);
+    token = await AdminUtil.login("fthrn.s27@pixelatee.com", "patangpuluhpatang");
+  });
+
+  afterEach(async () => {
+    await AdminUtil.deleteAdmin(admin1);
+
+    if (fs.existsSync("public/user")) fs.rmSync("public/user", { recursive: true, force: true });
+  });
+
+  it("should pass - update profile photo", async () => {
+    const response: request.Response = await request(web).patch("/api/v1/users/profiles/photo").set("Authorization", `Bearer ${token}`).attach("photo", "public/test/Kortlink.png");
+    console.info(response.body);
+    expect(response.status).toBe(200);
+  });
+
+  it("should fail - no sending anything", async () => {
+    const response: request.Response = await request(web).patch("/api/v1/users/profiles/photo").set("Authorization", `Bearer ${token}`);
+
+    expect(response.status).toBe(400);
+  });
+
+  it("should fail - no authorization", async () => {
+    const response: request.Response = await request(web).patch("/api/v1/users/profiles/photo");
+
+    expect(response.status).toBe(401);
+  });
+});
+
+describe("GET /api/v1/users/profiles/personal-info/preview", () => {
+  let admin1: string;
+  let token: string;
+
+  beforeEach(async () => {
+    admin1 = await AdminUtil.createAdmin("Han", "fthrn.s27@pixelatee.com", "patangpuluhpatang", "ADMIN", true);
+    token = await AdminUtil.login("fthrn.s27@pixelatee.com", "patangpuluhpatang");
+  });
+
+  afterEach(async () => {
+    await AdminUtil.deleteAdmin(admin1);
+  });
+
+  it("should pass - get personal info", async () => {
+    const response: request.Response = await request(web).get("/api/v1/users/profiles/personal-info/preview").set("Authorization", `Bearer ${token}`);
+
+    expect(response.status).toBe(200);
+  });
+
+  it("should fail - no authorization", async () => {
+    const response: request.Response = await request(web).get("/api/v1/users/profiles/personal-info/preview");
+
+    expect(response.status).toBe(401);
+  });
+});
+
+describe("PATCH /api/v1/users/profiles/personal-info", () => {
+  let admin1: string;
+  let token: string;
+
+  beforeEach(async () => {
+    admin1 = await AdminUtil.createAdmin("Han", "fthrn.s27@pixelatee.com", "patangpuluhpatang", "ADMIN", true);
+    token = await AdminUtil.login("fthrn.s27@pixelatee.com", "patangpuluhpatang");
+  });
+
+  afterEach(async () => {
+    await AdminUtil.deleteAdmin(admin1);
+  });
+
+  it("should pass - update personal info", async () => {
+    const response: request.Response = await request(web).patch("/api/v1/users/profiles/personal-info").set("Authorization", `Bearer ${token}`).send({
+      name: "Han Solo",
+      email: "fthrn27@gmail.com",
+      phoneNumber: "08123456789",
+      dateOfBirth: new Date(),
+    });
+    
+    expect(response.status).toBe(200);
+  });
+});
+
+describe("PATCH /api/v1/users/profiles/password", () => {
+  let admin1: string;
+  let token: string;
+
+  beforeEach(async () => {
+    admin1 = await AdminUtil.createAdmin("Han", "fthrn.s27@pixelatee.com", "patangpuluhpatang", "ADMIN", true);
+    token = await AdminUtil.login("fthrn.s27@pixelatee.com", "patangpuluhpatang");
+  });
+
+  afterEach(async () => {
+    await AdminUtil.deleteAdmin(admin1);
+  });
+
+  it("should pass - update password", async () => {
+    const response: request.Response = await request(web).patch("/api/v1/users/profiles/password").set("Authorization", `Bearer ${token}`).send({ password: "asam lambung jir" });
+
+    expect(response.status).toBe(200);
+  });
+
+  it("should fail - no authorization", async () => {
+    const response: request.Response = await request(web).patch("/api/v1/users/profiles/password").send({ password: "asam lambung jir" });
+
+    expect(response.status).toBe(401);
+  });
+});

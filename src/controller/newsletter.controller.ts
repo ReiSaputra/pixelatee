@@ -155,7 +155,7 @@ export class NewsletterController {
       const request: NewsletterRequest = req.body as NewsletterRequest;
 
       // assert file
-      const file: Express.Multer.File | undefined = req.file as Express.Multer.File | undefined;
+      const file: Express.Multer.File = req.file as Express.Multer.File;
 
       // include request file if exists
       if (file) {

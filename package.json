@@ -13,6 +13,15 @@
     "transform": {
       "^.+\\.[t|j]sx?$": "babel-jest"
     },
+    "verbose": true,
+    "collectCoverage": true,
+    "collectCoverageFrom": [
+      "src/**/*.{js,jsx,ts,tsx}",
+      "!src/index.ts",
+      "!src/helper/cron.helper.ts",
+      "!**/node_modules/**",
+      "!src/generated/**/**/*"
+    ],
     "transformIgnorePatterns": [
       "/node_modules/(?!@faker-js)"
     ]

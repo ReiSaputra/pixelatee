@@ -1,3 +1,4 @@
+import { faker } from "@faker-js/faker";
 import bcrypt from "bcrypt";
 import request from "supertest";
 
@@ -34,13 +35,16 @@ export class AdminUtil {
    * @param permissions whether to include all permissions for the admin
    * @returns the ID of the created admin
    */
-  public static async createAdmin(firstName: string, lastName: string, email: string, password: string, role: $Enums.UserRole, permission: boolean): Promise<string> {
+  public static async createAdmin(name: string, email: string, password: string, role: $Enums.UserRole, permission: boolean): Promise<string> {
     const admin = await prisma.user.create({
       data: {
-        name: `${firstName} ${lastName}`,
+        name: name,
         email: email,
         password: await bcrypt.hash(password, 10),
+        photo: "default.png",
         role: role,
+        dateOfBirth: new Date(),
+        phoneNumber: faker.phone.number({ style: "international" }),
         permissions: {
           create: {
             canReadAdmin: permission,
@@ -69,6 +73,13 @@ export class AdminUtil {
             canDeletePortfolio: permission,
           },
         },
+        address: {
+          create: {
+            city: faker.location.city(),
+            country: faker.location.country(),
+            zipCode: faker.location.zipCode(),
+          },
+        },
       },
     });
 
@@ -80,6 +91,8 @@ export class AdminUtil {
    * @param id the ID of the admin to be deleted
    */
   public static async deleteAdmin(id: string): Promise<void> {
+    await prisma.userAddress.delete({ where: { userId: id } });
+
     await prisma.userPermission.delete({ where: { userId: id } });
 
     await prisma.newsletter.deleteMany({ where: { authorId: id } });
@@ -124,7 +137,7 @@ export class AdminUtil {
         canWriteNewsletter: write,
         canUpdateNewsletter: update,
         canDeleteNewsletter: remove,
-        
+
         canReadPortfolio: read,
         canWritePortfolio: write,
         canUpdatePortfolio: update,

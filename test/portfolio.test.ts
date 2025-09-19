@@ -13,7 +13,7 @@ describe("GET /api/v1/public/portfolios", () => {
   let client1: string;
 
   beforeEach(async () => {
-    admin1 = await AdminUtil.createAdmin("Han", "Saputra", "fthrn.s27@gmail.com", "patangpuluhpatang", "ADMIN", false);
+    admin1 = await AdminUtil.createAdmin("Han", "fthrn.s27@gmail.com", "patangpuluhpatang", "ADMIN", false);
     client1 = await ClientUtil.createClient("Nomod");
     await PortfolioUtil.createAllPortfolio(10, admin1, client1);
   });
@@ -54,7 +54,7 @@ describe("GET /api/v1/public/portfolios/:portfolioId", () => {
   let portfolio2: string;
 
   beforeEach(async () => {
-    admin1 = await AdminUtil.createAdmin("Han", "Saputra", "fthrn.s27@gmail.com", "patangpuluhpatang", "ADMIN", false);
+    admin1 = await AdminUtil.createAdmin("Han", "fthrn.s27@gmail.com", "patangpuluhpatang", "ADMIN", false);
     client1 = await ClientUtil.createClient("Nomod");
     portfolio1 = await PortfolioUtil.createPortfolio("Kortlink App", "Kortlink is shortener App", "PUBLISHED", admin1, client1);
     portfolio2 = await PortfolioUtil.createPortfolio("Kortlink App", "Kortlink is shortener App", "PUBLISHED", admin1, client1, true, true, true, true);
@@ -112,8 +112,8 @@ describe("GET /api/v1/admin/portfolios", () => {
   let token: string;
 
   beforeEach(async () => {
-    admin1 = await AdminUtil.createAdmin("Han", "Saputra", "fthrn.s27@pixelatee.com", "patangpuluhpatang", "ADMIN", false);
-    admin2 = await AdminUtil.createAdmin("Aya", "Saputra", "aya28@pixelatee.com", "patangpuluhpatang", "ADMIN", false);
+    admin1 = await AdminUtil.createAdmin("Han", "fthrn.s27@pixelatee.com", "patangpuluhpatang", "ADMIN", false);
+    admin2 = await AdminUtil.createAdmin("Aya", "aya28@pixelatee.com", "patangpuluhpatang", "ADMIN", false);
     await AdminUtil.updateAdminPermission(admin1, true, true, true, true);
     client1 = await ClientUtil.createClient("Air Nomad");
     client2 = await ClientUtil.createClient("Kakatua");
@@ -204,7 +204,7 @@ describe("GET /api/v1/admin/portfolios/:portfolioId", () => {
   let token: string;
 
   beforeEach(async () => {
-    admin1 = await AdminUtil.createAdmin("Han", "Saputra", "fthrn.s27@pixelatee.com", "patangpuluhpatang", "ADMIN", false);
+    admin1 = await AdminUtil.createAdmin("Han", "fthrn.s27@pixelatee.com", "patangpuluhpatang", "ADMIN", false);
     await AdminUtil.updateAdminPermission(admin1, true, true, true, true);
     client1 = await ClientUtil.createClient("Example Client");
     portfolio1 = await PortfolioUtil.createPortfolio("Kortlink App", "Kortlink is shortener App", "PUBLISHED", admin1, client1);
@@ -250,7 +250,7 @@ describe("POST /api/v1/admin/portfolios", () => {
   let token: string;
 
   beforeEach(async () => {
-    admin1 = await AdminUtil.createAdmin("Han", "Saputra", "fthrn.s27@pixelatee.com", "patangpuluhpatang", "ADMIN", false);
+    admin1 = await AdminUtil.createAdmin("Han", "fthrn.s27@pixelatee.com", "patangpuluhpatang", "ADMIN", false);
     await AdminUtil.updateAdminPermission(admin1, true, true, true, true);
     client1 = await ClientUtil.createClient("Example Client");
     token = await AdminUtil.login("fthrn.s27@pixelatee.com", "patangpuluhpatang");
@@ -381,7 +381,7 @@ describe("DELETE /api/v1/admin/portfolios", () => {
   let portfolio1: string;
 
   beforeEach(async () => {
-    admin1 = await AdminUtil.createAdmin("Han", "Saputra", "fthrn.s27@pixelatee.com", "patangpuluhpatang", "ADMIN", false);
+    admin1 = await AdminUtil.createAdmin("Han", "fthrn.s27@pixelatee.com", "patangpuluhpatang", "ADMIN", false);
     await AdminUtil.updateAdminPermission(admin1, true, true, true, true);
     client1 = await ClientUtil.createClient("Example Client");
     token = await AdminUtil.login("fthrn.s27@pixelatee.com", "patangpuluhpatang");
@@ -427,7 +427,7 @@ describe("PATCH /api/v1/admin/portfolios/:portfolioId", () => {
   let portfolio1: string;
 
   beforeEach(async () => {
-    admin1 = await AdminUtil.createAdmin("Han", "Saputra", "fthrn.s27@pixelatee.com", "patangpuluhpatang", "ADMIN", false);
+    admin1 = await AdminUtil.createAdmin("Han", "fthrn.s27@pixelatee.com", "patangpuluhpatang", "ADMIN", false);
     await AdminUtil.updateAdminPermission(admin1, true, true, true, true);
     client1 = await ClientUtil.createClient("Example Client");
     token = await AdminUtil.login("fthrn.s27@pixelatee.com", "patangpuluhpatang");
@@ -479,7 +479,7 @@ describe("GET /api/v1/admin/portfolios/preview", () => {
   let portfolio1: string;
 
   beforeEach(async () => {
-    admin1 = await AdminUtil.createAdmin("Han", "Saputra", "fthrn.s27@pixelatee.com", "patangpuluhpatang", "ADMIN", false);
+    admin1 = await AdminUtil.createAdmin("Han", "fthrn.s27@pixelatee.com", "patangpuluhpatang", "ADMIN", false);
     await AdminUtil.updateAdminPermission(admin1, true, true, true, true);
     client1 = await ClientUtil.createClient("Example Client");
     token = await AdminUtil.login("fthrn.s27@pixelatee.com", "patangpuluhpatang");
@@ -512,6 +512,7 @@ describe("GET /api/v1/admin/portfolios/preview", () => {
 
   it("should fail - permission denied", async () => {
     await AdminUtil.updateAdminPermission(admin1, false, false, false, false);
+    
     const response: request.Response = await request(web).get(`/api/v1/admin/portfolios/${portfolio1}/preview`).set("Authorization", `Bearer ${token}`);
 
     expect(response.status).toBe(403);
