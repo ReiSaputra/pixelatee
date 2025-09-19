@@ -11,7 +11,7 @@ describe("GET /api/v1/admin/clients", () => {
   let token: string;
 
   beforeEach(async () => {
-    admin1 = await AdminUtil.createAdmin("Han", "Saputra", "fthrn.s27@pixelatee.com", "patangpuluhpatang", "ADMIN", false);
+    admin1 = await AdminUtil.createAdmin("Han", "fthrn.s27@pixelatee.com", "patangpuluhpatang", "ADMIN", false);
     await AdminUtil.updateAdminPermission(admin1, true, true, true, true);
     token = await AdminUtil.login("fthrn.s27@pixelatee.com", "patangpuluhpatang");
     await ClientUtil.createAllClient(15);
@@ -64,7 +64,7 @@ describe("POST /api/v1/admin/clients", () => {
   let token: string;
 
   beforeEach(async () => {
-    admin1 = await AdminUtil.createAdmin("Han", "Saputra", "fthrn.s27@pixelatee.com", "patangpuluhpatang", "ADMIN", false);
+    admin1 = await AdminUtil.createAdmin("Han", "fthrn.s27@pixelatee.com", "patangpuluhpatang", "ADMIN", false);
     await AdminUtil.updateAdminPermission(admin1, true, true, true, true);
     token = await AdminUtil.login("fthrn.s27@pixelatee.com", "patangpuluhpatang");
   });
@@ -109,7 +109,7 @@ describe("PATCH /api/v1/admin/clients/:clientId", () => {
   let token: string;
 
   beforeEach(async () => {
-    admin1 = await AdminUtil.createAdmin("Han", "Saputra", "fthrn.s27@pixelatee.com", "patangpuluhpatang", "ADMIN", true);
+    admin1 = await AdminUtil.createAdmin("Han", "fthrn.s27@pixelatee.com", "patangpuluhpatang", "ADMIN", true);
     token = await AdminUtil.login("fthrn.s27@pixelatee.com", "patangpuluhpatang");
     await request(web).post("/api/v1/admin/clients").set("Authorization", `Bearer ${token}`).field("name", "Client A").attach("logo", "public/test/Kortlink.png");
     client1 = await ClientUtil.findClient("Client A");
@@ -159,7 +159,7 @@ describe("DELETE /api/v1/admin/clients/:clientId", () => {
   let token: string;
 
   beforeEach(async () => {
-    admin1 = await AdminUtil.createAdmin("Senku", "Ishigami", "senku@pixelatee.com", "dontbestranger", "ADMIN", true);
+    admin1 = await AdminUtil.createAdmin("Senku", "senku@pixelatee.com", "dontbestranger", "ADMIN", true);
     await AdminUtil.updateAdminPermission(admin1, true, true, true, true);
     token = await AdminUtil.login("senku@pixelatee.com", "dontbestranger");
     await request(web).post("/api/v1/admin/clients").set("Authorization", `Bearer ${token}`).field("name", "Client A").attach("logo", "public/test/Kortlink.png");
@@ -195,6 +195,41 @@ describe("DELETE /api/v1/admin/clients/:clientId", () => {
     await AdminUtil.updateAdminPermission(admin1, false, false, false, false);
 
     const response: request.Response = await request(web).delete(`/api/v1/admin/clients/${client1}`).set("Authorization", `Bearer ${token}`);
+
+    expect(response.status).toBe(403);
+  });
+});
+
+describe("GET /api/v1/admin/clients/form", () => {
+  let admin1: string;
+  let token: string;
+
+  beforeEach(async () => {
+    admin1 = await AdminUtil.createAdmin("Senku", "senku@pixelatee.com", "dontbestranger", "ADMIN", true);
+    await ClientUtil.createAllClient(5);
+    token = await AdminUtil.login("senku@pixelatee.com", "dontbestranger");
+  });
+
+  afterEach(async () => {
+    await AdminUtil.deleteAdmin(admin1);
+  });
+
+  it("should pass - get form client", async () => {
+    const response: request.Response = await request(web).get("/api/v1/admin/clients/form").set("Authorization", `Bearer ${token}`);
+
+    expect(response.status).toBe(200);
+  });
+
+  it("should fail - no authorization", async () => {
+    const response: request.Response = await request(web).get("/api/v1/admin/clients/form");
+
+    expect(response.status).toBe(401);
+  });
+
+  it("should fail - no permission", async () => {
+    await AdminUtil.updateAdminPermission(admin1, false, false, false, false);
+
+    const response: request.Response = await request(web).get("/api/v1/admin/clients/form").set("Authorization", `Bearer ${token}`);
 
     expect(response.status).toBe(403);
   });

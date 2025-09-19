@@ -8,7 +8,7 @@ describe("POST /api/v1/public/auth/login", () => {
   let admin1: string;
 
   beforeEach(async () => {
-    admin1 = await AdminUtil.createAdmin("Franz", "Kafka", "franzkafka@pixelatee.com", "patangpuluhpatang", "ADMIN", false);
+    admin1 = await AdminUtil.createAdmin("Kafka", "franzkafka@pixelatee.com", "patangpuluhpatang", "ADMIN", false);
   });
 
   afterEach(async () => {
