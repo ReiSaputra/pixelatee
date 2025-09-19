@@ -5,7 +5,7 @@ const prisma = new PrismaClient();
 
 async function main() {
   const email = "admin@pixelatee.com"; 
-  const password = "123456"; 
+  const password = "dontknow"; 
   const hashedPassword = await bcrypt.hash(password, 10);
 
   const admin = await prisma.user.create({
