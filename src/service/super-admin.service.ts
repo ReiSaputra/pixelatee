@@ -32,9 +32,9 @@ export class SuperAdminService {
         role: response.userRole,
         address: {
           create: {
-            city: response.address.city,
-            country: response.address.country,
-            zipCode: response.address.zipCode,
+            city: null,
+            country: null,
+            zipCode: null,
           },
         },
         permissions: {
@@ -72,5 +72,16 @@ export class SuperAdminService {
     return toAdminRegisterResponse(createUser);
   }
 
-  //   public static async deleteAdmin(id: Admin): Promise<void> {}
+  // public static async adminList(request: AdminList): Promise<AdminResponse> {
+  //   // find all admins
+  //   const findAdmin: User[] = await prisma.user.findMany({
+  //     where: {
+  //       role: "ADMIN",
+  //     },
+  //   });
+
+  //   return toAdminResponse(findAdmin);
+  // }
+
+  // public static async deleteAdmin(id: Admin): Promise<void> {}
 }

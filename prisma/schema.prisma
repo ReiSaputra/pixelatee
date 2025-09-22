@@ -83,9 +83,9 @@ model UserAddress {
   user   User   @relation(fields: [userId], references: [id])
   userId String @unique @map("user_id")
 
-  city    String
-  country String
-  zipCode String @map("zip_code")
+  city    String?
+  country String?
+  zipCode String? @map("zip_code")
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
