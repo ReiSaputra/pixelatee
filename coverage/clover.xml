@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1758267213978" clover="3.2.0">
-  <project timestamp="1758267213979" name="All files">
-    <metrics statements="766" coveredstatements="239" conditionals="217" coveredconditionals="23" methods="118" coveredmethods="35" elements="1101" coveredelements="297" complexity="0" loc="766" ncloc="766" packages="10" files="44" classes="44"/>
+<coverage generated="1758510398765" clover="3.2.0">
+  <project timestamp="1758510398765" name="All files">
+    <metrics statements="793" coveredstatements="265" conditionals="217" coveredconditionals="23" methods="122" coveredmethods="40" elements="1132" coveredelements="328" complexity="0" loc="793" ncloc="793" packages="10" files="46" classes="46"/>
     <package name="application">
       <metrics statements="28" coveredstatements="25" conditionals="0" coveredconditionals="0" methods="6" coveredmethods="3"/>
       <file name="database.ts" path="C:\Users\Fathur Saputra\OneDrive\Documents\Coding\TypeScript\Intern Projects\pixelatee\src\application\database.ts">
@@ -10,7 +10,7 @@
         <line num="26" count="1" type="stmt"/>
         <line num="27" count="1" type="stmt"/>
         <line num="30" count="1" type="stmt"/>
-        <line num="31" count="330" type="stmt"/>
+        <line num="31" count="505" type="stmt"/>
         <line num="34" count="1" type="stmt"/>
         <line num="35" count="0" type="stmt"/>
         <line num="38" count="1" type="stmt"/>
@@ -20,7 +20,7 @@
         <metrics statements="3" coveredstatements="3" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
         <line num="4" count="1" type="stmt"/>
         <line num="13" count="1" type="stmt"/>
-        <line num="15" count="331" type="stmt"/>
+        <line num="15" count="506" type="stmt"/>
       </file>
       <file name="web.ts" path="C:\Users\Fathur Saputra\OneDrive\Documents\Coding\TypeScript\Intern Projects\pixelatee\src\application\web.ts">
         <metrics statements="16" coveredstatements="15" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="0"/>
@@ -43,14 +43,14 @@
       </file>
     </package>
     <package name="controller">
-      <metrics statements="241" coveredstatements="41" conditionals="36" coveredconditionals="2" methods="36" coveredmethods="8"/>
+      <metrics statements="252" coveredstatements="51" conditionals="36" coveredconditionals="2" methods="37" coveredmethods="10"/>
       <file name="auth.controller.ts" path="C:\Users\Fathur Saputra\OneDrive\Documents\Coding\TypeScript\Intern Projects\pixelatee\src\controller\auth.controller.ts">
         <metrics statements="6" coveredstatements="5" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
-        <line num="16" count="14" type="stmt"/>
-        <line num="18" count="14" type="stmt"/>
-        <line num="21" count="14" type="stmt"/>
-        <line num="24" count="14" type="stmt"/>
-        <line num="33" count="14" type="stmt"/>
+        <line num="16" count="21" type="stmt"/>
+        <line num="18" count="21" type="stmt"/>
+        <line num="21" count="21" type="stmt"/>
+        <line num="24" count="21" type="stmt"/>
+        <line num="33" count="21" type="stmt"/>
         <line num="35" count="0" type="stmt"/>
       </file>
       <file name="client.controller.ts" path="C:\Users\Fathur Saputra\OneDrive\Documents\Coding\TypeScript\Intern Projects\pixelatee\src\controller\client.controller.ts">
@@ -122,6 +122,9 @@
         <line num="93" count="0" type="stmt"/>
         <line num="96" count="0" type="stmt"/>
         <line num="98" count="0" type="stmt"/>
+      </file>
+      <file name="guest.controller.ts" path="C:\Users\Fathur Saputra\OneDrive\Documents\Coding\TypeScript\Intern Projects\pixelatee\src\controller\guest.controller.ts">
+        <metrics statements="0" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
       </file>
       <file name="newsletter.controller.ts" path="C:\Users\Fathur Saputra\OneDrive\Documents\Coding\TypeScript\Intern Projects\pixelatee\src\controller\newsletter.controller.ts">
         <metrics statements="66" coveredstatements="0" conditionals="8" coveredconditionals="0" methods="10" coveredmethods="0"/>
@@ -259,7 +262,7 @@
         <line num="216" count="0" type="stmt"/>
       </file>
       <file name="user.controller.ts" path="C:\Users\Fathur Saputra\OneDrive\Documents\Coding\TypeScript\Intern Projects\pixelatee\src\controller\user.controller.ts">
-        <metrics statements="42" coveredstatements="36" conditionals="2" coveredconditionals="2" methods="8" coveredmethods="7"/>
+        <metrics statements="53" coveredstatements="46" conditionals="2" coveredconditionals="2" methods="9" coveredmethods="9"/>
         <line num="20" count="1" type="stmt"/>
         <line num="22" count="1" type="stmt"/>
         <line num="25" count="1" type="stmt"/>
@@ -277,41 +280,52 @@
         <line num="82" count="1" type="stmt"/>
         <line num="85" count="1" type="stmt"/>
         <line num="87" count="0" type="stmt"/>
-        <line num="92" count="1" type="stmt"/>
-        <line num="94" count="1" type="stmt"/>
-        <line num="97" count="1" type="stmt"/>
         <line num="100" count="1" type="stmt"/>
-        <line num="102" count="0" type="stmt"/>
-        <line num="107" count="2" type="stmt"/>
-        <line num="109" count="2" type="stmt"/>
-        <line num="112" count="2" type="stmt"/>
-        <line num="115" count="2" type="stmt"/>
-        <line num="118" count="2" type="cond" truecount="2" falsecount="0"/>
-        <line num="119" count="1" type="stmt"/>
+        <line num="102" count="1" type="stmt"/>
+        <line num="105" count="1" type="stmt"/>
+        <line num="108" count="1" type="stmt"/>
+        <line num="110" count="0" type="stmt"/>
         <line num="123" count="2" type="stmt"/>
-        <line num="126" count="1" type="stmt"/>
-        <line num="128" count="1" type="stmt"/>
-        <line num="133" count="1" type="stmt"/>
+        <line num="125" count="2" type="stmt"/>
+        <line num="128" count="2" type="stmt"/>
+        <line num="131" count="2" type="stmt"/>
+        <line num="134" count="2" type="cond" truecount="2" falsecount="0"/>
         <line num="135" count="1" type="stmt"/>
-        <line num="138" count="1" type="stmt"/>
-        <line num="141" count="1" type="stmt"/>
-        <line num="143" count="0" type="stmt"/>
-        <line num="148" count="1" type="stmt"/>
-        <line num="150" count="1" type="stmt"/>
-        <line num="153" count="1" type="stmt"/>
-        <line num="156" count="1" type="stmt"/>
+        <line num="139" count="2" type="stmt"/>
+        <line num="142" count="1" type="stmt"/>
+        <line num="144" count="1" type="stmt"/>
+        <line num="157" count="1" type="stmt"/>
         <line num="159" count="1" type="stmt"/>
-        <line num="161" count="0" type="stmt"/>
+        <line num="162" count="1" type="stmt"/>
+        <line num="165" count="1" type="stmt"/>
+        <line num="167" count="0" type="stmt"/>
+        <line num="180" count="1" type="stmt"/>
+        <line num="182" count="1" type="stmt"/>
+        <line num="185" count="1" type="stmt"/>
+        <line num="188" count="1" type="stmt"/>
+        <line num="191" count="1" type="stmt"/>
+        <line num="193" count="0" type="stmt"/>
+        <line num="206" count="2" type="stmt"/>
+        <line num="208" count="2" type="stmt"/>
+        <line num="211" count="2" type="stmt"/>
+        <line num="214" count="2" type="stmt"/>
+        <line num="216" count="0" type="stmt"/>
+        <line num="229" count="3" type="stmt"/>
+        <line num="231" count="3" type="stmt"/>
+        <line num="234" count="3" type="stmt"/>
+        <line num="237" count="3" type="stmt"/>
+        <line num="240" count="2" type="stmt"/>
+        <line num="242" count="1" type="stmt"/>
       </file>
     </package>
     <package name="error">
       <metrics statements="4" coveredstatements="4" conditionals="1" coveredconditionals="0" methods="1" coveredmethods="1"/>
       <file name="response.error.ts" path="C:\Users\Fathur Saputra\OneDrive\Documents\Coding\TypeScript\Intern Projects\pixelatee\src\error\response.error.ts">
         <metrics statements="4" coveredstatements="4" conditionals="1" coveredconditionals="0" methods="1" coveredmethods="1"/>
-        <line num="2" count="6" type="stmt"/>
-        <line num="3" count="6" type="stmt"/>
-        <line num="12" count="6" type="stmt"/>
-        <line num="13" count="6" type="stmt"/>
+        <line num="2" count="8" type="stmt"/>
+        <line num="3" count="8" type="stmt"/>
+        <line num="12" count="8" type="stmt"/>
+        <line num="13" count="8" type="stmt"/>
       </file>
     </package>
     <package name="helper">
@@ -327,28 +341,28 @@
       <file name="auth.middleware.ts" path="C:\Users\Fathur Saputra\OneDrive\Documents\Coding\TypeScript\Intern Projects\pixelatee\src\middleware\auth.middleware.ts">
         <metrics statements="27" coveredstatements="19" conditionals="12" coveredconditionals="6" methods="5" coveredmethods="4"/>
         <line num="13" count="1" type="stmt"/>
-        <line num="24" count="14" type="stmt"/>
-        <line num="28" count="14" type="cond" truecount="1" falsecount="1"/>
+        <line num="24" count="21" type="stmt"/>
+        <line num="28" count="21" type="cond" truecount="1" falsecount="1"/>
         <line num="29" count="0" type="stmt"/>
         <line num="30" count="0" type="stmt"/>
-        <line num="32" count="14" type="stmt"/>
-        <line num="36" count="14" type="cond" truecount="2" falsecount="0"/>
-        <line num="38" count="6" type="stmt"/>
-        <line num="42" count="8" type="stmt"/>
-        <line num="45" count="8" type="cond" truecount="1" falsecount="1"/>
+        <line num="32" count="21" type="stmt"/>
+        <line num="36" count="21" type="cond" truecount="2" falsecount="0"/>
+        <line num="38" count="8" type="stmt"/>
+        <line num="42" count="13" type="stmt"/>
+        <line num="45" count="13" type="cond" truecount="1" falsecount="1"/>
         <line num="47" count="0" type="stmt"/>
-        <line num="51" count="8" type="stmt"/>
-        <line num="54" count="8" type="stmt"/>
-        <line num="57" count="8" type="stmt"/>
-        <line num="60" count="8" type="cond" truecount="1" falsecount="1"/>
+        <line num="51" count="13" type="stmt"/>
+        <line num="54" count="13" type="stmt"/>
+        <line num="57" count="13" type="stmt"/>
+        <line num="60" count="13" type="cond" truecount="1" falsecount="1"/>
         <line num="62" count="0" type="stmt"/>
-        <line num="66" count="8" type="stmt"/>
-        <line num="69" count="8" type="stmt"/>
-        <line num="71" count="6" type="stmt"/>
-        <line num="81" count="27" type="stmt"/>
-        <line num="83" count="8" type="cond" truecount="1" falsecount="1"/>
+        <line num="66" count="13" type="stmt"/>
+        <line num="69" count="13" type="stmt"/>
+        <line num="71" count="8" type="stmt"/>
+        <line num="81" count="29" type="stmt"/>
+        <line num="83" count="13" type="cond" truecount="1" falsecount="1"/>
         <line num="85" count="0" type="stmt"/>
-        <line num="89" count="8" type="stmt"/>
+        <line num="89" count="13" type="stmt"/>
         <line num="121" count="20" type="stmt"/>
         <line num="123" count="0" type="cond" truecount="0" falsecount="2"/>
         <line num="125" count="0" type="stmt"/>
@@ -356,10 +370,10 @@
       </file>
       <file name="error.middleware.ts" path="C:\Users\Fathur Saputra\OneDrive\Documents\Coding\TypeScript\Intern Projects\pixelatee\src\middleware\error.middleware.ts">
         <metrics statements="7" coveredstatements="4" conditionals="6" coveredconditionals="3" methods="2" coveredmethods="2"/>
-        <line num="9" count="7" type="cond" truecount="2" falsecount="0"/>
-        <line num="10" count="6" type="stmt"/>
-        <line num="11" count="1" type="cond" truecount="1" falsecount="1"/>
-        <line num="12" count="1" type="stmt"/>
+        <line num="9" count="10" type="cond" truecount="2" falsecount="0"/>
+        <line num="10" count="8" type="stmt"/>
+        <line num="11" count="2" type="cond" truecount="1" falsecount="1"/>
+        <line num="12" count="4" type="stmt"/>
         <line num="13" count="0" type="cond" truecount="0" falsecount="2"/>
         <line num="14" count="0" type="stmt"/>
         <line num="16" count="0" type="stmt"/>
@@ -390,10 +404,10 @@
       </file>
     </package>
     <package name="model">
-      <metrics statements="20" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="20" coveredmethods="2"/>
+      <metrics statements="21" coveredstatements="3" conditionals="0" coveredconditionals="0" methods="21" coveredmethods="3"/>
       <file name="auth.model.ts" path="C:\Users\Fathur Saputra\OneDrive\Documents\Coding\TypeScript\Intern Projects\pixelatee\src\model\auth.model.ts">
         <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
-        <line num="25" count="14" type="stmt"/>
+        <line num="25" count="21" type="stmt"/>
       </file>
       <file name="client.model.ts" path="C:\Users\Fathur Saputra\OneDrive\Documents\Coding\TypeScript\Intern Projects\pixelatee\src\model\client.model.ts">
         <metrics statements="3" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="3" coveredmethods="0"/>
@@ -427,14 +441,15 @@
         <line num="22" count="0" type="stmt"/>
       </file>
       <file name="user.model.ts" path="C:\Users\Fathur Saputra\OneDrive\Documents\Coding\TypeScript\Intern Projects\pixelatee\src\model\user.model.ts">
-        <metrics statements="3" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="3" coveredmethods="1"/>
-        <line num="66" count="0" type="stmt"/>
-        <line num="73" count="0" type="stmt"/>
-        <line num="104" count="7" type="stmt"/>
+        <metrics statements="4" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="4" coveredmethods="2"/>
+        <line num="64" count="0" type="stmt"/>
+        <line num="71" count="0" type="stmt"/>
+        <line num="102" count="2" type="stmt"/>
+        <line num="112" count="9" type="stmt"/>
       </file>
     </package>
     <package name="route">
-      <metrics statements="41" coveredstatements="41" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+      <metrics statements="43" coveredstatements="43" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
       <file name="auth.route.ts" path="C:\Users\Fathur Saputra\OneDrive\Documents\Coding\TypeScript\Intern Projects\pixelatee\src\route\auth.route.ts">
         <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
         <line num="5" count="1" type="stmt"/>
@@ -487,15 +502,17 @@
         <metrics statements="0" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
       </file>
       <file name="user.route.ts" path="C:\Users\Fathur Saputra\OneDrive\Documents\Coding\TypeScript\Intern Projects\pixelatee\src\route\user.route.ts">
-        <metrics statements="8" coveredstatements="8" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+        <metrics statements="10" coveredstatements="10" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
         <line num="8" count="1" type="stmt"/>
         <line num="10" count="1" type="stmt"/>
         <line num="11" count="1" type="stmt"/>
         <line num="12" count="1" type="stmt"/>
+        <line num="13" count="1" type="stmt"/>
+        <line num="14" count="1" type="stmt"/>
         <line num="15" count="1" type="stmt"/>
         <line num="16" count="1" type="stmt"/>
         <line num="17" count="1" type="stmt"/>
-        <line num="20" count="1" type="stmt"/>
+        <line num="18" count="1" type="stmt"/>
       </file>
     </package>
     <package name="schema">
@@ -539,26 +556,26 @@
       <file name="user.schema.ts" path="C:\Users\Fathur Saputra\OneDrive\Documents\Coding\TypeScript\Intern Projects\pixelatee\src\schema\user.schema.ts">
         <metrics statements="4" coveredstatements="4" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
         <line num="6" count="1" type="stmt"/>
-        <line num="21" count="1" type="stmt"/>
-        <line num="28" count="1" type="stmt"/>
-        <line num="35" count="1" type="stmt"/>
+        <line num="13" count="1" type="stmt"/>
+        <line num="20" count="1" type="stmt"/>
+        <line num="24" count="1" type="stmt"/>
       </file>
       <file name="validation.ts" path="C:\Users\Fathur Saputra\OneDrive\Documents\Coding\TypeScript\Intern Projects\pixelatee\src\schema\validation.ts">
         <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
-        <line num="11" count="18" type="stmt"/>
+        <line num="11" count="28" type="stmt"/>
       </file>
     </package>
     <package name="service">
-      <metrics statements="352" coveredstatements="64" conditionals="148" coveredconditionals="5" methods="40" coveredmethods="8"/>
+      <metrics statements="365" coveredstatements="77" conditionals="148" coveredconditionals="5" methods="42" coveredmethods="10"/>
       <file name="auth.service.ts" path="C:\Users\Fathur Saputra\OneDrive\Documents\Coding\TypeScript\Intern Projects\pixelatee\src\service\auth.service.ts">
         <metrics statements="7" coveredstatements="7" conditionals="4" coveredconditionals="2" methods="1" coveredmethods="1"/>
-        <line num="24" count="14" type="stmt"/>
-        <line num="27" count="14" type="stmt"/>
-        <line num="30" count="14" type="cond" truecount="1" falsecount="1"/>
-        <line num="32" count="14" type="stmt"/>
-        <line num="35" count="14" type="cond" truecount="1" falsecount="1"/>
-        <line num="38" count="14" type="stmt"/>
-        <line num="41" count="14" type="stmt"/>
+        <line num="24" count="21" type="stmt"/>
+        <line num="27" count="21" type="stmt"/>
+        <line num="30" count="21" type="cond" truecount="1" falsecount="1"/>
+        <line num="32" count="21" type="stmt"/>
+        <line num="35" count="21" type="cond" truecount="1" falsecount="1"/>
+        <line num="38" count="21" type="stmt"/>
+        <line num="41" count="21" type="stmt"/>
       </file>
       <file name="client.service.ts" path="C:\Users\Fathur Saputra\OneDrive\Documents\Coding\TypeScript\Intern Projects\pixelatee\src\service\client.service.ts">
         <metrics statements="26" coveredstatements="0" conditionals="14" coveredconditionals="0" methods="7" coveredmethods="0"/>
@@ -622,6 +639,9 @@
         <line num="119" count="0" type="cond" truecount="0" falsecount="2"/>
         <line num="120" count="0" type="stmt"/>
         <line num="124" count="0" type="stmt"/>
+      </file>
+      <file name="guest.service.ts" path="C:\Users\Fathur Saputra\OneDrive\Documents\Coding\TypeScript\Intern Projects\pixelatee\src\service\guest.service.ts">
+        <metrics statements="0" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
       </file>
       <file name="newsletter.service.ts" path="C:\Users\Fathur Saputra\OneDrive\Documents\Coding\TypeScript\Intern Projects\pixelatee\src\service\newsletter.service.ts">
         <metrics statements="93" coveredstatements="1" conditionals="34" coveredconditionals="0" methods="10" coveredmethods="0"/>
@@ -862,7 +882,7 @@
         <line num="72" count="0" type="stmt"/>
       </file>
       <file name="user.service.ts" path="C:\Users\Fathur Saputra\OneDrive\Documents\Coding\TypeScript\Intern Projects\pixelatee\src\service\user.service.ts">
-        <metrics statements="59" coveredstatements="56" conditionals="6" coveredconditionals="3" methods="7" coveredmethods="7"/>
+        <metrics statements="72" coveredstatements="69" conditionals="6" coveredconditionals="3" methods="9" coveredmethods="9"/>
         <line num="22" count="1" type="stmt"/>
         <line num="25" count="1" type="stmt"/>
         <line num="28" count="1" type="stmt"/>
@@ -898,30 +918,43 @@
         <line num="112" count="1" type="stmt"/>
         <line num="113" count="1" type="stmt"/>
         <line num="116" count="1" type="stmt"/>
-        <line num="121" count="1" type="stmt"/>
-        <line num="124" count="1" type="stmt"/>
-        <line num="125" count="1" type="stmt"/>
-        <line num="126" count="1" type="stmt"/>
-        <line num="129" count="1" type="stmt"/>
-        <line num="134" count="1" type="stmt"/>
-        <line num="137" count="1" type="stmt"/>
-        <line num="151" count="1" type="stmt"/>
-        <line num="152" count="1" type="stmt"/>
-        <line num="153" count="1" type="stmt"/>
-        <line num="154" count="1" type="stmt"/>
-        <line num="155" count="1" type="stmt"/>
-        <line num="156" count="1" type="stmt"/>
-        <line num="157" count="1" type="stmt"/>
-        <line num="159" count="1" type="stmt"/>
-        <line num="171" count="1" type="stmt"/>
-        <line num="174" count="1" type="stmt"/>
-        <line num="183" count="1" type="stmt"/>
+        <line num="127" count="1" type="stmt"/>
+        <line num="130" count="1" type="stmt"/>
+        <line num="131" count="1" type="stmt"/>
+        <line num="132" count="1" type="stmt"/>
+        <line num="135" count="1" type="stmt"/>
+        <line num="147" count="1" type="stmt"/>
+        <line num="150" count="1" type="stmt"/>
+        <line num="164" count="1" type="stmt"/>
+        <line num="165" count="1" type="stmt"/>
+        <line num="166" count="1" type="stmt"/>
+        <line num="167" count="1" type="stmt"/>
+        <line num="168" count="1" type="stmt"/>
+        <line num="169" count="1" type="stmt"/>
+        <line num="170" count="1" type="stmt"/>
+        <line num="172" count="1" type="stmt"/>
         <line num="184" count="1" type="stmt"/>
-        <line num="185" count="1" type="stmt"/>
-        <line num="186" count="1" type="stmt"/>
         <line num="187" count="1" type="stmt"/>
-        <line num="188" count="1" type="stmt"/>
-        <line num="191" count="1" type="stmt"/>
+        <line num="196" count="1" type="stmt"/>
+        <line num="197" count="1" type="stmt"/>
+        <line num="198" count="1" type="stmt"/>
+        <line num="199" count="1" type="stmt"/>
+        <line num="200" count="1" type="stmt"/>
+        <line num="201" count="1" type="stmt"/>
+        <line num="202" count="1" type="stmt"/>
+        <line num="205" count="1" type="stmt"/>
+        <line num="216" count="2" type="stmt"/>
+        <line num="225" count="2" type="stmt"/>
+        <line num="237" count="3" type="stmt"/>
+        <line num="240" count="2" type="stmt"/>
+        <line num="260" count="2" type="stmt"/>
+        <line num="261" count="2" type="stmt"/>
+        <line num="262" count="2" type="stmt"/>
+        <line num="263" count="2" type="stmt"/>
+        <line num="264" count="2" type="stmt"/>
+        <line num="265" count="2" type="stmt"/>
+        <line num="266" count="2" type="stmt"/>
+        <line num="268" count="2" type="stmt"/>
       </file>
     </package>
     <package name="types">

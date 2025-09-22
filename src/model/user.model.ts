@@ -7,11 +7,9 @@ export type UserRequest = {
   dateOfBirth?: string;
   password?: string;
   phoneNumber?: string;
-  addresses?: {
-    city: string;
-    country: string;
-    zipCode: string;
-  };
+  city?: string | null;
+  country?: string | null;
+  zipCode?: string | null;
 };
 
 export type UserResponse = {
@@ -51,9 +49,9 @@ export type UserResponse = {
     | undefined;
   addresses?:
     | {
-        city: string;
-        country: string;
-        zipCode: string;
+        city: string | undefined;
+        country: string | undefined;
+        zipCode: string | undefined;
       }
     | undefined;
 };
@@ -96,6 +94,16 @@ export function toUserPermissionResponse(permission: UserPermission): UserRespon
       canWriteAdmin: permission.canWriteAdmin,
       canUpdateAdmin: permission.canUpdateAdmin,
       canDeleteAdmin: permission.canDeleteAdmin,
+    },
+  };
+}
+
+export function toUserAddressResponse(user: User & { address: UserAddress | null }): UserResponse {
+  return {
+    addresses: {
+      city: user?.address?.city!,
+      country: user?.address?.country!,
+      zipCode: user?.address?.zipCode!,
     },
   };
 }

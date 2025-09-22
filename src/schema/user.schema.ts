@@ -3,21 +3,6 @@ import z from "zod";
 import { UserRequest } from "../model/user.model";
 
 export class UserSchema {
-  public static readonly UPDATE: z.ZodType<UserRequest> = z.strictObject({
-    name: z.string({ error: "Invalid type of name, must be string" }).nonempty({ error: "Name is required" }),
-    email: z.string({ error: "Invalid type of email, must be string" }).nonempty({ error: "Email is required" }),
-    photo: z
-      .string({ error: "Invalid type of photo, must be string" })
-      .regex(/^image\/(png|jpeg)$/, { error: "Fifth image must be a PNG or JPEG image" })
-      .nonempty({ error: "Photo is required" }),
-    phoneNumber: z.string({ error: "Invalid type of phone number, must be string" }).nonempty({ error: "Phone number is required" }),
-    addresses: z.strictObject({
-      city: z.string({ error: "Invalid type of city, must be string" }).nonempty({ error: "City is required" }),
-      country: z.string({ error: "Invalid type of country, must be string" }).nonempty({ error: "Country is required" }),
-      zipCode: z.string({ error: "Invalid type of zip code, must be string" }).nonempty({ error: "Zip code is required" }),
-    }),
-  });
-
   public static readonly UPDATE_PHOTO: z.ZodType<UserRequest> = z.strictObject({
     photo: z
       .string({ error: "Invalid type of photo, must be string" })
@@ -34,5 +19,11 @@ export class UserSchema {
 
   public static readonly UPDATE_PASSWORD: z.ZodType<UserRequest> = z.strictObject({
     password: z.string({ error: "Invalid type of password, must be string" }).nonempty({ error: "Password is required" }),
+  });
+
+  public static readonly UPDATE_ADDRESS: z.ZodType<UserRequest> = z.strictObject({
+    city: z.string({ error: "Invalid type of city, must be string" }).nullable(),
+    country: z.string({ error: "Invalid type of country, must be string" }).nullable(),
+    zipCode: z.string({ error: "Invalid type of zip code, must be string" }).nullable(),
   });
 }

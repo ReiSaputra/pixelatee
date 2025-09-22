@@ -112,6 +112,19 @@ export class AdminUtil {
     await prisma.user.deleteMany();
   }
 
+  public static async updateAdminAddress(id: string, city: string | null, country: string | null, zipCode: string | null): Promise<void> {
+    await prisma.userAddress.update({
+      where: {
+        userId: id,
+      },
+      data: {
+        city: city,
+        country: country,
+        zipCode: zipCode,
+      },
+    });
+  }
+
   public static async updateAdminPermission(id: string, read: boolean, write: boolean, update: boolean, remove: boolean): Promise<void> {
     await prisma.userPermission.update({
       where: {
