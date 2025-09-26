@@ -86,6 +86,57 @@ export class AdminUtil {
     return admin.id;
   }
 
+  public static async createAllAdmin(limiter: number): Promise<void> {
+    for (let i = 0; i < limiter; i++) {
+      await prisma.user.create({
+        data: {
+          name: faker.person.fullName(),
+          email: faker.internet.email(),
+          password: await bcrypt.hash("password", 10),
+          photo: "default.png",
+          role: faker.helpers.arrayElement(["SUPER_ADMIN", "ADMIN"] as const),
+          dateOfBirth: new Date(),
+          phoneNumber: faker.phone.number({ style: "international" }),
+          address: {
+            create: {
+              city: faker.location.city(),
+              country: faker.location.country(),
+              zipCode: faker.location.zipCode(),
+            },
+          },
+          permissions: {
+            create: {
+              canReadAdmin: faker.helpers.arrayElement([true, false]),
+              canWriteAdmin: faker.helpers.arrayElement([true, false]),
+              canUpdateAdmin: faker.helpers.arrayElement([true, false]),
+              canDeleteAdmin: faker.helpers.arrayElement([true, false]),
+
+              canReadClient: faker.helpers.arrayElement([true, false]),
+              canWriteClient: faker.helpers.arrayElement([true, false]),
+              canUpdateClient: faker.helpers.arrayElement([true, false]),
+              canDeleteClient: faker.helpers.arrayElement([true, false]),
+
+              canReadContact: faker.helpers.arrayElement([true, false]),
+              canWriteContact: faker.helpers.arrayElement([true, false]),
+              canUpdateContact: faker.helpers.arrayElement([true, false]),
+              canDeleteContact: faker.helpers.arrayElement([true, false]),
+
+              canReadNewsletter: faker.helpers.arrayElement([true, false]),
+              canWriteNewsletter: faker.helpers.arrayElement([true, false]),
+              canUpdateNewsletter: faker.helpers.arrayElement([true, false]),
+              canDeleteNewsletter: faker.helpers.arrayElement([true, false]),
+
+              canReadPortfolio: faker.helpers.arrayElement([true, false]),
+              canWritePortfolio: faker.helpers.arrayElement([true, false]),
+              canUpdatePortfolio: faker.helpers.arrayElement([true, false]),
+              canDeletePortfolio: faker.helpers.arrayElement([true, false]),
+            },
+          },
+        },
+      });
+    }
+  }
+
   /**
    * Delete an admin by their ID
    * @param id the ID of the admin to be deleted
@@ -109,6 +160,8 @@ export class AdminUtil {
    * @returns a promise that resolves to void when all admin are deleted
    */
   public static async deleteAllAdmin(): Promise<void> {
+    await prisma.userAddress.deleteMany();
+    await prisma.userPermission.deleteMany();
     await prisma.user.deleteMany();
   }
 

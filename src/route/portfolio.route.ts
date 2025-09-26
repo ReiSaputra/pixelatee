@@ -4,14 +4,15 @@ import { PortfolioController } from "../controller/portfolio.controller";
 
 import { AuthMiddleware } from "../middleware/auth.middleware";
 import { FileUploadMiddleware } from "../middleware/file-upload.middleware";
+import { GuestMiddleware } from "../middleware/guest.middleware";
 
 export const portfolioRoute: express.Router = express.Router();
 
 /**
  * Public
  */
-portfolioRoute.get("/public/portfolios", PortfolioController.publicGetAll);
-portfolioRoute.get("/public/portfolios/:portfolioId", PortfolioController.publicGetDetail);
+portfolioRoute.get("/public/portfolios", GuestMiddleware.dailyVisit, PortfolioController.publicGetAll);
+portfolioRoute.get("/public/portfolios/:portfolioId", GuestMiddleware.dailyVisit, PortfolioController.publicGetDetail);
 
 /**
  * Admin

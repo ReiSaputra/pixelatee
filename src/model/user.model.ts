@@ -56,47 +56,29 @@ export type UserResponse = {
     | undefined;
 };
 
+export type UserDashboardResponse = {
+  portfolios: {
+    title: string;
+    mainPhoto: string;
+    client: string;
+    status: $Enums.PortfolioStatus;
+  };
+  contacts: {
+    title: string;
+    email: string;
+    sender: string;
+    handledBy: string | undefined;
+    sentAt: string;
+  };
+};
+
+export type UserDashboardFilters = {
+  filter?: "7d" | "30d" | "1y" | undefined;
+};
+
 export type UserParams = {
   adminId: string;
 };
-
-export function toUserNavigationResponse(user: User & { permissions: UserPermission | null; address: UserAddress | null }) {
-  return {
-    name: user.name,
-    userRole: user.role,
-  };
-}
-
-export function toUserPermissionResponse(permission: UserPermission): UserResponse {
-  return {
-    permissions: {
-      canReadNewsletter: permission.canReadNewsletter,
-      canWriteNewsletter: permission.canWriteNewsletter,
-      canUpdateNewsletter: permission.canUpdateNewsletter,
-      canDeleteNewsletter: permission.canDeleteNewsletter,
-
-      canReadClient: permission.canReadClient,
-      canWriteClient: permission.canWriteClient,
-      canUpdateClient: permission.canUpdateClient,
-      canDeleteClient: permission.canDeleteClient,
-
-      canReadPortfolio: permission.canReadPortfolio,
-      canWritePortfolio: permission.canWritePortfolio,
-      canUpdatePortfolio: permission.canUpdatePortfolio,
-      canDeletePortfolio: permission.canDeletePortfolio,
-
-      canReadContact: permission.canReadContact,
-      canWriteContact: permission.canWriteContact,
-      canUpdateContact: permission.canUpdateContact,
-      canDeleteContact: permission.canDeleteContact,
-
-      canReadAdmin: permission.canReadAdmin,
-      canWriteAdmin: permission.canWriteAdmin,
-      canUpdateAdmin: permission.canUpdateAdmin,
-      canDeleteAdmin: permission.canDeleteAdmin,
-    },
-  };
-}
 
 export function toUserAddressResponse(user: User & { address: UserAddress | null }): UserResponse {
   return {

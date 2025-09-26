@@ -8,6 +8,7 @@ import { newsletterRoute } from "../route/newsletter.route";
 import { portfolioRoute } from "../route/portfolio.route";
 import { contactRoute } from "../route/contact.route";
 import { userRoute } from "../route/user.route";
+import { superAdminRoute } from "../route/super-admin.route";
 
 import { ErrorMiddleware } from "../middleware/error.middleware";
 import { clientRoute } from "../route/client.route";
@@ -42,8 +43,9 @@ web.use("/api/v1", authRoute);
 web.use("/api/v1", newsletterRoute);
 web.use("/api/v1", portfolioRoute);
 web.use("/api/v1", clientRoute);
-web.use("/api/v1", userRoute);
 web.use("/api/v1", contactRoute);
+web.use("/api/v1", userRoute);
+web.use("/api/v1", superAdminRoute);
 
 /**
  * Not Found Handler

@@ -4,6 +4,7 @@ import { web } from "../src/application/web";
 
 import { ContactPaginationResponseSuccess, ContactResponseError, ContactResponseSuccess, ContactUtil } from "./util/contact.util";
 import { AdminUtil } from "./util/admin.util";
+import { GuestUtil } from "./util/guest.util";
 
 describe("POST /api/v1/public/contacts", () => {
   beforeEach(async () => {
@@ -223,4 +224,8 @@ describe("DELETE /api/v1/admin/contacts/:contactId", () => {
 
     expect(response.status).toBe(401);
   });
+});
+
+afterAll(async () => {
+  await GuestUtil.deleteAllVisitor();
 });

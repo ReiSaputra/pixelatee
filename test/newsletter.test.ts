@@ -5,7 +5,7 @@ import { web } from "../src/application/web";
 
 import { NewsletterResponseError, NewsletterResponseSuccess, NewsletterUtil } from "./util/newsletter.util";
 import { AdminUtil } from "./util/admin.util";
-import { prisma } from "../src/application/database";
+import { GuestUtil } from "./util/guest.util";
 
 describe("POST /api/v1/public/newsletters/join", () => {
   beforeEach(async () => {
@@ -491,4 +491,8 @@ describe("PATCH /api/v1/admin/newsletters/:newsletterId", () => {
     
     expect(response.status).toBe(403);
   });
+});
+
+afterAll(async () => {
+  await GuestUtil.deleteAllVisitor();
 });
