@@ -1,13 +1,31 @@
 import express from "express";
 
 import { User, UserPermission } from "../generated/prisma";
-import { UserResponse, UserRequest } from "../model/user.model";
+import { UserResponse, UserRequest, UserDashboardFilters } from "../model/user.model";
 
 import { UserService } from "../service/user.service";
 
 import { UserRequest as UserReq } from "../types/user.type";
 
 export class UserController {
+  public static async dashboard(req: UserReq, res: express.Response, next: express.NextFunction): Promise<void> {
+    try {
+      // assert user
+      const user: (User & { permissions: UserPermission | null }) | undefined = req.user;
+
+      // assert query params
+      const filters: UserDashboardFilters = req.query as unknown as UserDashboardFilters; 
+
+      // call service
+      const response = await UserService.dashboard(user, filters);
+
+      // return response
+      res.status(200).json({ status: "Success", code: 200, data: {}, message: "Get dashboard successfully" });
+    } catch (error: any) {
+      next(error);
+    }
+  }
+
   /**
    * Get user profile
    * @param {UserRequest} req request that contains user information

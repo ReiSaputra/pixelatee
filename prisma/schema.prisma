@@ -93,6 +93,22 @@ model UserAddress {
   @@map("user_addresses")
 }
 
+model GuestVisit {
+  id String @id @default(uuid())
+
+  visitorId String @unique @map("visitor_id")
+
+  ip        String
+  userAgent String @map("user_agent")
+
+  visitDate DateTime @map("visit_date")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("guest_visits")
+}
+
 model Newsletter {
   id String @id @default(uuid())
 

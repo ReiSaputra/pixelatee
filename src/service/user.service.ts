@@ -3,14 +3,58 @@ import fs from "fs";
 
 import { prisma } from "../application/database";
 
-import { User, UserAddress, UserPermission } from "../generated/prisma";
+import { Contact, Portfolio, Prisma, User, UserAddress, UserPermission } from "../generated/prisma";
 
-import { UserRequest, UserResponse, toUserAddressResponse, toUserResponse } from "../model/user.model";
+import { UserDashboardFilters, UserRequest, UserResponse, toUserAddressResponse, toUserResponse } from "../model/user.model";
 
 import { Validation } from "../schema/validation";
 import { UserSchema } from "../schema/user.schema";
 
 export class UserService {
+  public static async dashboard(user: (User & { permissions: UserPermission | null }) | undefined, filters: UserDashboardFilters) {
+    // filter validation
+    const filterValidation: UserDashboardFilters = Validation.validate(UserSchema.DASHBOARD, filters);
+
+    // dynamic where
+    const where: Prisma.GuestVisitWhereInput = {};
+
+    // get data for charts
+    const findCharts = await prisma.guestVisit.groupBy({
+      by: ["visitDate"],
+      _count: { _all: true },
+      where: where,
+    });
+
+    // get data for portfolios
+    const portfolios: (Portfolio & { author: User | null })[] = await prisma.portfolio.findMany({
+      where: {
+        authorId: user?.id!,
+      },
+      include: {
+        author: true,
+      },
+    });
+
+    // get data for contacts
+    const contacts: (Contact & { handler: User | null })[] = await prisma.contact.findMany({
+      where: {
+        handlerId: user?.id!,
+      },
+      include: {
+        handler: true,
+      },
+    });
+
+    console.info({
+      findCharts,
+      portfolios,
+      contacts,
+    });
+
+    // return response
+    return findCharts;
+  }
+
   /**
    * Get user profile
    * @param {User & { permissions: UserPermission | null }} user user that contains user information

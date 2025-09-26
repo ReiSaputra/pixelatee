@@ -6,7 +6,7 @@ import { web } from "../src/application/web";
 import { PortfolioPaginationResponseSuccess, PortfolioResponseError, PortfolioResponseSuccess, PortfoliosResponseSuccess, PortfolioUtil } from "./util/portfolio.util";
 import { AdminUtil } from "./util/admin.util";
 import { ClientUtil } from "./util/client.util";
-import { prisma } from "../src/application/database";
+import { GuestUtil } from "./util/guest.util";
 
 describe("GET /api/v1/public/portfolios", () => {
   let admin1: string;
@@ -517,4 +517,8 @@ describe("GET /api/v1/admin/portfolios/preview", () => {
 
     expect(response.status).toBe(403);
   });
+});
+
+afterAll(async () => {
+  await GuestUtil.deleteAllVisitor();
 });

@@ -1,8 +1,12 @@
 import z from "zod";
 
-import { UserRequest } from "../model/user.model";
+import { UserDashboardFilters, UserRequest } from "../model/user.model";
 
 export class UserSchema {
+  public static readonly DASHBOARD: z.ZodType<UserDashboardFilters> = z.strictObject({
+    filter: z.enum(["7d", "30d", "1y"]).optional(),
+  });
+
   public static readonly UPDATE_PHOTO: z.ZodType<UserRequest> = z.strictObject({
     photo: z
       .string({ error: "Invalid type of photo, must be string" })
