@@ -3,9 +3,9 @@ import fs from "fs";
 
 import { prisma } from "../application/database";
 
-import { Contact, Portfolio, Prisma, User, UserAddress, UserPermission } from "../generated/prisma";
+import { User, UserAddress, UserPermission } from "../generated/prisma";
 
-import { UserDashboardFilters, UserRequest, UserResponse, toUserAddressResponse, toUserResponse } from "../model/user.model";
+import { UserRequest, UserResponse, toUserAddressResponse, toUserResponse } from "../model/user.model";
 
 import { Validation } from "../schema/validation";
 import { UserSchema } from "../schema/user.schema";
@@ -43,25 +43,43 @@ export class UserService {
     console.info(finalData);
 
     // get data for portfolios
-    const portfolios: (Portfolio & { author: User | null })[] = await prisma.portfolio.findMany({
+    const portfolios = await prisma.portfolio.findMany({
       where: {
         authorId: user?.id!,
       },
       take: 5,
-      include: {
-        author: true,
+      select: {
+        id: true,
+        title: true,
+        mainImage: true,
+        client: {
+          select: {
+            name: true,
+          },
+        },
+        status: true,
+        createdAt: true,
       },
       orderBy: { createdAt: "desc" },
     });
 
     // get data for contacts
-    const contacts: (Contact & { handler: User | null })[] = await prisma.contact.findMany({
+    const contacts = await prisma.contact.findMany({
       where: {
         handlerId: user?.id!,
       },
       take: 5,
-      include: {
-        handler: true,
+      select: {
+        id: true,
+        subject: true,
+        name: true,
+        email: true,
+        handler: {
+          select: {
+            name: true,
+          },
+        },
+        createdAt: true,
       },
       orderBy: { createdAt: "desc" },
     });
