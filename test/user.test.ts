@@ -73,7 +73,7 @@ describe("GET /api/v1/users/profiles/photo/preview", () => {
 
   it("should pass - get profile photo", async () => {
     const response: request.Response = await request(web).get("/api/v1/users/profiles/photo/preview").set("Authorization", `Bearer ${token}`);
-    console.info(response.body);
+
     expect(response.status).toBe(200);
   });
 
@@ -101,7 +101,7 @@ describe("PATCH /api/v1/users/profiles/photo", () => {
 
   it("should pass - update profile photo", async () => {
     const response: request.Response = await request(web).patch("/api/v1/users/profiles/photo").set("Authorization", `Bearer ${token}`).attach("photo", "public/test/Kortlink.png");
-    console.info(response.body);
+
     expect(response.status).toBe(200);
   });
 
@@ -164,7 +164,7 @@ describe("PATCH /api/v1/users/profiles/personal-info", () => {
       phoneNumber: "08123456789",
       dateOfBirth: new Date(),
     });
-    
+
     expect(response.status).toBe(200);
   });
 });
@@ -190,6 +190,94 @@ describe("PATCH /api/v1/users/profiles/password", () => {
 
   it("should fail - no authorization", async () => {
     const response: request.Response = await request(web).patch("/api/v1/users/profiles/password").send({ password: "asam lambung jir" });
+
+    expect(response.status).toBe(401);
+  });
+});
+
+describe("GET /api/v1/users/profiles/addresses/preview", () => {
+  let admin1: string;
+  let token: string;
+
+  beforeEach(async () => {
+    admin1 = await AdminUtil.createAdmin("Han", "fthrn.s27@pixelatee.com", "patangpuluhpatang", "ADMIN", true);
+    token = await AdminUtil.login("fthrn.s27@pixelatee.com", "patangpuluhpatang");
+  });
+
+  afterEach(async () => {
+    await AdminUtil.deleteAdmin(admin1);
+  });
+
+  it("should pass - get addresses", async () => {
+    const response: request.Response = await request(web).get("/api/v1/users/profiles/addresses/preview").set("Authorization", `Bearer ${token}`);
+
+    expect(response.status).toBe(200);
+  });
+
+  it("should pass - get addresses when there is no address (null)", async () => {
+    await AdminUtil.updateAdminAddress(admin1, null, null, null);
+
+    const response: request.Response = await request(web).get("/api/v1/users/profiles/addresses/preview").set("Authorization", `Bearer ${token}`);
+
+    expect(response.status).toBe(200);
+  });
+
+  it("should fail - no authorization", async () => {
+    const response: request.Response = await request(web).get("/api/v1/users/profiles/addresses/preview");
+
+    expect(response.status).toBe(401);
+  });
+});
+
+describe("PATCH /api/v1/users/profiles/addresses", () => {
+  let admin1: string;
+  let token: string;
+
+  beforeEach(async () => {
+    admin1 = await AdminUtil.createAdmin("Han", "fthrn.s27@pixelatee.com", "patangpuluhpatang", "ADMIN", true);
+    token = await AdminUtil.login("fthrn.s27@pixelatee.com", "patangpuluhpatang");
+  });
+
+  afterEach(async () => {
+    await AdminUtil.deleteAdmin(admin1);
+  });
+
+  it("should pass - update address", async () => {
+    const response: request.Response = await request(web).patch("/api/v1/users/profiles/addresses").set("Authorization", `Bearer ${token}`).send({
+      city: "Jakarta",
+      country: "Indonesia",
+      zipCode: "12345",
+    });
+
+    expect(response.status).toBe(200);
+  });
+
+  it("should pass - all null", async () => {
+    const response: request.Response = await request(web).patch("/api/v1/users/profiles/addresses").set("Authorization", `Bearer ${token}`).send({
+      city: null,
+      country: null,
+      zipCode: null,
+    });
+
+    expect(response.status).toBe(200);
+  });
+
+  it("should fail - all undefined", async () => {
+    const response: request.Response = await request(web).patch("/api/v1/users/profiles/addresses").set("Authorization", `Bearer ${token}`).send({
+      city: undefined,
+      country: undefined,
+      zipCode: undefined,
+    });
+
+    expect(response.status).toBe(400);
+  });
+
+  it("should fail - no authorization", async () => {
+    const response: request.Response = await request(web).patch("/api/v1/users/profiles/addresses").send({
+      city: "Jakarta",
+      country: "Indonesia",
+      zipCode: "12345",
+    });
 
     expect(response.status).toBe(401);
   });

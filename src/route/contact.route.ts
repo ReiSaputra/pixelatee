@@ -3,10 +3,11 @@ import express from "express";
 import { ContactController } from "../controller/contact.controller";
 
 import { AuthMiddleware } from "../middleware/auth.middleware";
+import { GuestMiddleware } from "../middleware/guest.middleware";
 
 export const contactRoute: express.Router = express.Router();
 
-contactRoute.post("/public/contacts", ContactController.publicCreate);
+contactRoute.post("/public/contacts", GuestMiddleware.dailyVisit, ContactController.publicCreate);
 
 contactRoute.get("/admin/contacts", AuthMiddleware.authentication, AuthMiddleware.authorization(["ADMIN", "SUPER_ADMIN"]), AuthMiddleware.permission("canReadContact"), ContactController.adminGetAll);
 contactRoute.get("/admin/contacts/:contactId", AuthMiddleware.authentication, AuthMiddleware.authorization(["ADMIN", "SUPER_ADMIN"]), AuthMiddleware.permission("canReadContact"), ContactController.adminGetDetail);

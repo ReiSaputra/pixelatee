@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/4</span>
+                <span class='fraction'>4/4</span>
             </div>
         
             
@@ -37,16 +37,16 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/4</span>
+                <span class='fraction'>4/4</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/4</span>
+                <span class='fraction'>4/4</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -190,7 +190,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -201,8 +201,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">24x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -215,7 +215,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -270,8 +270,8 @@ export type ContactFilters = {
  * @param contact - The Contact entity to be mapped
  * @returns A ContactResponse with the name of the contact
  */
-export function <span class="fstat-no" title="function not covered" >toContactResponse(</span>contact: Contact &amp; { handler: User | null }): ContactResponse {
-<span class="cstat-no" title="statement not covered" >  return {</span>
+export function toContactResponse(contact: Contact &amp; { handler: User | null }): ContactResponse {
+  return {
     name: contact.name,
     email: contact.email,
     subject: contact.subject,
@@ -281,9 +281,9 @@ export function <span class="fstat-no" title="function not covered" >toContactRe
   };
 }
 &nbsp;
-export function <span class="fstat-no" title="function not covered" >toContactsResponse(</span>contact: (Contact &amp; { handler: User | null })[]): ContactResponse[] {
-<span class="cstat-no" title="statement not covered" >  return contact.map(<span class="fstat-no" title="function not covered" >(i</span>tem) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    return {</span>
+export function toContactsResponse(contact: (Contact &amp; { handler: User | null })[]): ContactResponse[] {
+  return contact.map((item) =&gt; {
+    return {
       id: item.id,
       name: item.name,
       email: item.email,
@@ -295,8 +295,8 @@ export function <span class="fstat-no" title="function not covered" >toContactsR
   });
 }
 &nbsp;
-export function <span class="fstat-no" title="function not covered" >toContactPaginationResponse(</span>contact: (Contact &amp; { handler: User | null })[], page: number, limit: number, totalData: number, totalPage: number): ContactPaginationResponse {
-<span class="cstat-no" title="statement not covered" >  return {</span>
+export function toContactPaginationResponse(contact: (Contact &amp; { handler: User | null })[], page: number, limit: number, totalData: number, totalPage: number): ContactPaginationResponse {
+  return {
     contacts: toContactsResponse(contact),
     pagination: {
       page: page,
@@ -313,7 +313,7 @@ export function <span class="fstat-no" title="function not covered" >toContactPa
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-09-19T07:33:33.812Z
+                at 2025-09-22T09:45:42.737Z
             </div>
         <script src="../prettify.js"></script>
         <script>

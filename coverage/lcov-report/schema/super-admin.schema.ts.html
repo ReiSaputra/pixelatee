@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/1</span>
+                <span class='fraction'>3/3</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/1</span>
+                <span class='fraction'>3/3</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -87,12 +87,24 @@
 <a name='L22'></a><a href='#L22'>22</a>
 <a name='L23'></a><a href='#L23'>23</a>
 <a name='L24'></a><a href='#L24'>24</a>
-<a name='L25'></a><a href='#L25'>25</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L25'></a><a href='#L25'>25</a>
+<a name='L26'></a><a href='#L26'>26</a>
+<a name='L27'></a><a href='#L27'>27</a>
+<a name='L28'></a><a href='#L28'>28</a>
+<a name='L29'></a><a href='#L29'>29</a>
+<a name='L30'></a><a href='#L30'>30</a>
+<a name='L31'></a><a href='#L31'>31</a>
+<a name='L32'></a><a href='#L32'>32</a>
+<a name='L33'></a><a href='#L33'>33</a>
+<a name='L34'></a><a href='#L34'>34</a>
+<a name='L35'></a><a href='#L35'>35</a>
+<a name='L36'></a><a href='#L36'>36</a>
+<a name='L37'></a><a href='#L37'>37</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">7x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -106,6 +118,18 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -113,13 +137,13 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import z from "zod";
 &nbsp;
-import { AdminRegisterRequest } from "../model/super-admin.model";
+import { AdminFilters, AdminParams, AdminRegisterRequest } from "../model/super-admin.model";
 &nbsp;
 export class SuperAdminSchema {
-  public static readonly REGISTER_ADMIN: z.ZodType&lt;AdminRegisterRequest&gt; = <span class="cstat-no" title="statement not covered" >z</span>
+  public static readonly REGISTER_ADMIN: z.ZodType&lt;AdminRegisterRequest&gt; = z
     .strictObject({
       name: z.string({ error: "Invalid type of name, must be string" }).nonempty({ error: "Name is required" }),
-      password: z.string({ error: "Invalid type of password, must be string" }).nonempty({ error: "Password is required" }),
+      password: z.string({ error: "Invalid type of password, must be string" }).nonempty({ error: "Password is required" }).default("12345678"),
       email: z
         .email({ error: "Invalid email address" })
         .regex(/^[A-Za-z0-9._%+-]+@pixelatee\.com$/, { message: "Email must end with @pixelatee.com" })
@@ -128,12 +152,24 @@ export class SuperAdminSchema {
       phoneNumber: z.string({ error: "Invalid type of phone number, must be string" }).nonempty({ error: "Phone number is required" }),
       userRole: z.enum(["SUPER_ADMIN", "ADMIN"], { error: "Invalid type of user role, must be SUPER_ADMIN or ADMIN" }),
       address: z.strictObject({
-        city: z.string({ error: "Invalid type of city, must be string" }).nonempty({ error: "City is required" }),
-        country: z.string({ error: "Invalid type of country, must be string" }).nonempty({ error: "Country is required" }),
-        zipCode: z.string({ error: "Invalid type of zipCode, must be string" }).nonempty({ error: "ZipCode is required" }),
+        city: z.string({ error: "Invalid type of city, must be string" }).nullable(),
+        country: z.string({ error: "Invalid type of country, must be string" }).nullable(),
+        zipCode: z.string({ error: "Invalid type of zipCode, must be string" }).nullable(),
       }),
     })
     .required();
+&nbsp;
+  public static readonly DETAIL: z.ZodType&lt;AdminParams&gt; = z
+    .strictObject({
+      adminId: z.string({ error: "Invalid type of admin ID" }).nonempty({ error: "Admin ID is required" }),
+    })
+    .required();
+&nbsp;
+  public static readonly FILTER: z.ZodType&lt;AdminFilters&gt; = z.strictObject({
+    page: z.coerce.number({ error: "Invalid type of page, must be number" }).min(1, { error: "Page must be greater than 0" }).default(1),
+    search: z.string({ error: "Invalid type of search, must be string" }).optional(),
+    role: z.enum(["SUPER_ADMIN", "ADMIN"], { error: "Invalid type of role, must be SUPER_ADMIN or ADMIN" }).optional(),
+  });
 }
 &nbsp;</pre></td></tr></table></pre>
 
@@ -142,7 +178,7 @@ export class SuperAdminSchema {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-09-19T07:33:33.812Z
+                at 2025-09-22T09:45:42.737Z
             </div>
         <script src="../prettify.js"></script>
         <script>

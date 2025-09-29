@@ -1,13 +1,31 @@
 import express from "express";
 
 import { User, UserPermission } from "../generated/prisma";
-import { UserResponse, UserRequest } from "../model/user.model";
+import { UserResponse, UserRequest, UserDashboardFilters } from "../model/user.model";
 
 import { UserService } from "../service/user.service";
 
 import { UserRequest as UserReq } from "../types/user.type";
 
 export class UserController {
+  public static async dashboard(req: UserReq, res: express.Response, next: express.NextFunction): Promise<void> {
+    try {
+      // assert user
+      const user: (User & { permissions: UserPermission | null }) | undefined = req.user;
+
+      // assert query params
+      const filters: UserDashboardFilters = req.query as unknown as UserDashboardFilters; 
+
+      // call service
+      const response = await UserService.dashboard(user, filters);
+
+      // return response
+      res.status(200).json({ status: "Success", code: 200, data: {}, message: "Get dashboard successfully" });
+    } catch (error: any) {
+      next(error);
+    }
+  }
+
   /**
    * Get user profile
    * @param {UserRequest} req request that contains user information
@@ -88,11 +106,19 @@ export class UserController {
     }
   }
 
+  /**
+   * Get user photo preview
+   * @param {UserRequest} req request that contains user information
+   * @param {express.Response} res response that contains user photo preview
+   * @param {express.NextFunction} next next function to handle error
+   * @throws {ResponseError} if error occur
+   * @returns {Promise<void>} promise that resolves when successfully get user photo preview
+   */
   public static async updatePhotoPreview(req: UserReq, res: express.Response, next: express.NextFunction): Promise<void> {
     try {
       // assert user
       const user: (User & { permissions: UserPermission | null }) | undefined = req.user;
-      
+
       // call service
       const response: UserResponse = await UserService.updatePhotoPreview(user);
 
@@ -103,6 +129,14 @@ export class UserController {
     }
   }
 
+  /**
+   * Update user photo
+   * @param {UserRequest} req request that contains user photo
+   * @param {express.Response} res response that contains user profile
+   * @param {express.NextFunction} next next function to handle error
+   * @throws {ResponseError} if error occur
+   * @returns {Promise<void>} promise that resolves when successfully update user photo
+   */
   public static async updatePhoto(req: UserReq, res: express.Response, next: express.NextFunction): Promise<void> {
     try {
       // assert user
@@ -129,6 +163,14 @@ export class UserController {
     }
   }
 
+  /**
+   * Get user personal info preview
+   * @param {UserRequest} req request that contains user information
+   * @param {express.Response} res response that contains user profile
+   * @param {express.NextFunction} next next function to handle error
+   * @throws {ResponseError} if error occur
+   * @returns {Promise<void>} promise that resolves when successfully get user personal info preview
+   */
   public static async updatePersonalInfoPreview(req: UserReq, res: express.Response, next: express.NextFunction): Promise<void> {
     try {
       // assert user
@@ -144,6 +186,14 @@ export class UserController {
     }
   }
 
+  /**
+   * Update user personal info
+   * @param {UserRequest} req request that contains user information
+   * @param {express.Response} res response that contains user profile
+   * @param {express.NextFunction} next next function to handle error
+   * @throws {ResponseError} if error occur
+   * @returns {Promise<void>} promise that resolves when successfully update user personal info
+   */
   public static async updatePersonalInfo(req: UserReq, res: express.Response, next: express.NextFunction): Promise<void> {
     try {
       // assert user
@@ -162,5 +212,52 @@ export class UserController {
     }
   }
 
-  public static async updateAddress(req: UserReq, res: express.Response, next: express.NextFunction): Promise<void> {}
+  /**
+   * Get user address preview
+   * @param {UserRequest} req request that contains user information
+   * @param {express.Response} res response that contains user address preview
+   * @param {express.NextFunction} next next function to handle error
+   * @throws {ResponseError} if error occur
+   * @returns {Promise<void>} promise that resolves when successfully get user address preview
+   */
+  public static async updateAddressPreview(req: UserReq, res: express.Response, next: express.NextFunction): Promise<void> {
+    try {
+      // assert user
+      const user: (User & { permissions: UserPermission | null }) | undefined = req.user;
+
+      // call service
+      const response: UserResponse = await UserService.updateAddressPreview(user);
+
+      // return response
+      res.status(200).json({ status: "Success", code: 200, data: response, message: "Get address preview successfully" });
+    } catch (error: any) {
+      next(error);
+    }
+  }
+
+  /**
+   * Update user address
+   * @param {UserRequest} req request that contains user address
+   * @param {express.Response} res response that contains user address
+   * @param {express.NextFunction} next next function to handle error
+   * @throws {ResponseError} if error occur
+   * @returns {Promise<void>} promise that resolves when successfully update user address
+   */
+  public static async updateAddress(req: UserReq, res: express.Response, next: express.NextFunction): Promise<void> {
+    try {
+      // assert user
+      const user: (User & { permissions: UserPermission | null }) | undefined = req.user;
+
+      // assert request
+      const request: UserRequest = req.body as UserRequest;
+
+      // call service
+      const response: UserResponse = await UserService.updateAddress(user, request);
+
+      // return response
+      res.status(200).json({ status: "Success", code: 200, data: response, message: "Update address successfully" });
+    } catch (error: any) {
+      next(error);
+    }
+  }
 }

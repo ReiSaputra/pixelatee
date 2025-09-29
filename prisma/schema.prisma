@@ -83,14 +83,30 @@ model UserAddress {
   user   User   @relation(fields: [userId], references: [id])
   userId String @unique @map("user_id")
 
-  city    String
-  country String
-  zipCode String @map("zip_code")
+  city    String?
+  country String?
+  zipCode String? @map("zip_code")
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
   @@map("user_addresses")
+}
+
+model GuestVisit {
+  id String @id @default(uuid())
+
+  visitorId String @unique @map("visitor_id")
+
+  ip        String
+  userAgent String @map("user_agent")
+
+  visitDate DateTime @map("visit_date")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("guest_visits")
 }
 
 model Newsletter {

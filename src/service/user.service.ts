@@ -3,14 +3,58 @@ import fs from "fs";
 
 import { prisma } from "../application/database";
 
-import { User, UserAddress, UserPermission } from "../generated/prisma";
+import { Contact, Portfolio, Prisma, User, UserAddress, UserPermission } from "../generated/prisma";
 
-import { UserRequest, UserResponse, toUserResponse } from "../model/user.model";
+import { UserDashboardFilters, UserRequest, UserResponse, toUserAddressResponse, toUserResponse } from "../model/user.model";
 
 import { Validation } from "../schema/validation";
 import { UserSchema } from "../schema/user.schema";
 
 export class UserService {
+  public static async dashboard(user: (User & { permissions: UserPermission | null }) | undefined, filters: UserDashboardFilters) {
+    // filter validation
+    const filterValidation: UserDashboardFilters = Validation.validate(UserSchema.DASHBOARD, filters);
+
+    // dynamic where
+    const where: Prisma.GuestVisitWhereInput = {};
+
+    // get data for charts
+    const findCharts = await prisma.guestVisit.groupBy({
+      by: ["visitDate"],
+      _count: { _all: true },
+      where: where,
+    });
+
+    // get data for portfolios
+    const portfolios: (Portfolio & { author: User | null })[] = await prisma.portfolio.findMany({
+      where: {
+        authorId: user?.id!,
+      },
+      include: {
+        author: true,
+      },
+    });
+
+    // get data for contacts
+    const contacts: (Contact & { handler: User | null })[] = await prisma.contact.findMany({
+      where: {
+        handlerId: user?.id!,
+      },
+      include: {
+        handler: true,
+      },
+    });
+
+    console.info({
+      findCharts,
+      portfolios,
+      contacts,
+    });
+
+    // return response
+    return findCharts;
+  }
+
   /**
    * Get user profile
    * @param {User & { permissions: UserPermission | null }} user user that contains user information
@@ -116,6 +160,12 @@ export class UserService {
     return toUserResponse(updatePhotoUser!);
   }
 
+  /**
+   * Get user personal info preview
+   * @param {User & { permissions: UserPermission | null }} user user that contains user information
+   * @returns {Promise<UserResponse>} promise that resolves when successfully get user personal info preview
+   * @throws {ResponseError} if user not found
+   */
   public static async updatePersonalInfoPreview(user: (User & { permissions: UserPermission | null }) | undefined): Promise<UserResponse> {
     // find user
     const findUser: (User & { permissions: UserPermission | null; address: UserAddress | null }) | null = await prisma.user.findUnique({ where: { id: user?.id! }, include: { address: true, permissions: true } });
@@ -129,6 +179,13 @@ export class UserService {
     return toUserResponse(findUser!);
   }
 
+  /**
+   * Update user personal info
+   * @param {User & { permissions: UserPermission | null }} user user that contains user information
+   * @param {UserRequest} request request that contains user personal info
+   * @returns {Promise<UserResponse>} promise that resolves when successfully update user personal info
+   * @throws {ResponseError} if user not found
+   */
   public static async updatePersonalInfo(user: (User & { permissions: UserPermission | null }) | undefined, request: UserRequest): Promise<UserResponse> {
     // request validation
     const response: UserRequest = Validation.validate(UserSchema.UPDATE_PERSONAL_INFO, request);
@@ -183,11 +240,75 @@ export class UserService {
     updatePasswordUser.password = undefined!;
     updatePasswordUser.email = undefined!;
     updatePasswordUser.phoneNumber = undefined!;
+    updatePasswordUser.photo = undefined!;
     updatePasswordUser.role = undefined!;
     updatePasswordUser.permissions = undefined!;
     updatePasswordUser.address = undefined!;
 
     // return response
     return toUserResponse(updatePasswordUser);
+  }
+
+  /**
+   * Get user address preview
+   * @param {User & { permissions: UserPermission | null }} user user that contains user information
+   * @returns {Promise<UserResponse>} promise that resolves when successfully get user address preview
+   * @throws {ResponseError} if user not found
+   */
+  public static async updateAddressPreview(user: (User & { permissions: UserPermission | null }) | undefined): Promise<UserResponse> {
+    // find user address
+    const findAddressUser: (User & { address: UserAddress | null }) | null = await prisma.user.findUnique({
+      where: {
+        id: user?.id!,
+      },
+      include: {
+        address: true,
+      },
+    });
+
+    return toUserAddressResponse(findAddressUser!);
+  }
+
+  /**
+   * Update user address
+   * @param {User & { permissions: UserPermission | null }} user user that contains user information
+   * @param {UserRequest} request request that contains user address information
+   * @returns {Promise<UserResponse>} promise that resolves when successfully update user address
+   * @throws {ResponseError} if user not found or request is invalid
+   */
+  public static async updateAddress(user: (User & { permissions: UserPermission | null }) | undefined, request: UserRequest): Promise<UserResponse> {
+    // request validation
+    const requestValidation: UserRequest = Validation.validate<UserRequest>(UserSchema.UPDATE_ADDRESS, request);
+
+    // find user address
+    const findAddressUser = await prisma.user.update({
+      where: {
+        id: user?.id!,
+      },
+      data: {
+        address: {
+          update: {
+            city: requestValidation.city!,
+            country: requestValidation.country!,
+            zipCode: requestValidation.zipCode!,
+          },
+        },
+      },
+      include: {
+        address: true,
+        permissions: true,
+      },
+    });
+
+    // specify return
+    findAddressUser.password = undefined!;
+    findAddressUser.email = undefined!;
+    findAddressUser.phoneNumber = undefined!;
+    findAddressUser.photo = undefined!;
+    findAddressUser.role = undefined!;
+    findAddressUser.permissions = undefined!;
+    findAddressUser.address = undefined!;
+
+    return toUserResponse(findAddressUser);
   }
 }
