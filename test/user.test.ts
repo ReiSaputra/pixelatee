@@ -1,10 +1,42 @@
 import request from "supertest";
 import fs from "fs";
 
-import { AdminUtil } from "./util/admin.util";
-
 import { web } from "../src/application/web";
+
+import { AdminUtil } from "./util/admin.util";
+import { PortfolioUtil } from "./util/portfolio.util";
+import { ClientUtil } from "./util/client.util";
+import { ContactUtil } from "./util/contact.util";
+import { GuestUtil } from "./util/guest.util";
 import { prisma } from "../src/application/database";
+
+describe.only("GET /api/v1/users/dashboard", () => {
+  let admin1: string;
+  let token: string;
+  let client1: string;
+
+  beforeEach(async () => {
+    admin1 = await AdminUtil.createAdmin("Han", "fthrn.s27@pixelatee.com", "patangpuluhpatang", "ADMIN", true);
+    token = await AdminUtil.login("fthrn.s27@pixelatee.com", "patangpuluhpatang");
+    client1 = await ClientUtil.createClient("Air Nomad");
+    await PortfolioUtil.createAllPortfolio(10, admin1, client1);
+    await ContactUtil.createAllContact(20, admin1);
+    await GuestUtil.createAllVisitor(20);
+  });
+
+  afterEach(async () => {
+    await GuestUtil.deleteAllVisitor();
+    await PortfolioUtil.deleteAllPortfolio();
+    await ContactUtil.deleteAllContact();
+    await AdminUtil.deleteAdmin(admin1);
+  });
+
+  it("should pass - get dashboard", async () => {
+    const response = await request(web).get("/api/v1/users/dashboard").set("Authorization", `Bearer ${token}`);
+    
+    expect(response.status).toBe(200);
+  });
+});
 
 describe("GET /api/v1/users/profiles", () => {
   let admin1: string;
@@ -281,4 +313,8 @@ describe("PATCH /api/v1/users/profiles/addresses", () => {
 
     expect(response.status).toBe(401);
   });
+});
+
+afterAll(async () => {
+  await GuestUtil.deleteAllVisitor();
 });

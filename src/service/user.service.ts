@@ -11,28 +11,47 @@ import { Validation } from "../schema/validation";
 import { UserSchema } from "../schema/user.schema";
 
 export class UserService {
-  public static async dashboard(user: (User & { permissions: UserPermission | null }) | undefined, filters: UserDashboardFilters) {
-    // filter validation
-    const filterValidation: UserDashboardFilters = Validation.validate(UserSchema.DASHBOARD, filters);
-
-    // dynamic where
-    const where: Prisma.GuestVisitWhereInput = {};
-
-    // get data for charts
-    const findCharts = await prisma.guestVisit.groupBy({
+  public static async dashboard(user: (User & { permissions: UserPermission | null }) | undefined) {
+    // get data for charts weekly
+    const grouped = await prisma.guestVisit.groupBy({
       by: ["visitDate"],
+      orderBy: { visitDate: "asc" },
       _count: { _all: true },
-      where: where,
     });
+
+    // create range date
+    const today = new Date();
+
+    const last7Days: (string | undefined)[] = Array.from({ length: 7 }).map((_, i) => {
+      const d = new Date(today);
+      d.setDate(d.getDate() - i);
+      return d.toISOString().split("T")[0];
+    });
+
+    // mapping the range date
+    const finalData: {
+      date: string | undefined;
+      count: number;
+    }[] = last7Days.reverse().map((date) => {
+      const found = grouped.find((g) => g.visitDate.toISOString().startsWith(date!));
+      return {
+        date,
+        count: found ? found._count._all : 0,
+      };
+    });
+
+    console.info(finalData);
 
     // get data for portfolios
     const portfolios: (Portfolio & { author: User | null })[] = await prisma.portfolio.findMany({
       where: {
         authorId: user?.id!,
       },
+      take: 5,
       include: {
         author: true,
       },
+      orderBy: { createdAt: "desc" },
     });
 
     // get data for contacts
@@ -40,19 +59,19 @@ export class UserService {
       where: {
         handlerId: user?.id!,
       },
+      take: 5,
       include: {
         handler: true,
       },
-    });
-
-    console.info({
-      findCharts,
-      portfolios,
-      contacts,
+      orderBy: { createdAt: "desc" },
     });
 
     // return response
-    return findCharts;
+    return {
+      chart: finalData,
+      portfolios,
+      contacts,
+    };
   }
 
   /**

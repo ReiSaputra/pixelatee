@@ -4,7 +4,7 @@ import { prisma } from "../application/database";
 
 import { Portfolio, Prisma, User, UserPermission } from "../generated/prisma";
 
-import { AdminFilters, AdminPaginationResponse, AdminParams, AdminRegisterRequest, AdminResponse, toAdminPaginationResponse, toAdminResponse, toAdminsResponse } from "../model/super-admin.model";
+import { AdminFilters, AdminPaginationResponse, AdminParams, AdminPermissionRequest, AdminRegisterRequest, AdminResponse, toAdminPaginationResponse, toAdminResponse, toAdminsResponse } from "../model/super-admin.model";
 
 import { SuperAdminSchema } from "../schema/super-admin.schema";
 import { Validation } from "../schema/validation";
@@ -135,7 +135,6 @@ export class SuperAdminService {
     // delete permission
     await prisma.userPermission.delete({ where: { userId: findAdmin.id } });
 
-
     // delete admin
     const deleteAdmin: User = await prisma.user.delete({ where: { id: findAdmin.id } });
 
@@ -143,7 +142,7 @@ export class SuperAdminService {
     return toAdminResponse(deleteAdmin);
   }
 
-  public static async updateAdminPermission(params: AdminParams) {
+  public static async updateAdminPermissions(request: AdminPermissionRequest, params: AdminParams): Promise<AdminResponse> {
     // params validation
     const paramsValidation = Validation.validate<AdminParams>(SuperAdminSchema.DETAIL, params);
 
@@ -155,5 +154,54 @@ export class SuperAdminService {
     });
 
     // if admin not found then throw error
+    if (!findAdmin) throw new ResponseError("Admin not found");
+
+    // update permission
+    const updatePermission: UserPermission = await prisma.userPermission.update({
+      where: {
+        userId: findAdmin.id,
+      },
+      data: {
+        canReadAdmin: request.canReadAdmin,
+        canWriteAdmin: request.canWriteAdmin,
+        canUpdateAdmin: request.canUpdateAdmin,
+        canDeleteAdmin: request.canDeleteAdmin,
+
+        canReadClient: request.canReadClient,
+        canWriteClient: request.canWriteClient,
+        canUpdateClient: request.canUpdateClient,
+        canDeleteClient: request.canDeleteClient,
+
+        canReadContact: request.canReadContact,
+        canWriteContact: request.canWriteContact,
+        canUpdateContact: request.canUpdateContact,
+        canDeleteContact: request.canDeleteContact,
+
+        canReadNewsletter: request.canReadNewsletter,
+        canWriteNewsletter: request.canWriteNewsletter,
+        canUpdateNewsletter: request.canUpdateNewsletter,
+        canDeleteNewsletter: request.canDeleteNewsletter,
+
+        canReadPortfolio: request.canReadPortfolio,
+        canWritePortfolio: request.canWritePortfolio,
+        canUpdatePortfolio: request.canUpdatePortfolio,
+        canDeletePortfolio: request.canDeletePortfolio,
+      },
+    });
+
+    // if permission change the admin role
+    if (updatePermission.canReadAdmin || updatePermission.canWriteAdmin || updatePermission.canUpdateAdmin || updatePermission.canDeleteAdmin) {
+      await prisma.user.update({
+        where: {
+          id: findAdmin.id,
+        },
+        data: {
+          role: "SUPER_ADMIN",
+        },
+      });
+    }
+
+    // return permission
+    return toAdminResponse(findAdmin);
   }
 }

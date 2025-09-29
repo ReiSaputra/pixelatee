@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">87.5% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>7/8</span>
+                <span class='fraction'>0/8</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">83.33% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>5/6</span>
+                <span class='fraction'>0/6</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>2/2</span>
+                <span class='fraction'>0/2</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">85.71% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>6/7</span>
+                <span class='fraction'>0/7</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line high'></div>
+    <div class='status-line low'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -90,12 +90,12 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">87x</span>
-<span class="cline-any cline-yes">65x</span>
-<span class="cline-any cline-yes">22x</span>
-<span class="cline-any cline-yes">48x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -108,14 +108,14 @@ import jwt from "jsonwebtoken";
 import { ResponseError } from "../error/response.error";
 &nbsp;
 export class ErrorMiddleware {
-  public static handle(error: Error, req: express.Request, res: express.Response, next: express.NextFunction) {
-    if (error instanceof ResponseError) {
-      res.status(error.status).json({ status: "Error", code: error.status, error: error.name, message: error.message });
-    } else if (error instanceof z.ZodError) {
-      res.status(400).json({ status: "Error", code: 400, error: error.name, message: error.issues.map((issue) =&gt; issue.message) });
-    } else if (error instanceof jwt.JsonWebTokenError) {
-      res.status(401).json({ status: "Error", code: 401, error: error.name, message: error.message });
-    } else <span class="missing-if-branch" title="else path not taken" >E</span>{
+<span class="fstat-no" title="function not covered" >  pu</span>blic static handle(error: Error, req: express.Request, res: express.Response, next: express.NextFunction) {
+<span class="cstat-no" title="statement not covered" >    if (error instanceof ResponseError) {</span>
+<span class="cstat-no" title="statement not covered" >      res.status(error.status).json({ status: "Error", code: error.status, error: error.name, message: error.message });</span>
+    } else <span class="cstat-no" title="statement not covered" >if (error instanceof z.ZodError) {</span>
+<span class="cstat-no" title="statement not covered" >      res.status(400).json({ status: "Error", code: 400, error: error.name, message: error.issues.map(<span class="fstat-no" title="function not covered" >(i</span>ssue) =&gt; <span class="cstat-no" title="statement not covered" >issue.message)</span> });</span>
+    } else <span class="cstat-no" title="statement not covered" >if (error instanceof jwt.JsonWebTokenError) {</span>
+<span class="cstat-no" title="statement not covered" >      res.status(401).json({ status: "Error", code: 401, error: error.name, message: error.message });</span>
+    } else {
 <span class="cstat-no" title="statement not covered" >      res.status(500).json({ status: "Error", code: 500, error: error.name, message: error.message });</span>
     }
   }
@@ -127,7 +127,7 @@ export class ErrorMiddleware {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-09-22T09:45:42.737Z
+                at 2025-09-29T02:57:01.047Z
             </div>
         <script src="../prettify.js"></script>
         <script>

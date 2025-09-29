@@ -21,10 +21,11 @@
       "!src/helper/cron.helper.ts",
       "!**/node_modules/**",
       "!src/generated/**/**/*",
-      "!src/types/**/*"
+      "!src/types/**/*",
+      "!src/model/guest.model.ts"
     ],
     "transformIgnorePatterns": [
-      "/node_modules/(?!@faker-js)"
+      "/node_modules/(?!(uuid|@faker-js)/)"
     ]
   },
   "devDependencies": {
