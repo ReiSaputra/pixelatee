@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>4/4</span>
+                <span class='fraction'>0/4</span>
             </div>
         
             
@@ -37,16 +37,16 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>4/4</span>
+                <span class='fraction'>0/4</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>4/4</span>
+                <span class='fraction'>0/4</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line high'></div>
+    <div class='status-line low'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -221,7 +221,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">12x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -239,8 +239,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">7x</span>
-<span class="cline-any cline-yes">43x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -265,7 +265,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -326,8 +326,8 @@ export type PortfolioPaginationResponse = {
  * @param portfolio the Portfolio model to be converted
  * @returns the PortfolioResponse object
  */
-export function toPortfolioResponse(portfolio: Portfolio &amp; { client: Client | null }): PortfolioResponse {
-  return {
+export function <span class="fstat-no" title="function not covered" >toPortfolioResponse(</span>portfolio: Portfolio &amp; { client: Client | null }): PortfolioResponse {
+<span class="cstat-no" title="statement not covered" >  return {</span>
     title: portfolio.title,
     description: portfolio.description,
     client: portfolio.client?.name,
@@ -344,9 +344,9 @@ export function toPortfolioResponse(portfolio: Portfolio &amp; { client: Client 
  * @param portfolio an array of Portfolio models to be converted
  * @returns an array of PortfolioResponse that contains the converted Portfolio models
  */
-export function toPortfoliosResponse(portfolio: (Portfolio &amp; { client: Client | null })[]): PortfolioResponse[] {
-  return portfolio.map((item) =&gt; {
-    return {
+export function <span class="fstat-no" title="function not covered" >toPortfoliosResponse(</span>portfolio: (Portfolio &amp; { client: Client | null })[]): PortfolioResponse[] {
+<span class="cstat-no" title="statement not covered" >  return portfolio.map(<span class="fstat-no" title="function not covered" >(i</span>tem) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >    return {</span>
       id: item.id,
       title: item.title,
       description: item.description!,
@@ -370,8 +370,8 @@ export function toPortfoliosResponse(portfolio: (Portfolio &amp; { client: Clien
  * @param totalPage the total page of the Portfolio models
  * @returns a PortfolioPaginationResponse object that contains the converted Portfolio models and pagination information
  */
-export function toPortfolioPaginationResponse(portfolio: (Portfolio &amp; { client: Client | null })[], page: number, limit: number, totalData: number, totalPage: number): PortfolioPaginationResponse {
-  return {
+export function <span class="fstat-no" title="function not covered" >toPortfolioPaginationResponse(</span>portfolio: (Portfolio &amp; { client: Client | null })[], page: number, limit: number, totalData: number, totalPage: number): PortfolioPaginationResponse {
+<span class="cstat-no" title="statement not covered" >  return {</span>
     portfolios: toPortfoliosResponse(portfolio),
     pagination: {
       page: page,
@@ -388,7 +388,7 @@ export function toPortfolioPaginationResponse(portfolio: (Portfolio &amp; { clie
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-09-22T09:45:42.737Z
+                at 2025-09-29T02:57:01.047Z
             </div>
         <script src="../prettify.js"></script>
         <script>

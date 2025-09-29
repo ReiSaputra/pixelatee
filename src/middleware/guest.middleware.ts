@@ -1,12 +1,12 @@
 import express from "express";
-import uuid from "uuid";
+import { v4 as uuid } from "uuid";
 
 import { CookieGuest } from "../model/guest.model";
 
 import { prisma } from "../application/database";
 
 export class GuestMiddleware {
-  public static async dailyVisit(req: express.Request, res: express.Response, next: express.NextFunction) {
+  public static async dailyVisit(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
     try {
       // assert cookie
       const cookie: CookieGuest = req.signedCookies as CookieGuest;
@@ -14,7 +14,7 @@ export class GuestMiddleware {
       // if cookie is not exist, create new cookie
       if (!cookie.visitorId) {
         // cookie
-        const visitorId: string = uuid.v4();
+        const visitorId: string = uuid();
 
         // create cookie
         res.cookie("visitorId", visitorId, {

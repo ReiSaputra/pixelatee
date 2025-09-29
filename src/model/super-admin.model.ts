@@ -8,7 +8,7 @@ export type AdminFilters = {
   page: number;
   search?: string | undefined;
   role?: $Enums.UserRole | undefined;
-}
+};
 
 export type AdminRegisterRequest = {
   name: string;
@@ -44,6 +44,33 @@ export type AdminPaginationResponse = {
   };
 };
 
+export type AdminPermissionRequest = {
+  canReadNewsletter: boolean;
+  canWriteNewsletter: boolean;
+  canUpdateNewsletter: boolean;
+  canDeleteNewsletter: boolean;
+
+  canReadClient: boolean;
+  canWriteClient: boolean;
+  canUpdateClient: boolean;
+  canDeleteClient: boolean;
+
+  canReadPortfolio: boolean;
+  canWritePortfolio: boolean;
+  canUpdatePortfolio: boolean;
+  canDeletePortfolio: boolean;
+
+  canReadContact: boolean;
+  canWriteContact: boolean;
+  canUpdateContact: boolean;
+  canDeleteContact: boolean;
+
+  canReadAdmin: boolean;
+  canWriteAdmin: boolean;
+  canUpdateAdmin: boolean;
+  canDeleteAdmin: boolean;
+};
+
 export function toAdminResponse(admin: User): AdminResponse {
   return {
     name: admin.name,
@@ -73,5 +100,3 @@ export function toAdminPaginationResponse(admin: User[], page: number, limit: nu
     },
   };
 }
-
-

@@ -212,6 +212,7 @@ describe("GET /api/v1/admin/clients/form", () => {
 
   afterEach(async () => {
     await AdminUtil.deleteAdmin(admin1);
+    await ClientUtil.deleteAllClient();
   });
 
   it("should pass - get form client", async () => {
