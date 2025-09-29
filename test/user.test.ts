@@ -33,8 +33,14 @@ describe.only("GET /api/v1/users/dashboard", () => {
 
   it("should pass - get dashboard", async () => {
     const response = await request(web).get("/api/v1/users/dashboard").set("Authorization", `Bearer ${token}`);
-    
+
     expect(response.status).toBe(200);
+  });
+
+  it("should fail - no authorization", async () => {
+    const response = await request(web).get("/api/v1/users/dashboard");
+
+    expect(response.status).toBe(401);
   });
 });
 
@@ -53,7 +59,7 @@ describe("GET /api/v1/users/profiles", () => {
 
   it("should pass - get profile", async () => {
     const response: request.Response = await request(web).get("/api/v1/users/profiles").set("Authorization", `Bearer ${token}`);
-
+    console.info(response.body.data);
     expect(response.status).toBe(200);
   });
 
