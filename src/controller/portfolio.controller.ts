@@ -130,14 +130,14 @@ export class PortfolioController {
       // assert files
       const files: Express.Multer.File[] = req.files as Express.Multer.File[];
 
-      // assert files to request if exists
-      if (files && Array.isArray(files)) {
-        request.mainImage = files[0]?.mimetype!;
-        request.secondImage = files[1]?.mimetype;
-        request.thirdImage = files[2]?.mimetype;
-        request.fourthImage = files[3]?.mimetype;
-        request.fifthImage = files[4]?.mimetype;
-      }
+      // // assert files to request if exists
+      // if (files && Array.isArray(files)) {
+      //   request.mainImage = files[0]?.mimetype!;
+      //   request.secondImage = files[1]?.mimetype;
+      //   request.thirdImage = files[2]?.mimetype;
+      //   request.fourthImage = files[3]?.mimetype;
+      //   request.fifthImage = files[4]?.mimetype;
+      // }
 
       // call service
       const response: PortfolioResponse = await PortfolioService.adminCreate(user, request, files);

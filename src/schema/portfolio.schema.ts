@@ -14,23 +14,23 @@ export class PortfolioSchema {
     description: z.string({ error: "Invalid type of description, must be string" }),
     status: z.enum(["PUBLISHED"], { error: "Invalid type of status, must be PUBLISHED" }),
     client: z.string({ error: "Invalid type of client, must be string" }),
-    mainImage: z.string({ error: "Invalid type of main image, must be string" }).regex(/^image\/(png|jpeg)$/, { error: "Main image must be a PNG or JPEG image" }),
-    secondImage: z
-      .string({ error: "Invalid type of second image, must be string" })
-      .regex(/^image\/(png|jpeg)$/, { error: "Second image must be a PNG or JPEG image" })
-      .optional(),
-    thirdImage: z
-      .string({ error: "Invalid type of third image, must be string" })
-      .regex(/^image\/(png|jpeg)$/, { error: "Third image must be a PNG or JPEG image" })
-      .optional(),
-    fourthImage: z
-      .string({ error: "Invalid type of fourth image, must be string" })
-      .regex(/^image\/(png|jpeg)$/, { error: "Fourth image must be a PNG or JPEG image" })
-      .optional(),
-    fifthImage: z
-      .string({ error: "Invalid type of fifth image, must be string" })
-      .regex(/^image\/(png|jpeg)$/, { error: "Fifth image must be a PNG or JPEG image" })
-      .optional(),
+    // mainImage: z.string({ error: "Invalid type of main image, must be string" }).regex(/^image\/(png|jpeg)$/, { error: "Main image must be a PNG or JPEG image" }),
+    // secondImage: z
+    //   .string({ error: "Invalid type of second image, must be string" })
+    //   .regex(/^image\/(png|jpeg)$/, { error: "Second image must be a PNG or JPEG image" })
+    //   .optional(),
+    // thirdImage: z
+    //   .string({ error: "Invalid type of third image, must be string" })
+    //   .regex(/^image\/(png|jpeg)$/, { error: "Third image must be a PNG or JPEG image" })
+    //   .optional(),
+    // fourthImage: z
+    //   .string({ error: "Invalid type of fourth image, must be string" })
+    //   .regex(/^image\/(png|jpeg)$/, { error: "Fourth image must be a PNG or JPEG image" })
+    //   .optional(),
+    // fifthImage: z
+    //   .string({ error: "Invalid type of fifth image, must be string" })
+    //   .regex(/^image\/(png|jpeg)$/, { error: "Fifth image must be a PNG or JPEG image" })
+    //   .optional(),
   });
 
   public static readonly UPDATE: z.ZodType<PortfolioRequest> = z.strictObject({

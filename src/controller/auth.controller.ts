@@ -20,10 +20,6 @@ export class AuthController {
       // call service
       const response: AuthResponse = await AuthService.login(request);
 
-<<<<<<< HEAD
-    // set session cookie
-    res.cookie("session", response.token, { httpOnly: true, secure: false, sameSite: "lax", signed: true });
-=======
       // set session cookie
       res.cookie("session", response.token, {
         httpOnly: true,
@@ -32,7 +28,6 @@ export class AuthController {
         signed: true,
         maxAge: 7 * 24 * 60 * 60 * 1000,
       });
->>>>>>> db248f6a3f3604cbf2f243f2fff1a20f3ec9dda2
 
       // return response
       res.status(200).json({ status: "Success", code: 200, data: response, message: "User logged in successfully" });
