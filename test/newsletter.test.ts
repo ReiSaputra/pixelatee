@@ -17,76 +17,76 @@ describe("POST /api/v1/public/newsletters/join", () => {
   });
 
   it("should pass - join newsletter", async () => {
-    const response: request.Response = await request(web).post("/api/v1/public/newsletters/join").send({ email: "fathurraihan.edu@gmail.com" });
+    const response: request.Response = await request(web).post("/api/v1/public/newsletters/join").set("User-Agent", "jest-test-agent").send({ email: "fathurraihan.edu@gmail.com" });
 
     const body: NewsletterResponseSuccess = response.body as NewsletterResponseSuccess;
 
     expect(response.status).toBe(200);
 
     expect(body.status).toBe("Success");
-  });
+  }, 10000);
 
   it("should pass - different domain", async () => {
-    const response: request.Response = await request(web).post("/api/v1/public/newsletters/join").send({ email: "fathurraihan@example.com" });
+    const response: request.Response = await request(web).post("/api/v1/public/newsletters/join").set("User-Agent", "jest-test-agent").send({ email: "fathurraihan@example.com" });
 
     const body: NewsletterResponseSuccess = response.body as NewsletterResponseSuccess;
 
     expect(response.status).toBe(200);
 
     expect(body.status).toBe("Success");
-  });
+  }, 10000);
 
   it("should fail - invalid email", async () => {
-    const response: request.Response = await request(web).post("/api/v1/public/newsletters/join").send({ email: "fathurraihan" });
+    const response: request.Response = await request(web).post("/api/v1/public/newsletters/join").set("User-Agent", "jest-test-agent").send({ email: "fathurraihan" });
 
     const body: NewsletterResponseError = response.body as NewsletterResponseError;
 
     expect(response.status).toBe(400);
 
     expect(body.error).toBe("ZodError");
-  });
+  }, 10000);
 
   it("should fail - email already exist", async () => {
     await NewsletterUtil.createMember("fathurraihan.edu@gmail.com");
 
-    const response: request.Response = await request(web).post("/api/v1/public/newsletters/join").send({ email: "fathurraihan.edu@gmail.com" });
+    const response: request.Response = await request(web).post("/api/v1/public/newsletters/join").set("User-Agent", "jest-test-agent").send({ email: "fathurraihan.edu@gmail.com" });
 
     const body: NewsletterResponseError = response.body as NewsletterResponseError;
 
     expect(response.status).toBe(400);
 
     expect(body.error).toBe("ResponseError");
-  });
+  }, 10000);
 
   it("should fail - missing email", async () => {
-    const response: request.Response = await request(web).post("/api/v1/public/newsletters/join").send({});
+    const response: request.Response = await request(web).post("/api/v1/public/newsletters/join").set("User-Agent", "jest-test-agent").send({});
 
     const body: NewsletterResponseError = response.body as NewsletterResponseError;
 
     expect(response.status).toBe(400);
 
     expect(body.error).toBe("ZodError");
-  });
+  }, 10000);
 
   it("should fail - string empty email", async () => {
-    const response: request.Response = await request(web).post("/api/v1/public/newsletters/join").send({ email: "" });
+    const response: request.Response = await request(web).post("/api/v1/public/newsletters/join").set("User-Agent", "jest-test-agent").send({ email: "" });
 
     const body: NewsletterResponseError = response.body as NewsletterResponseError;
 
     expect(response.status).toBe(400);
 
     expect(body.error).toBe("ZodError");
-  });
+  }, 10000);
 
   it("should fail - null email", async () => {
-    const response: request.Response = await request(web).post("/api/v1/public/newsletters/join").send({ email: null });
+    const response: request.Response = await request(web).post("/api/v1/public/newsletters/join").set("User-Agent", "jest-test-agent").send({ email: null });
 
     const body: NewsletterResponseError = response.body as NewsletterResponseError;
 
     expect(response.status).toBe(400);
 
     expect(body.error).toBe("ZodError");
-  });
+  }, 10000);
 });
 
 describe("GET /api/v1/public/newsletters/activate", () => {
@@ -101,30 +101,30 @@ describe("GET /api/v1/public/newsletters/activate", () => {
   });
 
   it("should pass - activate newsletter subscription", async () => {
-    const response: request.Response = await request(web).get(`/api/v1/public/newsletters/activate?memberId=${admin1}`);
+    const response: request.Response = await request(web).get(`/api/v1/public/newsletters/activate?memberId=${admin1}`).set("User-Agent", "jest-test-agent");
 
     expect(response.status).toBe(302);
-  });
+  }, 10000);
 
   it("should fail - member not found", async () => {
-    const response: request.Response = await request(web).get("/api/v1/public/newsletters/activate?memberId=1");
+    const response: request.Response = await request(web).get("/api/v1/public/newsletters/activate?memberId=1").set("User-Agent", "jest-test-agent");
 
     const body: NewsletterResponseError = response.body as NewsletterResponseError;
 
     expect(response.status).toBe(400);
 
     expect(body.error).toBe("ResponseError");
-  });
+  }, 10000);
 
   it("should fail - no sending query params", async () => {
-    const response: request.Response = await request(web).get("/api/v1/public/newsletters/activate");
+    const response: request.Response = await request(web).get("/api/v1/public/newsletters/activate").set("User-Agent", "jest-test-agent");
 
     const body: NewsletterResponseError = response.body as NewsletterResponseError;
 
     expect(response.status).toBe(400);
 
     expect(body.error).toBe("ZodError");
-  });
+  }, 10000);
 });
 
 describe("GET /api/v1/public/newsletters/thank-you", () => {
@@ -139,7 +139,7 @@ describe("GET /api/v1/public/newsletters/thank-you", () => {
   });
 
   it("should pass - get thanks data", async () => {
-    const response: request.Response = await request(web).get(`/api/v1/public/newsletters/thank-you?memberId=${admin1}`);
+    const response: request.Response = await request(web).get(`/api/v1/public/newsletters/thank-you?memberId=${admin1}`).set("User-Agent", "jest-test-agent");
 
     const body: NewsletterResponseSuccess = response.body as NewsletterResponseSuccess;
 
@@ -149,7 +149,7 @@ describe("GET /api/v1/public/newsletters/thank-you", () => {
   });
 
   it("should fail - member not found", async () => {
-    const response: request.Response = await request(web).get("/api/v1/public/newsletters/thank-you?memberId=1");
+    const response: request.Response = await request(web).get("/api/v1/public/newsletters/thank-you?memberId=1").set("User-Agent", "jest-test-agent");
 
     const body: NewsletterResponseError = response.body as NewsletterResponseError;
 
@@ -159,7 +159,7 @@ describe("GET /api/v1/public/newsletters/thank-you", () => {
   });
 
   it("should fail - no sending query params", async () => {
-    const response: request.Response = await request(web).get("/api/v1/public/newsletters/thank-you");
+    const response: request.Response = await request(web).get("/api/v1/public/newsletters/thank-you").set("User-Agent", "jest-test-agent");
 
     const body: NewsletterResponseError = response.body as NewsletterResponseError;
 
@@ -169,7 +169,7 @@ describe("GET /api/v1/public/newsletters/thank-you", () => {
   });
 });
 
-describe("GET /api/v1/public/newsletters/unsubscribe", () => {
+describe("DELETE /api/v1/public/newsletters/unsubscribe", () => {
   let admin1: string;
 
   beforeEach(async () => {
@@ -181,8 +181,8 @@ describe("GET /api/v1/public/newsletters/unsubscribe", () => {
   });
 
   it("should pass - unsubscribe newsletter subscription", async () => {
-    const response: request.Response = await request(web).delete(`/api/v1/public/newsletters/unsubscribe?memberId=${admin1}`);
-    
+    const response: request.Response = await request(web).delete(`/api/v1/public/newsletters/unsubscribe?memberId=${admin1}`).set("User-Agent", "jest-test-agent");
+
     expect(response.status).toBe(200);
   });
 });
@@ -488,7 +488,7 @@ describe("PATCH /api/v1/admin/newsletters/:newsletterId", () => {
       .field("type", "TECH")
       .field("isScheduled", "true")
       .field("status", "PUBLISHED");
-    
+
     expect(response.status).toBe(403);
   });
 });

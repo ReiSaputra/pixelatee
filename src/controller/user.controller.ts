@@ -13,14 +13,11 @@ export class UserController {
       // assert user
       const user: (User & { permissions: UserPermission | null }) | undefined = req.user;
 
-      // assert query params
-      const filters: UserDashboardFilters = req.query as unknown as UserDashboardFilters; 
-
       // call service
-      const response = await UserService.dashboard(user, filters);
+      const response = await UserService.dashboard(user);
 
       // return response
-      res.status(200).json({ status: "Success", code: 200, data: {}, message: "Get dashboard successfully" });
+      res.status(200).json({ status: "Success", code: 200, data: response, message: "Get dashboard successfully" });
     } catch (error: any) {
       next(error);
     }

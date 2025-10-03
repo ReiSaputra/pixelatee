@@ -16,7 +16,10 @@ describe("POST /api/v1/public/contacts", () => {
   });
 
   it("should pass - create contact", async () => {
-    const response: request.Response = await request(web).post("/api/v1/public/contacts").send({ name: "Fathurraihan Saputra", email: "fathurraihan@example.com", subject: "test", message: "test", type: "IT_CONSULTATION" });
+    const response: request.Response = await request(web)
+      .post("/api/v1/public/contacts")
+      .set("User-Agent", "jest-test-agent")
+      .send({ name: "Fathurraihan Saputra", email: "fathurraihan@example.com", subject: "test", message: "test", type: "IT_CONSULTATION" });
 
     const body: ContactResponseSuccess = response.body as ContactResponseSuccess;
 
@@ -24,7 +27,10 @@ describe("POST /api/v1/public/contacts", () => {
   });
 
   it("should fail - wrong type", async () => {
-    const response: request.Response = await request(web).post("/api/v1/public/contacts").send({ name: "Fathurraihan Saputra", email: "fathurraihan@example.com", subject: "test", message: "test", type: "IT" });
+    const response: request.Response = await request(web)
+      .post("/api/v1/public/contacts")
+      .set("User-Agent", "jest-test-agent")
+      .send({ name: "Fathurraihan Saputra", email: "fathurraihan@example.com", subject: "test", message: "test", type: "IT" });
 
     const body: ContactResponseError = response.body as ContactResponseError;
 
@@ -34,7 +40,7 @@ describe("POST /api/v1/public/contacts", () => {
   });
 
   it("should fail - null properties", async () => {
-    const response: request.Response = await request(web).post("/api/v1/public/contacts").send({ name: null, email: null, subject: null, message: null, type: null });
+    const response: request.Response = await request(web).post("/api/v1/public/contacts").set("User-Agent", "jest-test-agent").send({ name: null, email: null, subject: null, message: null, type: null });
 
     const body: ContactResponseError = response.body as ContactResponseError;
 
@@ -44,7 +50,7 @@ describe("POST /api/v1/public/contacts", () => {
   });
 
   it("should fail - empty string properties", async () => {
-    const response: request.Response = await request(web).post("/api/v1/public/contacts").send({ name: "", email: "", subject: "", message: "", type: "" });
+    const response: request.Response = await request(web).post("/api/v1/public/contacts").set("User-Agent", "jest-test-agent").send({ name: "", email: "", subject: "", message: "", type: "" });
 
     const body: ContactResponseError = response.body as ContactResponseError;
 
@@ -54,7 +60,7 @@ describe("POST /api/v1/public/contacts", () => {
   });
 
   it("should fail - undefined properties", async () => {
-    const response: request.Response = await request(web).post("/api/v1/public/contacts").send({ name: undefined, email: undefined, subject: undefined, message: undefined, type: undefined });
+    const response: request.Response = await request(web).post("/api/v1/public/contacts").set("User-Agent", "jest-test-agent").send({ name: undefined, email: undefined, subject: undefined, message: undefined, type: undefined });
 
     const body: ContactResponseError = response.body as ContactResponseError;
 
@@ -84,6 +90,14 @@ describe("GET /api/v1/admin/contacts", () => {
 
   it("should pass - get all contact on page 1", async () => {
     const response: request.Response = await request(web).get("/api/v1/admin/contacts?page=1").set("Authorization", `Bearer ${token}`);
+
+    const body: ContactPaginationResponseSuccess = response.body as ContactPaginationResponseSuccess;
+
+    expect(response.status).toBe(200);
+  });
+
+  it("should pass - get all contact on page 2", async () => {
+    const response: request.Response = await request(web).get("/api/v1/admin/contacts?page=2").set("Authorization", `Bearer ${token}`);
 
     const body: ContactPaginationResponseSuccess = response.body as ContactPaginationResponseSuccess;
 

@@ -1,6 +1,6 @@
 import z from "zod";
 
-import { AdminFilters, AdminParams, AdminRegisterRequest } from "../model/super-admin.model";
+import { AdminFilters, AdminParams, AdminPermissionRequest, AdminRegisterRequest } from "../model/super-admin.model";
 
 export class SuperAdminSchema {
   public static readonly REGISTER_ADMIN: z.ZodType<AdminRegisterRequest> = z
@@ -33,4 +33,33 @@ export class SuperAdminSchema {
     search: z.string({ error: "Invalid type of search, must be string" }).optional(),
     role: z.enum(["SUPER_ADMIN", "ADMIN"], { error: "Invalid type of role, must be SUPER_ADMIN or ADMIN" }).optional(),
   });
+
+  public static readonly UPDATE_PERMISSION_ADMIN: z.ZodType<AdminPermissionRequest> = z
+    .strictObject({
+      canReadNewsletter: z.boolean({ error: "Invalid type of canReadNewsletter, must be boolean" }),
+      canWriteNewsletter: z.boolean({ error: "Invalid type of canWriteNewsletter, must be boolean" }),
+      canUpdateNewsletter: z.boolean({ error: "Invalid type of canUpdateNewsletter, must be boolean" }),
+      canDeleteNewsletter: z.boolean({ error: "Invalid type of canDeleteNewsletter, must be boolean" }),
+
+      canReadClient: z.boolean({ error: "Invalid type of canReadClient, must be boolean" }),
+      canWriteClient: z.boolean({ error: "Invalid type of canWriteClient, must be boolean" }),
+      canUpdateClient: z.boolean({ error: "Invalid type of canUpdateClient, must be boolean" }),
+      canDeleteClient: z.boolean({ error: "Invalid type of canDeleteClient, must be boolean" }),
+
+      canReadPortfolio: z.boolean({ error: "Invalid type of canReadPortfolio, must be boolean" }),
+      canWritePortfolio: z.boolean({ error: "Invalid type of canWritePortfolio, must be boolean" }),
+      canUpdatePortfolio: z.boolean({ error: "Invalid type of canUpdatePortfolio, must be boolean" }),
+      canDeletePortfolio: z.boolean({ error: "Invalid type of canDeletePortfolio, must be boolean" }),
+
+      canReadContact: z.boolean({ error: "Invalid type of canReadContact, must be boolean" }),
+      canWriteContact: z.boolean({ error: "Invalid type of canWriteContact, must be boolean" }),
+      canUpdateContact: z.boolean({ error: "Invalid type of canUpdateContact, must be boolean" }),
+      canDeleteContact: z.boolean({ error: "Invalid type of canDeleteContact, must be boolean" }),
+
+      canReadAdmin: z.boolean({ error: "Invalid type of canReadAdmin, must be boolean" }),
+      canWriteAdmin: z.boolean({ error: "Invalid type of canWriteAdmin, must be boolean" }),
+      canUpdateAdmin: z.boolean({ error: "Invalid type of canUpdateAdmin, must be boolean" }),
+      canDeleteAdmin: z.boolean({ error: "Invalid type of canDeleteAdmin, must be boolean" }),
+    })
+    .required();
 }

@@ -3,56 +3,93 @@ import fs from "fs";
 
 import { prisma } from "../application/database";
 
-import { Contact, Portfolio, Prisma, User, UserAddress, UserPermission } from "../generated/prisma";
+import { User, UserAddress, UserPermission } from "../generated/prisma";
 
-import { UserDashboardFilters, UserRequest, UserResponse, toUserAddressResponse, toUserResponse } from "../model/user.model";
+import { UserRequest, UserResponse, toUserAddressResponse, toUserResponse } from "../model/user.model";
 
 import { Validation } from "../schema/validation";
 import { UserSchema } from "../schema/user.schema";
 
 export class UserService {
-  public static async dashboard(user: (User & { permissions: UserPermission | null }) | undefined, filters: UserDashboardFilters) {
-    // filter validation
-    const filterValidation: UserDashboardFilters = Validation.validate(UserSchema.DASHBOARD, filters);
-
-    // dynamic where
-    const where: Prisma.GuestVisitWhereInput = {};
-
-    // get data for charts
-    const findCharts = await prisma.guestVisit.groupBy({
+  public static async dashboard(user: (User & { permissions: UserPermission | null }) | undefined) {
+    // get data for charts weekly
+    const grouped = await prisma.guestVisit.groupBy({
       by: ["visitDate"],
+      orderBy: { visitDate: "asc" },
       _count: { _all: true },
-      where: where,
     });
 
+    // create range date
+    const today = new Date();
+
+    const last7Days: (string | undefined)[] = Array.from({ length: 7 }).map((_, i) => {
+      const d = new Date(today);
+      d.setDate(d.getDate() - i);
+      return d.toISOString().split("T")[0];
+    });
+
+    // mapping the range date
+    const finalData: {
+      date: string | undefined;
+      count: number;
+    }[] = last7Days.reverse().map((date) => {
+      const found = grouped.find((g) => g.visitDate.toISOString().startsWith(date!));
+      return {
+        date,
+        count: found ? found._count._all : 0,
+      };
+    });
+
+    console.info(finalData);
+
     // get data for portfolios
-    const portfolios: (Portfolio & { author: User | null })[] = await prisma.portfolio.findMany({
+    const portfolios = await prisma.portfolio.findMany({
       where: {
         authorId: user?.id!,
       },
-      include: {
-        author: true,
+      take: 5,
+      select: {
+        id: true,
+        title: true,
+        mainImage: true,
+        client: {
+          select: {
+            name: true,
+          },
+        },
+        status: true,
+        createdAt: true,
       },
+      orderBy: { createdAt: "desc" },
     });
 
     // get data for contacts
-    const contacts: (Contact & { handler: User | null })[] = await prisma.contact.findMany({
+    const contacts = await prisma.contact.findMany({
       where: {
         handlerId: user?.id!,
       },
-      include: {
-        handler: true,
+      take: 5,
+      select: {
+        id: true,
+        subject: true,
+        name: true,
+        email: true,
+        handler: {
+          select: {
+            name: true,
+          },
+        },
+        createdAt: true,
       },
-    });
-
-    console.info({
-      findCharts,
-      portfolios,
-      contacts,
+      orderBy: { createdAt: "desc" },
     });
 
     // return response
-    return findCharts;
+    return {
+      chart: finalData,
+      portfolios,
+      contacts,
+    };
   }
 
   /**

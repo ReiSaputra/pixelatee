@@ -4,7 +4,7 @@ import { UserDashboardFilters, UserRequest } from "../model/user.model";
 
 export class UserSchema {
   public static readonly DASHBOARD: z.ZodType<UserDashboardFilters> = z.strictObject({
-    filter: z.enum(["7d", "30d", "1y"]).optional(),
+    filter: z.enum(["7d", "30d", "1y"]).optional().default("7d"),
   });
 
   public static readonly UPDATE_PHOTO: z.ZodType<UserRequest> = z.strictObject({

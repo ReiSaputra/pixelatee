@@ -7,6 +7,7 @@ import { FileUploadMiddleware } from "../middleware/file-upload.middleware";
 
 export const userRoute: express.Router = express.Router();
 
+userRoute.get("/users/dashboard", AuthMiddleware.authentication, AuthMiddleware.authorization(["ADMIN", "SUPER_ADMIN"]), UserController.dashboard);
 userRoute.get("/users/profiles", AuthMiddleware.authentication, AuthMiddleware.authorization(["ADMIN", "SUPER_ADMIN"]), UserController.profile);
 userRoute.get("/users/profiles/photo/preview", AuthMiddleware.authentication, AuthMiddleware.authorization(["ADMIN", "SUPER_ADMIN"]), UserController.updatePhotoPreview);
 userRoute.get("/users/profiles/personal-info/preview", AuthMiddleware.authentication, AuthMiddleware.authorization(["ADMIN", "SUPER_ADMIN"]), UserController.updatePersonalInfoPreview);

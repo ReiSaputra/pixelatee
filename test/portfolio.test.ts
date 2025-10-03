@@ -25,7 +25,7 @@ describe("GET /api/v1/public/portfolios", () => {
   });
 
   it("should pass - get all portfolio", async () => {
-    const response: request.Response = await request(web).get("/api/v1/public/portfolios");
+    const response: request.Response = await request(web).get("/api/v1/public/portfolios").set("User-Agent", "jest-test-agent");
 
     const body: PortfoliosResponseSuccess = response.body as PortfoliosResponseSuccess;
 
@@ -37,7 +37,7 @@ describe("GET /api/v1/public/portfolios", () => {
   it("should pass - get all portfolio with zero data", async () => {
     await PortfolioUtil.deleteAllPortfolio();
 
-    const response: request.Response = await request(web).get("/api/v1/public/portfolios");
+    const response: request.Response = await request(web).get("/api/v1/public/portfolios").set("User-Agent", "jest-test-agent");
 
     const body: PortfoliosResponseSuccess = response.body as PortfoliosResponseSuccess;
 
@@ -68,7 +68,7 @@ describe("GET /api/v1/public/portfolios/:portfolioId", () => {
   });
 
   it("should pass - get detail portfolio", async () => {
-    const response: request.Response = await request(web).get(`/api/v1/public/portfolios/${portfolio1}`);
+    const response: request.Response = await request(web).get(`/api/v1/public/portfolios/${portfolio1}`).set("User-Agent", "jest-test-agent");
 
     const body: PortfolioResponseSuccess = response.body as PortfolioResponseSuccess;
 
@@ -81,7 +81,7 @@ describe("GET /api/v1/public/portfolios/:portfolioId", () => {
   });
 
   it("should pass - get detail portfolio with full image", async () => {
-    const response: request.Response = await request(web).get(`/api/v1/public/portfolios/${portfolio2}`);
+    const response: request.Response = await request(web).get(`/api/v1/public/portfolios/${portfolio2}`).set("User-Agent", "jest-test-agent");
 
     const body: PortfolioResponseSuccess = response.body as PortfolioResponseSuccess;
 
@@ -94,7 +94,7 @@ describe("GET /api/v1/public/portfolios/:portfolioId", () => {
   });
 
   it("should fail - portfolio id not found", async () => {
-    const response: request.Response = await request(web).get(`/api/v1/public/portfolios/invalid`);
+    const response: request.Response = await request(web).get(`/api/v1/public/portfolios/invalid`).set("User-Agent", "jest-test-agent");
 
     const body: PortfolioResponseError = response.body as PortfolioResponseError;
 
