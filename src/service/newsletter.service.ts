@@ -11,7 +11,7 @@ import { prisma } from "../application/database";
 
 import { Newsletter, NewsletterMember, Prisma, User, UserPermission } from "../generated/prisma";
 
-import { NewsletterFilters, NewsletterJoinParams, NewsletterJoinRequest, NewsletterParams, NewsletterRequest, NewsletterResponse, toNewsletterJoinResponse, toNewsletterResponse, toNewslettersResponse } from "../model/newsletter.model";
+import { NewsletterFilters, NewsletterJoinParams, NewsletterJoinRequest, NewsletterParams, NewsletterRequest, NewsletterResponse, toNewsletterJoinResponse, toNewsletterResponse, toNewslettersResponse, toScheduledNewslettersResponse } from "../model/newsletter.model";
 
 import { NewsletterSchema } from "../schema/newsletter.schema";
 import { Validation } from "../schema/validation";
@@ -178,7 +178,7 @@ export class NewsletterService {
     });
 
     // return response
-    return toNewslettersResponse(findNewsletters);
+    return toScheduledNewslettersResponse(findNewsletters);
   }
 
   public static async adminGetDetail(params: NewsletterParams): Promise<NewsletterResponse> {

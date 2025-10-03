@@ -40,8 +40,6 @@ export class UserService {
       };
     });
 
-    console.info(finalData);
-
     // get data for portfolios
     const portfolios = await prisma.portfolio.findMany({
       where: {

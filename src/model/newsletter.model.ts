@@ -68,7 +68,6 @@ export function toScheduledNewslettersResponse(newsletters: (Newsletter & { auth
       id: newsletter.id,
       title: newsletter.title,
       content: newsletter.content,
-      type: newsletter.type,
       createdAt: newsletter.createdAt,
     };
   });
