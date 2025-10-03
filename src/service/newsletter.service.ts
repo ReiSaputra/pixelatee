@@ -11,7 +11,7 @@ import { prisma } from "../application/database";
 
 import { Newsletter, NewsletterMember, Prisma, User, UserPermission } from "../generated/prisma";
 
-import { NewsletterFilters, NewsletterJoinParams, NewsletterJoinRequest, NewsletterParams, NewsletterRequest, NewsletterResponse, toNewsletterJoinResponse, toNewsletterResponse, toNewslettersResponse } from "../model/newsletter.model";
+import { NewsletterFilters, NewsletterJoinParams, NewsletterJoinRequest, NewsletterParams, NewsletterRequest, NewsletterResponse, toNewsletterJoinResponse, toNewsletterResponse, toNewslettersResponse, toScheduledNewslettersResponse } from "../model/newsletter.model";
 
 import { NewsletterSchema } from "../schema/newsletter.schema";
 import { Validation } from "../schema/validation";
@@ -106,7 +106,7 @@ export class NewsletterService {
 
     // specify return
     deleteNewsletterMember.id = undefined!;
-    
+
     // return response
     return toNewsletterJoinResponse(deleteNewsletterMember);
   }
@@ -165,6 +165,20 @@ export class NewsletterService {
 
     // return response
     return toNewslettersResponse(findNewsletters);
+  }
+
+  public static async adminGetAllScheduled(user: (User & { permissions: UserPermission | null }) | undefined): Promise<NewsletterResponse[]> {
+    // find all newsletters that are scheduled
+    const findNewsletters: (Newsletter & { author: User })[] = await prisma.newsletter.findMany({
+      where: { authorId: user?.id!, status: "SCHEDULED" },
+      orderBy: { createdAt: "desc" },
+      include: {
+        author: true,
+      },
+    });
+
+    // return response
+    return toScheduledNewslettersResponse(findNewsletters);
   }
 
   public static async adminGetDetail(params: NewsletterParams): Promise<NewsletterResponse> {

@@ -14,6 +14,7 @@ newsletterRoute.get("/public/newsletters/thank-you", GuestMiddleware.dailyVisit,
 newsletterRoute.delete("/public/newsletters/unsubscribe", GuestMiddleware.dailyVisit, NewsletterController.unsubscribe);
 
 newsletterRoute.get("/admin/newsletters", AuthMiddleware.authentication, AuthMiddleware.authorization(["ADMIN", "SUPER_ADMIN"]), AuthMiddleware.permission("canReadNewsletter"), NewsletterController.adminGetAll);
+newsletterRoute.get("/admin/newsletters/scheduled", AuthMiddleware.authentication, AuthMiddleware.authorization(["ADMIN", "SUPER_ADMIN"]), AuthMiddleware.permission("canReadNewsletter"), NewsletterController.adminGetAllScheduled);
 newsletterRoute.get("/admin/newsletters/:newsletterId", AuthMiddleware.authentication, AuthMiddleware.authorization(["ADMIN", "SUPER_ADMIN"]), AuthMiddleware.permission("canReadNewsletter"), NewsletterController.adminGetDetail);
 newsletterRoute.get("/admin/newsletters/:newsletterId/preview", AuthMiddleware.authentication, AuthMiddleware.authorization(["ADMIN", "SUPER_ADMIN"]), AuthMiddleware.permission("canWriteNewsletter"), NewsletterController.adminEditPreview);
 newsletterRoute.post(

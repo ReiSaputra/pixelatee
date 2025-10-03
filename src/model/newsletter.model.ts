@@ -62,6 +62,17 @@ export function toNewsletterResponse(newsletter: Newsletter & { author: User }):
   };
 }
 
+export function toScheduledNewslettersResponse(newsletters: (Newsletter & { author: User })[]): NewsletterResponse[] {
+  return newsletters.map((newsletter) => {
+    return {
+      id: newsletter.id,
+      title: newsletter.title,
+      content: newsletter.content,
+      createdAt: newsletter.createdAt,
+    };
+  });
+}
+
 export function toNewslettersResponse(newsletters: (Newsletter & { author: User })[]): NewsletterResponse[] {
   return newsletters.map((newsletter) => {
     return {
