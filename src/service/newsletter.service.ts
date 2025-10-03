@@ -106,7 +106,7 @@ export class NewsletterService {
 
     // specify return
     deleteNewsletterMember.id = undefined!;
-    
+
     // return response
     return toNewsletterJoinResponse(deleteNewsletterMember);
   }
@@ -157,6 +157,20 @@ export class NewsletterService {
     // find all newsletters
     const findNewsletters: (Newsletter & { author: User })[] = await prisma.newsletter.findMany({
       where: where,
+      orderBy: { createdAt: "desc" },
+      include: {
+        author: true,
+      },
+    });
+
+    // return response
+    return toNewslettersResponse(findNewsletters);
+  }
+
+  public static async adminGetAllScheduled(user: (User & { permissions: UserPermission | null }) | undefined): Promise<NewsletterResponse[]> {
+    // find all newsletters that are scheduled
+    const findNewsletters: (Newsletter & { author: User })[] = await prisma.newsletter.findMany({
+      where: { authorId: user?.id!, status: "SCHEDULED" },
       orderBy: { createdAt: "desc" },
       include: {
         author: true,

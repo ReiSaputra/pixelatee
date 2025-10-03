@@ -124,6 +124,21 @@ export class NewsletterController {
     }
   }
 
+  public static async adminGetAllScheduled(req: UserRequest, res: express.Response, next: express.NextFunction): Promise<void> {
+    try {
+      // assert user
+      const User: (User & { permissions: UserPermission | null }) | undefined = req.user;
+
+      // call service
+      const response: NewsletterResponse[] = await NewsletterService.adminGetAllScheduled(User);
+
+      // return response
+      res.status(200).json({ status: "Success", code: 200, data: response, message: "Get all newsletters successfully" });
+    } catch (error: any) {
+      next(error)
+    }
+  }
+
   public static async adminGetDetail(req: UserRequest, res: express.Response, next: express.NextFunction): Promise<void> {
     try {
       // assert params
