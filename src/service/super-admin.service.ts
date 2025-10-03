@@ -29,7 +29,7 @@ export class SuperAdminService {
         password: await bcrypt.hash(response.password, 10),
         email: response.email,
         photo: "default.png",
-        dateOfBirth: response.dateOfBirth,
+        dateOfBirth: new Date(response.dateOfBirth),
         phoneNumber: response.phoneNumber,
         role: response.userRole,
         address: {
@@ -130,14 +130,15 @@ export class SuperAdminService {
     const deleteContacts: Prisma.BatchPayload = await prisma.contact.updateMany({ where: { handlerId: findAdmin.id }, data: { handlerId: null } });
 
     // delete address
-    await prisma.userAddress.delete({ where: { userId: findAdmin.id } });
+    await prisma.userAddress.deleteMany({ where: { userId: findAdmin.id } });
 
     // delete permission
-    await prisma.userPermission.delete({ where: { userId: findAdmin.id } });
+    await prisma.userPermission.deleteMany({ where: { userId: findAdmin.id } });
 
 
     // delete admin
     const deleteAdmin: User = await prisma.user.delete({ where: { id: findAdmin.id } });
+
 
     // return admin
     return toAdminResponse(deleteAdmin);
