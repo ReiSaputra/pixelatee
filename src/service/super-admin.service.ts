@@ -2,7 +2,7 @@ import bcrypt from "bcrypt";
 
 import { prisma } from "../application/database";
 
-import { Portfolio, Prisma, User, UserPermission } from "../generated/prisma";
+import { Portfolio, Prisma, User, UserAddress, UserPermission } from "../generated/prisma";
 
 import { AdminFilters, AdminPaginationResponse, AdminParams, AdminPermissionRequest, AdminRegisterRequest, AdminResponse, toAdminPaginationResponse, toAdminResponse, toAdminsResponse } from "../model/super-admin.model";
 
@@ -10,6 +10,7 @@ import { SuperAdminSchema } from "../schema/super-admin.schema";
 import { Validation } from "../schema/validation";
 
 import { ResponseError } from "../error/response.error";
+import { toUserResponse, UserResponse } from "../model/user.model";
 
 export class SuperAdminService {
   public static async registerAdmin(request: AdminRegisterRequest): Promise<AdminResponse> {
@@ -107,6 +108,7 @@ export class SuperAdminService {
     // count all admins
     const countAdmin = await prisma.user.count({ where: where });
 
+    // return admin
     return toAdminPaginationResponse(findAdmin, filterValidation.page, 15, countAdmin, Math.ceil(countAdmin / 15));
   }
 
@@ -204,5 +206,30 @@ export class SuperAdminService {
 
     // return permission
     return toAdminResponse(findAdmin);
+  }
+
+  public static async adminDetail(params: AdminParams): Promise<UserResponse> {
+    // params validation
+    const paramsValidation = Validation.validate<AdminParams>(SuperAdminSchema.DETAIL, params);
+
+    // find admin by id
+    const findAdmin: (User & { permissions: UserPermission | null; address: UserAddress | null }) | null = await prisma.user.findUnique({
+      where: {
+        id: paramsValidation.adminId,
+      },
+      include: {
+        permissions: true,
+        address: true,
+      },
+    });
+
+    // if admin not found then throw error
+    if (!findAdmin) throw new ResponseError("Admin not found");
+
+    // specify return
+    findAdmin!.password = "*".repeat(findAdmin!.password.length).slice(0, 14);
+
+    // return admin
+    return toUserResponse(findAdmin);
   }
 }
