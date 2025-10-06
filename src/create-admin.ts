@@ -4,17 +4,17 @@ import bcrypt from "bcrypt";
 const prisma = new PrismaClient();
 
 async function main() {
-  const email = "admin3@pixelatee.com";
-  const password = "dontknowyet";
+  const email = "admin1@pixelatee.com";
+  const password = "dontknow";
   const hashedPassword = await bcrypt.hash(password, 10);
 
   const admin = await prisma.user.create({
     data: {
       email,
       password: hashedPassword,
-      role: "ADMIN",
-      name: "Almight3",
-      phoneNumber: "0812332",
+      role: "SUPER_ADMIN",
+      name: "Deku",
+      phoneNumber: "08123112",
       dateOfBirth: new Date("1990-01-01"),
       photo: "Logo.png",
     },
