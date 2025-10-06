@@ -22,7 +22,7 @@ export class ClientService {
     const findClient: Client[] = await prisma.client.findMany({ orderBy: { name: "asc" } });
 
     // specify return
-    findClient.map((item) => (item.id = undefined!));
+    // findClient.map((item) => (item.id = undefined!));
 
     // return response
     return toClientsResponse(findClient);

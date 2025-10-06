@@ -5,13 +5,20 @@ import { prisma } from "../application/database";
 
 import { User, UserAddress, UserPermission } from "../generated/prisma";
 
-import { UserRequest, UserResponse, toUserAddressResponse, toUserResponse } from "../model/user.model";
+import {
+  UserRequest,
+  UserResponse,
+  toUserAddressResponse,
+  toUserResponse,
+} from "../model/user.model";
 
 import { Validation } from "../schema/validation";
 import { UserSchema } from "../schema/user.schema";
 
 export class UserService {
-  public static async dashboard(user: (User & { permissions: UserPermission | null }) | undefined) {
+  public static async dashboard(
+    user: (User & { permissions: UserPermission | null }) | undefined
+  ) {
     // get data for charts weekly
     const grouped = await prisma.guestVisit.groupBy({
       by: ["visitDate"],
@@ -22,18 +29,22 @@ export class UserService {
     // create range date
     const today = new Date();
 
-    const last7Days: (string | undefined)[] = Array.from({ length: 7 }).map((_, i) => {
-      const d = new Date(today);
-      d.setDate(d.getDate() - i);
-      return d.toISOString().split("T")[0];
-    });
+    const last7Days: (string | undefined)[] = Array.from({ length: 7 }).map(
+      (_, i) => {
+        const d = new Date(today);
+        d.setDate(d.getDate() - i);
+        return d.toISOString().split("T")[0];
+      }
+    );
 
     // mapping the range date
     const finalData: {
       date: string | undefined;
       count: number;
     }[] = last7Days.reverse().map((date) => {
-      const found = grouped.find((g) => g.visitDate.toISOString().startsWith(date!));
+      const found = grouped.find((g) =>
+        g.visitDate.toISOString().startsWith(date!)
+      );
       return {
         date,
         count: found ? found._count._all : 0,
@@ -96,9 +107,19 @@ export class UserService {
    * @returns {Promise<AdminResponse>} promise that resolves when successfully get user profile
    * @throws {ResponseError} if user not found
    */
-  public static async profile(user: (User & { permissions: UserPermission | null }) | undefined): Promise<UserResponse> {
+  public static async profile(
+    user: (User & { permissions: UserPermission | null }) | undefined
+  ): Promise<UserResponse> {
     // find user
-    const findUser: (User & { permissions: UserPermission | null; address: UserAddress | null }) | null = await prisma.user.findUnique({ where: { id: user?.id! }, include: { permissions: true, address: true } });
+    const findUser:
+      | (User & {
+          permissions: UserPermission | null;
+          address: UserAddress | null;
+        })
+      | null = await prisma.user.findUnique({
+      where: { id: user?.id! },
+      include: { permissions: true, address: true },
+    });
 
     // specify return
     findUser!.password = "*".repeat(findUser!.password.length).slice(0, 14);
@@ -113,9 +134,19 @@ export class UserService {
    * @returns {Promise<AdminResponse>} promise that resolves when successfully logout user
    * @throws {ResponseError} if user not found
    */
-  public static async logout(user: (User & { permissions: UserPermission | null }) | undefined): Promise<UserResponse> {
+  public static async logout(
+    user: (User & { permissions: UserPermission | null }) | undefined
+  ): Promise<UserResponse> {
     // find user
-    const findUser: (User & { permissions: UserPermission | null; address: UserAddress | null }) | null = await prisma.user.findUnique({ where: { id: user?.id! }, include: { permissions: true, address: true } });
+    const findUser:
+      | (User & {
+          permissions: UserPermission | null;
+          address: UserAddress | null;
+        })
+      | null = await prisma.user.findUnique({
+      where: { id: user?.id! },
+      include: { permissions: true, address: true },
+    });
 
     // specify return
     findUser!.password = undefined!;
@@ -135,9 +166,19 @@ export class UserService {
    * @returns {Promise<UserResponse>} promise that resolves when successfully get user photo preview
    * @throws {ResponseError} if user not found
    */
-  public static async updatePhotoPreview(user: (User & { permissions: UserPermission | null }) | undefined): Promise<UserResponse> {
+  public static async updatePhotoPreview(
+    user: (User & { permissions: UserPermission | null }) | undefined
+  ): Promise<UserResponse> {
     // find user
-    const findUser: (User & { permissions: UserPermission | null; address: UserAddress | null }) | null = await prisma.user.findUnique({ where: { id: user?.id! }, include: { address: true, permissions: true } });
+    const findUser:
+      | (User & {
+          permissions: UserPermission | null;
+          address: UserAddress | null;
+        })
+      | null = await prisma.user.findUnique({
+      where: { id: user?.id! },
+      include: { address: true, permissions: true },
+    });
 
     // specify return
     findUser!.name = undefined!;
@@ -160,12 +201,21 @@ export class UserService {
    * @returns {Promise<UserResponse>} promise that resolves when successfully update user photo
    * @throws {ResponseError} if user not found
    */
-  public static async updatePhoto(user: (User & { permissions: UserPermission | null }) | undefined, request: UserRequest, file: Express.Multer.File | undefined): Promise<UserResponse> {
+  public static async updatePhoto(
+    user: (User & { permissions: UserPermission | null }) | undefined,
+    request: UserRequest,
+    file: Express.Multer.File | undefined
+  ): Promise<UserResponse> {
     // request validation
-    const response: UserRequest = Validation.validate<UserRequest>(UserSchema.UPDATE_PHOTO, request);
+    const response: UserRequest = Validation.validate<UserRequest>(
+      UserSchema.UPDATE_PHOTO,
+      request
+    );
 
     // find user
-    const findUser: User | null = await prisma.user.findUnique({ where: { id: user?.id! } });
+    const findUser: User | null = await prisma.user.findUnique({
+      where: { id: user?.id! },
+    });
 
     // delete old photo if it's not default.png
     if (findUser!.photo && findUser!.photo !== "default.png") {
@@ -176,7 +226,12 @@ export class UserService {
     }
 
     // update photo
-    const updatePhotoUser: (User & { permissions: UserPermission | null; address: UserAddress | null }) | null = await prisma.user.update({
+    const updatePhotoUser:
+      | (User & {
+          permissions: UserPermission | null;
+          address: UserAddress | null;
+        })
+      | null = await prisma.user.update({
       where: { id: user?.id! },
       data: { photo: file?.filename! },
       include: { address: true, permissions: true },
@@ -201,9 +256,19 @@ export class UserService {
    * @returns {Promise<UserResponse>} promise that resolves when successfully get user personal info preview
    * @throws {ResponseError} if user not found
    */
-  public static async updatePersonalInfoPreview(user: (User & { permissions: UserPermission | null }) | undefined): Promise<UserResponse> {
+  public static async updatePersonalInfoPreview(
+    user: (User & { permissions: UserPermission | null }) | undefined
+  ): Promise<UserResponse> {
     // find user
-    const findUser: (User & { permissions: UserPermission | null; address: UserAddress | null }) | null = await prisma.user.findUnique({ where: { id: user?.id! }, include: { address: true, permissions: true } });
+    const findUser:
+      | (User & {
+          permissions: UserPermission | null;
+          address: UserAddress | null;
+        })
+      | null = await prisma.user.findUnique({
+      where: { id: user?.id! },
+      include: { address: true, permissions: true },
+    });
 
     // specify return
     findUser!.password = undefined!;
@@ -221,12 +286,21 @@ export class UserService {
    * @returns {Promise<UserResponse>} promise that resolves when successfully update user personal info
    * @throws {ResponseError} if user not found
    */
-  public static async updatePersonalInfo(user: (User & { permissions: UserPermission | null }) | undefined, request: UserRequest): Promise<UserResponse> {
+  public static async updatePersonalInfo(
+    user: (User & { permissions: UserPermission | null }) | undefined,
+    request: UserRequest
+  ): Promise<UserResponse> {
     // request validation
-    const response: UserRequest = Validation.validate(UserSchema.UPDATE_PERSONAL_INFO, request);
+    const response: UserRequest = Validation.validate(
+      UserSchema.UPDATE_PERSONAL_INFO,
+      request
+    );
 
     // update personal info
-    const updatePersonalInfo: User & { permissions: UserPermission | null; address: UserAddress | null } = await prisma.user.update({
+    const updatePersonalInfo: User & {
+      permissions: UserPermission | null;
+      address: UserAddress | null;
+    } = await prisma.user.update({
       where: {
         id: user?.id!,
       },
@@ -258,12 +332,21 @@ export class UserService {
    * @returns {Promise<AdminResponse>} promise that resolves when successfully change user password
    * @throws {ResponseError} if user not found or old password not match
    */
-  public static async updatePassword(user: (User & { permissions: UserPermission | null }) | undefined, request: UserRequest): Promise<UserResponse> {
+  public static async updatePassword(
+    user: (User & { permissions: UserPermission | null }) | undefined,
+    request: UserRequest
+  ): Promise<UserResponse> {
     // request validation
-    const response: UserRequest = Validation.validate<UserRequest>(UserSchema.UPDATE_PASSWORD, request);
+    const response: UserRequest = Validation.validate<UserRequest>(
+      UserSchema.UPDATE_PASSWORD,
+      request
+    );
 
     // update password user
-    const updatePasswordUser: User & { permissions: UserPermission | null; address: UserAddress | null } = await prisma.user.update({
+    const updatePasswordUser: User & {
+      permissions: UserPermission | null;
+      address: UserAddress | null;
+    } = await prisma.user.update({
       where: { id: user?.id! },
       data: {
         password: await bcrypt.hash(response.password!, 10),
@@ -290,16 +373,19 @@ export class UserService {
    * @returns {Promise<UserResponse>} promise that resolves when successfully get user address preview
    * @throws {ResponseError} if user not found
    */
-  public static async updateAddressPreview(user: (User & { permissions: UserPermission | null }) | undefined): Promise<UserResponse> {
+  public static async updateAddressPreview(
+    user: (User & { permissions: UserPermission | null }) | undefined
+  ): Promise<UserResponse> {
     // find user address
-    const findAddressUser: (User & { address: UserAddress | null }) | null = await prisma.user.findUnique({
-      where: {
-        id: user?.id!,
-      },
-      include: {
-        address: true,
-      },
-    });
+    const findAddressUser: (User & { address: UserAddress | null }) | null =
+      await prisma.user.findUnique({
+        where: {
+          id: user?.id!,
+        },
+        include: {
+          address: true,
+        },
+      });
 
     return toUserAddressResponse(findAddressUser!);
   }
@@ -311,21 +397,53 @@ export class UserService {
    * @returns {Promise<UserResponse>} promise that resolves when successfully update user address
    * @throws {ResponseError} if user not found or request is invalid
    */
-  public static async updateAddress(user: (User & { permissions: UserPermission | null }) | undefined, request: UserRequest): Promise<UserResponse> {
+  public static async updateAddress(
+    user: (User & { permissions: UserPermission | null }) | undefined,
+    request: UserRequest
+  ): Promise<UserResponse> {
     // request validation
-    const requestValidation: UserRequest = Validation.validate<UserRequest>(UserSchema.UPDATE_ADDRESS, request);
+    const requestValidation: UserRequest = Validation.validate<UserRequest>(
+      UserSchema.UPDATE_ADDRESS,
+      request
+    );
 
     // find user address
+    // const findAddressUser = await prisma.user.update({
+    //   where: {
+    //     id: user?.id!,
+    //   },
+    //   data: {
+    //     address: {
+    //       update: {
+    //         city: requestValidation.city!,
+    //         country: requestValidation.country!,
+    //         zipCode: requestValidation.zipCode!,
+    //       },
+    //     },
+    //   },
+    //   include: {
+    //     address: true,
+    //     permissions: true,
+    //   },
+    // });
+
     const findAddressUser = await prisma.user.update({
       where: {
         id: user?.id!,
       },
       data: {
         address: {
-          update: {
-            city: requestValidation.city!,
-            country: requestValidation.country!,
-            zipCode: requestValidation.zipCode!,
+          upsert: {
+            create: {
+              city: requestValidation.city!,
+              country: requestValidation.country!,
+              zipCode: requestValidation.zipCode!,
+            },
+            update: {
+              city: requestValidation.city!,
+              country: requestValidation.country!,
+              zipCode: requestValidation.zipCode!,
+            },
           },
         },
       },

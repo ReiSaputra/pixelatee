@@ -2,9 +2,25 @@ import bcrypt from "bcrypt";
 
 import { prisma } from "../application/database";
 
-import { Portfolio, Prisma, User, UserAddress, UserPermission } from "../generated/prisma";
+import {
+  Portfolio,
+  Prisma,
+  User,
+  UserAddress,
+  UserPermission,
+} from "../generated/prisma";
 
-import { AdminFilters, AdminPaginationResponse, AdminParams, AdminPermissionRequest, AdminRegisterRequest, AdminResponse, toAdminPaginationResponse, toAdminResponse, toAdminsResponse } from "../model/super-admin.model";
+import {
+  AdminFilters,
+  AdminPaginationResponse,
+  AdminParams,
+  AdminPermissionRequest,
+  AdminRegisterRequest,
+  AdminResponse,
+  toAdminPaginationResponse,
+  toAdminResponse,
+  toAdminsResponse,
+} from "../model/super-admin.model";
 
 import { SuperAdminSchema } from "../schema/super-admin.schema";
 import { Validation } from "../schema/validation";
@@ -13,12 +29,19 @@ import { ResponseError } from "../error/response.error";
 import { toUserResponse, UserResponse } from "../model/user.model";
 
 export class SuperAdminService {
-  public static async registerAdmin(request: AdminRegisterRequest): Promise<AdminResponse> {
+  public static async registerAdmin(
+    request: AdminRegisterRequest
+  ): Promise<AdminResponse> {
     // request validation
-    const response: AdminRegisterRequest = Validation.validate(SuperAdminSchema.REGISTER_ADMIN, request);
+    const response: AdminRegisterRequest = Validation.validate(
+      SuperAdminSchema.REGISTER_ADMIN,
+      request
+    );
 
     // check if admin already exists
-    const findAdmin = await prisma.user.findUnique({ where: { email: response.email } });
+    const findAdmin = await prisma.user.findUnique({
+      where: { email: response.email },
+    });
 
     // if admin already exists then throw error
     if (findAdmin) throw new ResponseError("Admin already exists");
@@ -75,9 +98,15 @@ export class SuperAdminService {
     return toAdminResponse(createUser);
   }
 
-  public static async adminList(user: (User & { permissions: UserPermission | null }) | undefined, filters: AdminFilters): Promise<AdminPaginationResponse> {
+  public static async adminList(
+    user: (User & { permissions: UserPermission | null }) | undefined,
+    filters: AdminFilters
+  ): Promise<AdminPaginationResponse> {
     // filter validation
-    const filterValidation = Validation.validate(SuperAdminSchema.FILTER, filters);
+    const filterValidation = Validation.validate(
+      SuperAdminSchema.FILTER,
+      filters
+    );
 
     // set offset for skipping data
     const offset = (filterValidation.page - 1) * 15;
@@ -89,7 +118,10 @@ export class SuperAdminService {
 
     // if there is a search filter
     if (filterValidation.search) {
-      where.OR = [{ name: { contains: filterValidation.search } }, { email: { contains: filterValidation.search } }];
+      where.OR = [
+        { name: { contains: filterValidation.search } },
+        { email: { contains: filterValidation.search } },
+      ];
     }
 
     // if there is a role filter
@@ -109,12 +141,21 @@ export class SuperAdminService {
     const countAdmin = await prisma.user.count({ where: where });
 
     // return admin
-    return toAdminPaginationResponse(findAdmin, filterValidation.page, 15, countAdmin, Math.ceil(countAdmin / 15));
+    return toAdminPaginationResponse(
+      findAdmin,
+      filterValidation.page,
+      15,
+      countAdmin,
+      Math.ceil(countAdmin / 15)
+    );
   }
 
   public static async deleteAdmin(params: AdminParams): Promise<AdminResponse> {
     // params validation
-    const paramsValidation = Validation.validate<AdminParams>(SuperAdminSchema.DETAIL, params);
+    const paramsValidation = Validation.validate<AdminParams>(
+      SuperAdminSchema.DETAIL,
+      params
+    );
 
     // find admin by id
     const findAdmin: User | null = await prisma.user.findUnique({
@@ -127,9 +168,13 @@ export class SuperAdminService {
     if (!findAdmin) throw new ResponseError("Admin not found");
 
     // delete and update containing depend data
-    const deleteNewsletter: Prisma.BatchPayload = await prisma.newsletter.deleteMany({ where: { authorId: findAdmin.id } });
-    const deletePortfolios: Prisma.BatchPayload = await prisma.portfolio.deleteMany({ where: { authorId: findAdmin.id } });
-    const deleteContacts: Prisma.BatchPayload = await prisma.contact.updateMany({ where: { handlerId: findAdmin.id }, data: { handlerId: null } });
+    const deleteNewsletter: Prisma.BatchPayload =
+      await prisma.newsletter.deleteMany({ where: { authorId: findAdmin.id } });
+    const deletePortfolios: Prisma.BatchPayload =
+      await prisma.portfolio.deleteMany({ where: { authorId: findAdmin.id } });
+    const deleteContacts: Prisma.BatchPayload = await prisma.contact.updateMany(
+      { where: { handlerId: findAdmin.id }, data: { handlerId: null } }
+    );
 
     // delete address
     await prisma.userAddress.deleteMany({ where: { userId: findAdmin.id } });
@@ -138,16 +183,86 @@ export class SuperAdminService {
     await prisma.userPermission.deleteMany({ where: { userId: findAdmin.id } });
 
     // delete admin
-    const deleteAdmin: User = await prisma.user.delete({ where: { id: findAdmin.id } });
-
+    const deleteAdmin: User = await prisma.user.delete({
+      where: { id: findAdmin.id },
+    });
 
     // return admin
     return toAdminResponse(deleteAdmin);
   }
 
-  public static async updateAdminPermissions(request: AdminPermissionRequest, params: AdminParams): Promise<AdminResponse> {
+  // public static async updateAdminPermissions(request: AdminPermissionRequest, params: AdminParams): Promise<AdminResponse> {
+  //   // params validation
+  //   const paramsValidation = Validation.validate<AdminParams>(SuperAdminSchema.DETAIL, params);
+
+  //   // find admin by id
+  //   const findAdmin: User | null = await prisma.user.findUnique({
+  //     where: {
+  //       id: paramsValidation.adminId,
+  //     },
+  //   });
+
+  //   // if admin not found then throw error
+  //   if (!findAdmin) throw new ResponseError("Admin not found");
+
+  //   // update permission
+  //   const updatePermission: UserPermission = await prisma.userPermission.update({
+  //     where: {
+  //       userId: findAdmin.id,
+  //     },
+  //     data: {
+  //       canReadAdmin: request.canReadAdmin,
+  //       canWriteAdmin: request.canWriteAdmin,
+  //       canUpdateAdmin: request.canUpdateAdmin,
+  //       canDeleteAdmin: request.canDeleteAdmin,
+
+  //       canReadClient: request.canReadClient,
+  //       canWriteClient: request.canWriteClient,
+  //       canUpdateClient: request.canUpdateClient,
+  //       canDeleteClient: request.canDeleteClient,
+
+  //       canReadContact: request.canReadContact,
+  //       canWriteContact: request.canWriteContact,
+  //       canUpdateContact: request.canUpdateContact,
+  //       canDeleteContact: request.canDeleteContact,
+
+  //       canReadNewsletter: request.canReadNewsletter,
+  //       canWriteNewsletter: request.canWriteNewsletter,
+  //       canUpdateNewsletter: request.canUpdateNewsletter,
+  //       canDeleteNewsletter: request.canDeleteNewsletter,
+
+  //       canReadPortfolio: request.canReadPortfolio,
+  //       canWritePortfolio: request.canWritePortfolio,
+  //       canUpdatePortfolio: request.canUpdatePortfolio,
+  //       canDeletePortfolio: request.canDeletePortfolio,
+  //     },
+  //   });
+
+  //   // if permission change the admin role
+  //   if (updatePermission.canReadAdmin || updatePermission.canWriteAdmin || updatePermission.canUpdateAdmin || updatePermission.canDeleteAdmin) {
+  //     await prisma.user.update({
+  //       where: {
+  //         id: findAdmin.id,
+  //       },
+  //       data: {
+  //         role: "SUPER_ADMIN",
+  //       },
+  //     });
+  //   }
+
+  //   // return permission
+  //   return toAdminResponse(findAdmin);
+  // }
+
+  public static async updateAdminPermissions(
+    request: AdminPermissionRequest,
+    params: AdminParams
+  ): Promise<AdminResponse> {
     // params validation
-    const paramsValidation = Validation.validate<AdminParams>(SuperAdminSchema.DETAIL, params);
+    const paramsValidation = Validation.validate<AdminParams>(
+      SuperAdminSchema.DETAIL,
+      params
+    );
 
     // find admin by id
     const findAdmin: User | null = await prisma.user.findUnique({
@@ -156,64 +271,119 @@ export class SuperAdminService {
       },
     });
 
-    // if admin not found then throw error
     if (!findAdmin) throw new ResponseError("Admin not found");
 
-    // update permission
-    const updatePermission: UserPermission = await prisma.userPermission.update({
+    // cek dulu apakah permission record sudah ada
+    const existingPermission = await prisma.userPermission.findUnique({
       where: {
         userId: findAdmin.id,
       },
-      data: {
-        canReadAdmin: request.canReadAdmin,
-        canWriteAdmin: request.canWriteAdmin,
-        canUpdateAdmin: request.canUpdateAdmin,
-        canDeleteAdmin: request.canDeleteAdmin,
-
-        canReadClient: request.canReadClient,
-        canWriteClient: request.canWriteClient,
-        canUpdateClient: request.canUpdateClient,
-        canDeleteClient: request.canDeleteClient,
-
-        canReadContact: request.canReadContact,
-        canWriteContact: request.canWriteContact,
-        canUpdateContact: request.canUpdateContact,
-        canDeleteContact: request.canDeleteContact,
-
-        canReadNewsletter: request.canReadNewsletter,
-        canWriteNewsletter: request.canWriteNewsletter,
-        canUpdateNewsletter: request.canUpdateNewsletter,
-        canDeleteNewsletter: request.canDeleteNewsletter,
-
-        canReadPortfolio: request.canReadPortfolio,
-        canWritePortfolio: request.canWritePortfolio,
-        canUpdatePortfolio: request.canUpdatePortfolio,
-        canDeletePortfolio: request.canDeletePortfolio,
-      },
     });
 
-    // if permission change the admin role
-    if (updatePermission.canReadAdmin || updatePermission.canWriteAdmin || updatePermission.canUpdateAdmin || updatePermission.canDeleteAdmin) {
-      await prisma.user.update({
+    let updatePermission: UserPermission;
+
+    if (existingPermission) {
+      // kalau sudah ada, update
+      updatePermission = await prisma.userPermission.update({
         where: {
-          id: findAdmin.id,
+          userId: findAdmin.id,
         },
         data: {
-          role: "SUPER_ADMIN",
+          canReadAdmin: request.canReadAdmin,
+          canWriteAdmin: request.canWriteAdmin,
+          canUpdateAdmin: request.canUpdateAdmin,
+          canDeleteAdmin: request.canDeleteAdmin,
+
+          canReadClient: request.canReadClient,
+          canWriteClient: request.canWriteClient,
+          canUpdateClient: request.canUpdateClient,
+          canDeleteClient: request.canDeleteClient,
+
+          canReadContact: request.canReadContact,
+          canWriteContact: request.canWriteContact,
+          canUpdateContact: request.canUpdateContact,
+          canDeleteContact: request.canDeleteContact,
+
+          canReadNewsletter: request.canReadNewsletter,
+          canWriteNewsletter: request.canWriteNewsletter,
+          canUpdateNewsletter: request.canUpdateNewsletter,
+          canDeleteNewsletter: request.canDeleteNewsletter,
+
+          canReadPortfolio: request.canReadPortfolio,
+          canWritePortfolio: request.canWritePortfolio,
+          canUpdatePortfolio: request.canUpdatePortfolio,
+          canDeletePortfolio: request.canDeletePortfolio,
+        },
+      });
+    } else {
+      // kalau belum ada, buat permission baru
+      updatePermission = await prisma.userPermission.create({
+        data: {
+          userId: findAdmin.id,
+          canReadAdmin: request.canReadAdmin,
+          canWriteAdmin: request.canWriteAdmin,
+          canUpdateAdmin: request.canUpdateAdmin,
+          canDeleteAdmin: request.canDeleteAdmin,
+
+          canReadClient: request.canReadClient,
+          canWriteClient: request.canWriteClient,
+          canUpdateClient: request.canUpdateClient,
+          canDeleteClient: request.canDeleteClient,
+
+          canReadContact: request.canReadContact,
+          canWriteContact: request.canWriteContact,
+          canUpdateContact: request.canUpdateContact,
+          canDeleteContact: request.canDeleteContact,
+
+          canReadNewsletter: request.canReadNewsletter,
+          canWriteNewsletter: request.canWriteNewsletter,
+          canUpdateNewsletter: request.canUpdateNewsletter,
+          canDeleteNewsletter: request.canDeleteNewsletter,
+
+          canReadPortfolio: request.canReadPortfolio,
+          canWritePortfolio: request.canWritePortfolio,
+          canUpdatePortfolio: request.canUpdatePortfolio,
+          canDeletePortfolio: request.canDeletePortfolio,
         },
       });
     }
 
-    // return permission
-    return toAdminResponse(findAdmin);
+    // jika permission admin berubah, ubah role-nya ke SUPER_ADMIN
+    if (
+      updatePermission.canReadAdmin ||
+      updatePermission.canWriteAdmin ||
+      updatePermission.canUpdateAdmin ||
+      updatePermission.canDeleteAdmin
+    ) {
+      await prisma.user.update({
+        where: { id: findAdmin.id },
+        data: { role: "SUPER_ADMIN" },
+      });
+    }
+
+    // return admin dengan permission baru
+    const updatedAdmin = await prisma.user.findUnique({
+      where: { id: findAdmin.id },
+      include: { permissions: true, address: true },
+    });
+
+    return toAdminResponse(updatedAdmin!);
   }
 
   public static async adminDetail(params: AdminParams): Promise<UserResponse> {
     // params validation
-    const paramsValidation = Validation.validate<AdminParams>(SuperAdminSchema.DETAIL, params);
+    const paramsValidation = Validation.validate<AdminParams>(
+      SuperAdminSchema.DETAIL,
+      params
+    );
 
     // find admin by id
-    const findAdmin: (User & { permissions: UserPermission | null; address: UserAddress | null }) | null = await prisma.user.findUnique({
+    const findAdmin:
+      | (User & {
+          permissions: UserPermission | null;
+          address: UserAddress | null;
+        })
+      | null = await prisma.user.findUnique({
       where: {
         id: paramsValidation.adminId,
       },
