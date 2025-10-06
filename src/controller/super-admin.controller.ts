@@ -6,6 +6,7 @@ import { SuperAdminService } from "../service/super-admin.service";
 
 import { UserRequest } from "../types/user.type";
 import { User, UserPermission } from "../generated/prisma";
+import { UserResponse } from "../model/user.model";
 
 export class SuperAdminController {
   /**
@@ -56,7 +57,20 @@ export class SuperAdminController {
     }
   }
 
-  public static async adminDetail(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {}
+  public static async adminDetail(req: UserRequest, res: express.Response, next: express.NextFunction): Promise<void> {
+    try {
+      // assert parameters
+      const params = req.params as AdminParams;
+
+      // call service
+      const response: UserResponse = await SuperAdminService.adminDetail(params);
+
+      // return response
+      res.status(200).json({ status: "Success", code: 200, data: response, message: "Get admin detail successfully" });
+    } catch (error: any) {
+      next(error);
+    }
+  }
 
   /**
    * Delete an admin by ID
