@@ -4,7 +4,13 @@ import { prisma } from "../application/database";
 
 import { Client } from "../generated/prisma";
 
-import { ClientParams, ClientRequest, ClientResponse, toClientResponse, toClientsResponse } from "../model/client.model";
+import {
+  ClientParams,
+  ClientRequest,
+  ClientResponse,
+  toClientResponse,
+  toClientsResponse,
+} from "../model/client.model";
 import { ClientSchema } from "../schema/client.schema";
 
 import { Validation } from "../schema/validation";
@@ -19,7 +25,9 @@ export class ClientService {
    */
   public static async adminGetAll(): Promise<ClientResponse[]> {
     // find all client
-    const findClient: Client[] = await prisma.client.findMany({ orderBy: { name: "asc" } });
+    const findClient: Client[] = await prisma.client.findMany({
+      orderBy: { name: "asc" },
+    });
 
     // specify return
     // findClient.map((item) => (item.id = undefined!));
@@ -34,9 +42,15 @@ export class ClientService {
    * @returns the created client
    * @throws ResponseError if error occur
    */
-  public static async adminCreate(request: ClientRequest, file: Express.Multer.File | undefined): Promise<ClientResponse> {
+  public static async adminCreate(
+    request: ClientRequest,
+    file: Express.Multer.File | undefined
+  ): Promise<ClientResponse> {
     // request validation
-    const requestValidation: ClientRequest = Validation.validate<ClientRequest>(ClientSchema.CREATE, request);
+    const requestValidation: ClientRequest = Validation.validate<ClientRequest>(
+      ClientSchema.CREATE,
+      request
+    );
 
     // create client
     const createClient: Client = await prisma.client.create({
@@ -57,15 +71,27 @@ export class ClientService {
    * @returns the updated client
    * @throws ResponseError if error occur
    */
-  public static async adminUpdate(request: ClientRequest, params: ClientParams, file: Express.Multer.File | undefined): Promise<ClientResponse> {
+  public static async adminUpdate(
+    request: ClientRequest,
+    params: ClientParams,
+    file: Express.Multer.File | undefined
+  ): Promise<ClientResponse> {
     // request validation
-    const requestValidation: ClientRequest = Validation.validate<ClientRequest>(ClientSchema.UPDATE, request);
+    const requestValidation: ClientRequest = Validation.validate<ClientRequest>(
+      ClientSchema.UPDATE,
+      request
+    );
 
     // params validation
-    const paramsValidation: ClientParams = Validation.validate<ClientParams>(ClientSchema.DETAIL, params);
+    const paramsValidation: ClientParams = Validation.validate<ClientParams>(
+      ClientSchema.DETAIL,
+      params
+    );
 
     // find client
-    const findClient: Client | null = await prisma.client.findUnique({ where: { id: paramsValidation.clientId } });
+    const findClient: Client | null = await prisma.client.findUnique({
+      where: { id: paramsValidation.clientId },
+    });
 
     // throw error if client not found
     if (!findClient) throw new ResponseError("Client not found");
@@ -77,11 +103,16 @@ export class ClientService {
       }
     }
 
+    // if (file && file.filename !== findClient.logo) {
+    //   const oldFilePath = `public/client/${findClient.logo}`;
+    //   if (fs.existsSync(oldFilePath)) fs.unlinkSync(oldFilePath);
+    // }
+
     // update client
     const updateClient: Client = await prisma.client.update({
       data: {
         name: requestValidation.name,
-        logo: file?.originalname ?? findClient.logo,
+        logo: file?.filename ?? findClient.logo,
       },
       where: { id: paramsValidation.clientId },
     });
@@ -96,12 +127,19 @@ export class ClientService {
    * @returns the deleted client
    * @throws ResponseError if error occur
    */
-  public static async adminDelete(params: ClientParams): Promise<ClientResponse> {
+  public static async adminDelete(
+    params: ClientParams
+  ): Promise<ClientResponse> {
     // params validation
-    const paramsValidation: ClientParams = Validation.validate<ClientParams>(ClientSchema.DETAIL, params);
+    const paramsValidation: ClientParams = Validation.validate<ClientParams>(
+      ClientSchema.DETAIL,
+      params
+    );
 
     // find client
-    const findClient: Client | null = await prisma.client.findUnique({ where: { id: paramsValidation.clientId } });
+    const findClient: Client | null = await prisma.client.findUnique({
+      where: { id: paramsValidation.clientId },
+    });
 
     // if client not found, throw error
     if (!findClient) {
@@ -114,7 +152,9 @@ export class ClientService {
     }
 
     // delete client
-    const deleteClient: Client = await prisma.client.delete({ where: { id: findClient.id } });
+    const deleteClient: Client = await prisma.client.delete({
+      where: { id: findClient.id },
+    });
 
     // return response
     return toClientResponse(deleteClient);
@@ -127,7 +167,9 @@ export class ClientService {
    */
   public static async formGetAll(): Promise<ClientResponse[]> {
     // find all client
-    const findClient: Client[] = await prisma.client.findMany({ orderBy: { name: "asc" } });
+    const findClient: Client[] = await prisma.client.findMany({
+      orderBy: { name: "asc" },
+    });
 
     // specify return
     findClient.map((item) => (item.logo = undefined!));
